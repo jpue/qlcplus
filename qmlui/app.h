@@ -173,6 +173,9 @@ public:
     int defaultMask() const;
     int accessMask() const;
 
+    SimpleDesk* simpleDesk() const;
+    VirtualConsole* virtualConsole() const;
+
     bool is3DSupported() const;
 
     Q_INVOKABLE void aboutQt();

@@ -26,6 +26,9 @@
 #include "app.h"
 #include "qlcfile.h"
 #include "qlcconfig.h"
+#include "webaccess.h"
+#include "simpledesk.h"
+#include "virtualconsole.h"
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 #define endl Qt::endl
@@ -101,6 +104,24 @@ int main(int argc, char *argv[])
                                       "Disable the 3D preview.");
     parser.addOption(threedSupportOption);
 
+    QCommandLineOption enableWebAccessOption(QStringList() << "w" << "web",
+                                      "Enable remote web access.");
+    parser.addOption(enableWebAccessOption);
+
+    QCommandLineOption webAccessPortOption(QStringList() << "wp" << "web-port",
+                                      "Set the port to use for web access.",
+                                      "port", "");
+    parser.addOption(webAccessPortOption);
+
+    QCommandLineOption enableWebAuthOption(QStringList() << "wa" << "web-auth",
+                                      "Enable remote web access with users authentication.");
+    parser.addOption(enableWebAuthOption);
+
+    QCommandLineOption webAuthFileOption(QStringList() << "a" << "web-auth-file",
+                                      "Specify a file where to store web access basic authentication credentials.",
+                                      "file", "");
+    parser.addOption(webAuthFileOption);
+
     parser.process(app);
 
     // 3D enablement
@@ -163,7 +184,7 @@ int main(int argc, char *argv[])
 
     // open file
     QString filename = parser.value(openFileOption);
-    if (filename.isEmpty() == false)
+    if (!filename.isEmpty())
     {
         if (filename.endsWith(KExtFixture))
             qlcplusApp.loadFixture(filename);
@@ -174,6 +195,20 @@ int main(int argc, char *argv[])
     // open last file
     if (parser.isSet(openLastOption))
         qlcplusApp.loadLastWorkspace();
+
+    // start webaccess
+    if (parser.isSet(enableWebAccessOption))
+    {
+        WebAccess *webAccess = new WebAccess(qlcplusApp.doc(), qlcplusApp.virtualConsole(), qlcplusApp.simpleDesk(),
+                                             parser.value(webAccessPortOption).toInt(), parser.isSet(enableWebAuthOption),
+                                             parser.value(webAuthFileOption));
+
+        // TODO
+        Q_UNUSED(webAccess);
+        //QObject::connect(webAccess, SIGNAL(toggleDocMode()), &app, SLOT(slotModeToggle()));
+        //QObject::connect(webAccess, SIGNAL(loadProject(QString)), &app, SLOT(slotLoadDocFromMemory(QString)));
+        //QObject::connect(webAccess, SIGNAL(storeAutostartProject(QString)), &app, SLOT(slotSaveAutostart(QString)));
+    }
 
     return app.exec();
 }

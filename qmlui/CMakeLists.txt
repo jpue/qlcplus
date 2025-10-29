@@ -100,6 +100,7 @@ target_include_directories(${module_name} PRIVATE
     ../engine/src
     ../plugins/interfaces
     ../plugins/midi/src/common
+    ../webaccess/src
     fixtureeditor
     tardis
     virtualconsole
@@ -123,6 +124,7 @@ target_link_libraries(${module_name} PRIVATE
     Qt${QT_MAJOR_VERSION}::Svg
     Qt${QT_MAJOR_VERSION}::Widgets
     qlcplusengine
+    qlcpluswebaccess
 )
 
 if(ANDROID)
