@@ -315,6 +315,16 @@ int App::defaultMask() const
             AC_ShowManager | AC_SimpleDesk | AC_VCControl | AC_VCEditing;
 }
 
+SimpleDesk* App::simpleDesk() const
+{
+    return m_simpleDesk;
+}
+
+VirtualConsole* App::virtualConsole() const
+{
+    return m_virtualConsole;
+}
+
 void App::keyPressEvent(QKeyEvent *e)
 {
     if (m_contextManager)
