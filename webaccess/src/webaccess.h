@@ -115,15 +115,24 @@ protected slots:
     void slotCueSideFaderValueChanged();
     void slotCuePlaybackStateChanged();
     void slotCueDisableStateChanged(bool disable);
+  #ifndef QMLUI
     void slotClockTimeChanged(quint32 time);
+  #else
+    void slotCurrentClockTimeChanged(int time);
+  #endif
     void slotClockDisableStateChanged(bool disable);
     void slotFramePageChanged(int pageNum);
     void slotFrameDisableStateChanged(bool disable);
+  #ifndef QMLUI
     void slotMatrixSliderValueChanged(int value);
     void slotMatrixColorChanged(int);
     void slotMatrixAnimationValueChanged(QString name);
+  #else
+    void slotAnimationFaderLevelChanged();
+    void slotAnimationAlgorithmChanged();
+    void slotAnimationColorChanged(int);
+  #endif
     void slotMatrixControlKnobValueChanged(int controlID, int value);
-
     void slotGrandMasterValueChanged(uchar value);
 
 protected:
