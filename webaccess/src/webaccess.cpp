@@ -1420,7 +1420,11 @@ QString WebAccess::getFrameHTML(VCFrame *frame)
                    "<img src=\"check.png\" width=\"27\"></a>\n";
 
             m_JScode += "frameDisableState[" + QString::number(frame->id()) + "] = " + QString::number(frame->isDisabled() ? 1 : 0) + ";\n";
+          #ifndef QMLUI
             connect(frame, SIGNAL(disableStateChanged(bool)), this, SLOT(slotFrameDisableStateChanged(bool)));
+          #else
+            connect(frame, SIGNAL(disabledStateChanged(bool)), this, SLOT(slotFrameDisableStateChanged(bool)));
+          #endif
         }
 
         m_JScode += "framesWidth[" + QString::number(frame->id()) + "] = " + QString::number(origSize.width()) + ";\n";
@@ -1589,7 +1593,11 @@ QString WebAccess::getSoloFrameHTML(VCSoloFrame *frame)
                    "<img src=\"check.png\" width=\"27\"></a>\n";
 
             m_JScode += "frameDisableState[" + QString::number(frame->id()) + "] = " + QString::number(frame->isDisabled() ? 1 : 0) + ";\n";
+          #ifndef QMLUI
             connect(frame, SIGNAL(disableStateChanged(bool)), this, SLOT(slotFrameDisableStateChanged(bool)));
+          #else
+            connect(frame, SIGNAL(disabledStateChanged(bool)), this, SLOT(slotFrameDisableStateChanged(bool)));
+          #endif
         }
 
         m_JScode += "framesWidth[" + QString::number(frame->id()) + "] = " + QString::number(origSize.width()) + ";\n";
@@ -1711,8 +1719,13 @@ QString WebAccess::getButtonHTML(VCButton *btn)
 
     connect(btn, SIGNAL(stateChanged(int)),
             this, SLOT(slotButtonStateChanged(int)));
+  #ifndef QMLUI
     connect(btn, SIGNAL(disableStateChanged(bool)),
             this, SLOT(slotButtonDisableStateChanged(bool)));
+  #else
+    connect(btn, SIGNAL(disabledStateChanged(bool)),
+            this, SLOT(slotButtonDisableStateChanged(bool)));
+  #endif
 
     return str;
 }
@@ -1888,12 +1901,14 @@ QString WebAccess::getSliderHTML(VCSlider *slider)
   #ifndef QMLUI
     connect(slider, SIGNAL(valueChanged(QString)),
             this, SLOT(slotSliderValueChanged(QString)));
+    connect(slider, SIGNAL(disableStateChanged(bool)),
+            this, SLOT(slotSliderDisableStateChanged(bool)));
   #else
     connect(slider, SIGNAL(valueChanged(int)),
             this, SLOT(slotSliderValueChanged(int)));
-  #endif
-    connect(slider, SIGNAL(disableStateChanged(bool)),
+    connect(slider, SIGNAL(disabledStateChanged(bool)),
             this, SLOT(slotSliderDisableStateChanged(bool)));
+  #endif
 
     return str;
 }
@@ -1948,8 +1963,13 @@ QString WebAccess::getLabelHTML(VCLabel *label)
             getWidgetBackgroundImage(label) + "\">" +
             label->caption() + "</div>\n</div>\n";
 
+  #ifndef QMLUI
     connect(label, SIGNAL(disableStateChanged(bool)),
             this, SLOT(slotLabelDisableStateChanged(bool)));
+  #else
+    connect(label, SIGNAL(disabledStateChanged(bool)),
+            this, SLOT(slotLabelDisableStateChanged(bool)));
+  #endif
 
     return str;
 }
@@ -2528,8 +2548,13 @@ QString WebAccess::getCueListHTML(VCCueList *cue)
             this, SLOT(slotCuePlaybackStateChanged()));
     connect(cue, SIGNAL(playbackStatusChanged()),
             this, SLOT(slotCuePlaybackStateChanged()));
+  #ifndef QMLUI
     connect(cue, SIGNAL(disableStateChanged(bool)),
             this, SLOT(slotCueDisableStateChanged(bool)));
+  #else
+    connect(cue, SIGNAL(disabledStateChanged(bool)),
+            this, SLOT(slotCueDisableStateChanged(bool)));
+  #endif
 
     return str;
 }
@@ -2651,8 +2676,13 @@ QString WebAccess::getClockHTML(VCClock *clock)
 
     str += "</a></div>\n";
 
+  #ifndef QMLUI
     connect(clock, SIGNAL(disableStateChanged(bool)),
             this, SLOT(slotClockDisableStateChanged(bool)));
+  #else
+    connect(clock, SIGNAL(disabledStateChanged(bool)),
+            this, SLOT(slotClockDisableStateChanged(bool)));
+  #endif
 
     return str;
 }
