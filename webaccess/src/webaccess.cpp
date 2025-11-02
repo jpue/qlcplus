@@ -917,7 +917,9 @@ void WebAccess::slotHandleWebSocketRequest(QHttpConnection *conn, QString data)
                 else
                     button->releaseFunction();
               #else
-                button->setState(value ? VCButton::ButtonState::Active : VCButton::ButtonState::Inactive);
+                if ( (value != 0) &&
+                     ((button->actionType() == VCButton::ButtonAction::Toggle) || (button->actionType() == VCButton::ButtonAction::Blackout)))
+                    button->requestStateChange((button->state() == VCButton::ButtonState::Active) ? false : true);
               #endif
             }
             break;
@@ -1715,7 +1717,11 @@ QString WebAccess::getButtonHTML(VCButton *btn)
     return str;
 }
 
+#ifndef QMLUI
 void WebAccess::slotSliderValueChanged(QString val)
+#else
+void WebAccess::slotSliderValueChanged(int val)
+#endif
 {
     VCSlider *slider = qobject_cast<VCSlider *>(sender());
     if (slider == NULL)
@@ -1784,7 +1790,7 @@ QString WebAccess::getSliderHTML(VCSlider *slider)
       #ifndef QMLUI
         slider->topLabelText()
       #else
-        slider->caption()
+        ((slider->valueDisplayStyle() == VCSlider::ValueDisplayStyle::DMXValue) ? QString::number(slider->value()) : QString::number((slider->value() * 100.0) / 255.0, 10, 0) + "%")
       #endif
       + "</div>\n";
 
@@ -1879,8 +1885,13 @@ QString WebAccess::getSliderHTML(VCSlider *slider)
     str += "</div>\n";
     str += "</div>\n";
 
+  #ifndef QMLUI
     connect(slider, SIGNAL(valueChanged(QString)),
             this, SLOT(slotSliderValueChanged(QString)));
+  #else
+    connect(slider, SIGNAL(valueChanged(int)),
+            this, SLOT(slotSliderValueChanged(int)));
+  #endif
     connect(slider, SIGNAL(disableStateChanged(bool)),
             this, SLOT(slotSliderDisableStateChanged(bool)));
 

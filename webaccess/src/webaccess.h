@@ -101,7 +101,11 @@ protected slots:
     void slotButtonStateChanged(int state);
     void slotButtonDisableStateChanged(bool disable);
     void slotLabelDisableStateChanged(bool disable);
+  #ifndef QMLUI
     void slotSliderValueChanged(QString val);
+  #else
+    void slotSliderValueChanged(int val);
+  #endif
     void slotSliderDisableStateChanged(bool disable);
     void slotAudioTriggersToggled(bool toggle);
     void slotCueIndexChanged(int idx);
