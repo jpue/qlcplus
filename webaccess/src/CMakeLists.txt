@@ -40,10 +40,19 @@ add_library(${module_name}
 target_include_directories(${module_name} PUBLIC
     ../../engine/audio/src
     ../../engine/src
-    ../../ui/src
-    ../../ui/src/virtualconsole
     qhttpserver
 )
+if(NOT qmlui)
+    target_include_directories(${module_name} PUBLIC
+        ../../ui/src
+        ../../ui/src/virtualconsole
+    )
+else()
+    target_include_directories(${module_name} PUBLIC
+        ../../qmlui
+        ../../qmlui/virtualconsole
+    )
+endif()
 
 target_compile_definitions(${module_name} PUBLIC
     NO_SSL
@@ -57,10 +66,10 @@ target_link_libraries(${module_name} PUBLIC
     Qt${QT_MAJOR_VERSION}::Gui
     Qt${QT_MAJOR_VERSION}::Multimedia
     Qt${QT_MAJOR_VERSION}::Network
+    Qt${QT_MAJOR_VERSION}::Quick
     Qt${QT_MAJOR_VERSION}::Widgets
     Qt${QT_MAJOR_VERSION}::WebSockets
     qlcplusengine
-    qlcplusui
 )
 
 if(qmlui OR (QT_VERSION_MAJOR GREATER 5))
