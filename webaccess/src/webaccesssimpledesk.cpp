@@ -33,14 +33,22 @@ WebAccessSimpleDesk::WebAccessSimpleDesk(QObject *parent) :
 
 QString WebAccessSimpleDesk::getHTML(Doc *doc, SimpleDesk *sd)
 {
+#ifndef QMLUI
     int uni = sd->getCurrentUniverseIndex() + 1;
     int page = sd->getCurrentPage();
+    int slidersNumber = sd->getSlidersNumber();
+#else // TODO
+    Q_UNUSED(sd);
+    int uni = 1; //sd->getCurrentUniverseIndex() + 1;
+    int page = 1; //sd->getCurrentPage();
+    int slidersNumber = 32; //sd->getSlidersNumber();
+#endif
 
     QString JScode = "<script type=\"text/javascript\" src=\"simpledesk.js\"></script>\n";
     JScode += "<script type=\"text/javascript\">\n";
     JScode += "var currentUniverse = " + QString::number(uni) + ";\n";
     JScode += "var currentPage = " + QString::number(page) + ";\n";
-    JScode += "var channelsPerPage = " + QString::number(sd->getSlidersNumber()) + ";\n";
+    JScode += "var channelsPerPage = " + QString::number(slidersNumber) + ";\n";
     JScode += "</script>\n";
 
     QString CSScode = "<link rel=\"stylesheet\" type=\"text/css\" media=\"screen\" href=\"common.css\">\n";
@@ -96,7 +104,13 @@ QString WebAccessSimpleDesk::getChannelsMessage(Doc *doc, SimpleDesk *sd,
     for (int i = startAddr; i < startAddr + chNumber; i++)
     {
         QString type = "";
+
+    #ifndef QMLUI
         uchar value = sd->getAbsoluteChannelValue(universeAddr + i);
+    #else // TODO
+        uchar value = sd->value(universeAddr + i);
+    #endif
+
         Fixture* fxi = doc->fixture(doc->fixtureForAddress(universeAddr + i));
         if (fxi != NULL)
         {

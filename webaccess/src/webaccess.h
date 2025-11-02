@@ -28,7 +28,13 @@ class WebAccessNetwork;
 
 class WebAccessAuth;
 
-class VCAudioTriggers;
+#ifndef QMLUI
+  class VCAudioTriggers;
+  class VCMatrix;
+#else
+  class VCAudioTrigger;
+  class VCAnimation;
+#endif
 class VirtualConsole;
 class VCSoloFrame;
 class SimpleDesk;
@@ -39,7 +45,6 @@ class VCSlider;
 class VCLabel;
 class VCFrame;
 class VCClock;
-class VCMatrix;
 class Doc;
 
 class QHttpServer;
@@ -68,10 +73,15 @@ private:
     QString getButtonHTML(VCButton *btn);
     QString getSliderHTML(VCSlider *slider);
     QString getLabelHTML(VCLabel *label);
+#ifndef QMLUI
     QString getAudioTriggersHTML(VCAudioTriggers *triggers);
+    QString getMatrixHTML(VCMatrix *matrix);
+#else
+    QString getAudioTriggerHTML(VCAudioTrigger *triggers);
+    QString getMatrixHTML(VCAnimation *matrix);
+#endif
     QString getCueListHTML(VCCueList *cue);
     QString getClockHTML(VCClock *clock);
-    QString getMatrixHTML(VCMatrix *matrix);
     QString getGrandMasterSliderHTML();
 
     QString getChildrenHTML(VCWidget *frame, int pagesNum, int currentPageIdx);
