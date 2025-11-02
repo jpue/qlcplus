@@ -2039,8 +2039,10 @@ QString WebAccess::getAudioTriggerHTML(VCAudioTrigger *triggers)
 
     str += "</div></div>\n";
 
+    /* TODO
     connect(triggers, SIGNAL(captureEnabled(bool)),
             this, SLOT(slotAudioTriggersToggled(bool)));
+    */
 
     return str;
 }
@@ -2530,6 +2532,7 @@ QString WebAccess::getCueListHTML(VCCueList *cue)
 
     m_JScode += "isDisableCue[" + QString::number(cue->id()) + "] = " + QString::number(cue->isDisabled()) + ";\n";
 
+  #ifndef QMLUI
     connect(cue, SIGNAL(stepChanged(int)),
             this, SLOT(slotCueIndexChanged(int)));
     connect(cue, SIGNAL(stepNoteChanged(int, QString)),
@@ -2548,10 +2551,29 @@ QString WebAccess::getCueListHTML(VCCueList *cue)
             this, SLOT(slotCuePlaybackStateChanged()));
     connect(cue, SIGNAL(playbackStatusChanged()),
             this, SLOT(slotCuePlaybackStateChanged()));
-  #ifndef QMLUI
     connect(cue, SIGNAL(disableStateChanged(bool)),
             this, SLOT(slotCueDisableStateChanged(bool)));
   #else
+    connect(cue, SIGNAL(playbackIndexChanged(int)),
+            this, SLOT(slotCueIndexChanged(int)));
+    /* TODO
+    connect(cue, SIGNAL(stepNoteChanged(int, QString)),
+            this, SLOT(slotCueStepNoteChanged(int, QString)));
+    connect(cue, SIGNAL(progressStateChanged()),
+            this, SLOT(slotCueProgressStateChanged()));
+    connect(cue, SIGNAL(sideFaderButtonChecked()),
+            this, SLOT(slotSideFaderButtonChecked(bool)));
+    connect(cue, SIGNAL(sideFaderButtonToggled()),
+            this, SLOT(slotCueShowSideFaderPanel()));
+    connect(cue, SIGNAL(sideFaderValueChanged()),
+            this, SLOT(slotCueSideFaderValueChanged()));
+    connect(cue, SIGNAL(playbackButtonClicked()),
+            this, SLOT(slotCuePlaybackStateChanged()));
+    connect(cue, SIGNAL(stopButtonClicked()),
+            this, SLOT(slotCuePlaybackStateChanged()));
+    connect(cue, SIGNAL(playbackStatusChanged()),
+            this, SLOT(slotCuePlaybackStateChanged()));
+    */
     connect(cue, SIGNAL(disabledStateChanged(bool)),
             this, SLOT(slotCueDisableStateChanged(bool)));
   #endif
@@ -2559,7 +2581,11 @@ QString WebAccess::getCueListHTML(VCCueList *cue)
     return str;
 }
 
+#ifndef QMLUI
 void WebAccess::slotClockTimeChanged(quint32 time)
+#else
+void WebAccess::slotCurrentClockTimeChanged(int time)
+#endif
 {
     VCClock *clock = qobject_cast<VCClock *>(sender());
     if (clock == NULL)
@@ -2606,8 +2632,13 @@ QString WebAccess::getClockHTML(VCClock *clock)
         str += QString::number(clock->id()) + ", 'S')\" ";
         str += "oncontextmenu=\"javascript:controlWatch(";
         str += QString::number(clock->id()) + ", 'R'); return false;\"";
+      #ifndef QMLUI
         connect(clock, SIGNAL(timeChanged(quint32)),
                 this, SLOT(slotClockTimeChanged(quint32)));
+      #else
+        connect(clock, SIGNAL(currentTimeChanged(int)),
+                this, SLOT(slotCurrentClockTimeChanged(int)));
+      #endif
     }
     else
     {
@@ -2687,19 +2718,27 @@ QString WebAccess::getClockHTML(VCClock *clock)
     return str;
 }
 
+#ifndef QMLUI
 void WebAccess::slotMatrixSliderValueChanged(int value)
 {
-  #ifndef QMLUI
     VCMatrix *matrix = qobject_cast<VCMatrix *>(sender());
-  #else
-    VCAnimation *matrix = qobject_cast<VCAnimation*>(sender());
-  #endif
     if (matrix == NULL)
         return;
 
     QString wsMessage = QString("%1|MATRIX_SLIDER|%2").arg(matrix->id()).arg(value);
     sendWebSocketMessage(wsMessage);
 }
+#else
+void WebAccess::slotAnimationFaderLevelChanged()
+{
+    VCAnimation *animation = qobject_cast<VCAnimation*>(sender());
+    if (animation == NULL)
+        return;
+
+    QString wsMessage = QString("%1|MATRIX_SLIDER|%2").arg(animation->id()).arg(animation->faderLevel());
+    sendWebSocketMessage(wsMessage);
+}
+#endif
 
 void WebAccess::slotMatrixColorChanged(int index)
 {
@@ -2721,19 +2760,27 @@ void WebAccess::slotMatrixColorChanged(int index)
     sendWebSocketMessage(wsMessage.toUtf8());
 }
 
+#ifndef QMLUI
 void WebAccess::slotMatrixAnimationValueChanged(QString name)
 {
-  #ifndef QMLUI
     VCMatrix *matrix = qobject_cast<VCMatrix *>(sender());
-  #else
-    VCAnimation *matrix = qobject_cast<VCAnimation*>(sender());
-  #endif
     if (matrix == NULL)
         return;
 
     QString wsMessage = QString("%1|MATRIX_COMBO|%2").arg(matrix->id()).arg(name);
     sendWebSocketMessage(wsMessage);
 }
+#else
+void WebAccess::slotAnimationAlgorithmChanged()
+{
+    VCAnimation *animation = qobject_cast<VCAnimation*>(sender());
+    if (animation == NULL)
+        return;
+
+    QString wsMessage = QString("%1|MATRIX_COMBO|%2").arg(animation->id()).arg(animation->algorithms()[animation->algorithmIndex()]);
+    sendWebSocketMessage(wsMessage);
+}
+#endif
 
 void WebAccess::slotMatrixControlKnobValueChanged(int controlID, int value)
 {
@@ -3003,12 +3050,25 @@ QString WebAccess::getMatrixHTML(VCAnimation *matrix)
     str += "</div>";
     str += "</div>\n";
 
+  #ifndef QMLUI
     connect(matrix, SIGNAL(sliderValueChanged(int)),
             this, SLOT(slotMatrixSliderValueChanged(int)));
     connect(matrix, SIGNAL(mtxColorChanged(int)),
             this, SLOT(slotMatrixColorChanged(int)));
     connect(matrix, SIGNAL(animationValueChanged(QString)),
             this, SLOT(slotMatrixAnimationValueChanged(QString)));
+  #else
+    connect(matrix, SIGNAL(faderLevelChanged()),
+            this, SLOT(slotAnimationFaderLevelChanged()));
+    /* TODO
+    connect(matrix, SIGNAL(startColorChanged()),
+            this, SLOT(slotMatrixStartColorChanged()));
+    connect(matrix, SIGNAL(endColorChanged()),
+            this, SLOT(slotMatrixEndColorChanged()));
+    */
+    connect(matrix, SIGNAL(algorithmIndexChanged()),
+            this, SLOT(slotAnimationAlgorithmChanged()));
+  #endif
 
     return str;
 }
