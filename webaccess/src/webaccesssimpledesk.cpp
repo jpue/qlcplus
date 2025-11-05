@@ -33,15 +33,17 @@ WebAccessSimpleDesk::WebAccessSimpleDesk(QObject *parent) :
 
 QString WebAccessSimpleDesk::getHTML(Doc *doc, SimpleDesk *sd)
 {
+    if ((doc == NULL) || (sd == NULL))
+        return QString("");
+
 #ifndef QMLUI
     int uni = sd->getCurrentUniverseIndex() + 1;
     int page = sd->getCurrentPage();
     int slidersNumber = sd->getSlidersNumber();
-#else // TODO
-    Q_UNUSED(sd);
-    int uni = 1; //sd->getCurrentUniverseIndex() + 1;
-    int page = 1; //sd->getCurrentPage();
-    int slidersNumber = 32; //sd->getSlidersNumber();
+#else
+    const int uni = sd->universeFilter() + 1;
+    const int page = 1; // TODO
+    const int slidersNumber = 512; // TODO
 #endif
 
     QString JScode = "<script type=\"text/javascript\" src=\"simpledesk.js\"></script>\n";
@@ -79,11 +81,21 @@ QString WebAccessSimpleDesk::getHTML(Doc *doc, SimpleDesk *sd)
                 "<div class=\"styled-select\" style=\"display: inline-block;\">\n"
                 "<select onchange=\"universeChanged(this.value);\">\n";
 
+#ifndef QMLUI
     QStringList uniList = doc->inputOutputMap()->universeNames();
     for (int i = 0; i < uniList.count(); i++)
     {
         bodyHTML += "<option value=\"" + QString::number(i) + "\">" + uniList.at(i) + "</option>\n";
     }
+#else
+    for (const QVariant& universe : sd->universesListModel().toList())
+    {
+        const QVariantMap& universeMap = universe.toMap();
+        bodyHTML += "<option value=\"" + QString::number(universeMap.value("mValue", 0).toInt()) + "\">" +
+                    universeMap.value("mLabel", "").toString().toHtmlEscaped() + "</option>\n";
+    }
+#endif
+
     bodyHTML += "</select></div>\n";
     bodyHTML += "</div>\n";
 
@@ -97,19 +109,30 @@ QString WebAccessSimpleDesk::getHTML(Doc *doc, SimpleDesk *sd)
 QString WebAccessSimpleDesk::getChannelsMessage(Doc *doc, SimpleDesk *sd,
                                                 quint32 universe, int startAddr, int chNumber)
 {
+    if ((doc == NULL) || (sd == NULL))
+        return QString("");
+
+    qDebug() << "getChannelsMessage" << universe << startAddr << chNumber;
+
     QString message;
     quint32 universeAddr = (universe << 9);
-    qDebug () << "Uni addr:" << universeAddr;
+    qDebug() << "Uni addr:" << universeAddr;
+
+  #ifdef QMLUI
+    // race condition possible - universe(Filter) not locked
+    const int universeFilter = sd->universeFilter();
+    sd->setUniverseFilter(universe);
+  #endif
 
     for (int i = startAddr; i < startAddr + chNumber; i++)
     {
         QString type = "";
 
-    #ifndef QMLUI
+      #ifndef QMLUI
         uchar value = sd->getAbsoluteChannelValue(universeAddr + i);
-    #else // TODO
-        uchar value = sd->value(universeAddr + i);
-    #endif
+      #else
+        uchar value = sd->value(i);
+      #endif
 
         Fixture* fxi = doc->fixture(doc->fixtureForAddress(universeAddr + i));
         if (fxi != NULL)
@@ -133,6 +156,10 @@ QString WebAccessSimpleDesk::getChannelsMessage(Doc *doc, SimpleDesk *sd,
     }
     // remove trailing separator
     message.truncate(message.length() - 1);
+
+  #ifdef QMLUI
+    sd->setUniverseFilter(universeFilter);
+  #endif
 
     qDebug() << "Message to send:" << message;
     return message;
