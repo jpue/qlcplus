@@ -110,8 +110,10 @@ WebAccess::WebAccess(Doc *doc, VirtualConsole *vcInstance, SimpleDesk *sdInstanc
     connect(m_doc->masterTimer(), SIGNAL(functionStopped(quint32)),
             this, SLOT(slotFunctionStopped(quint32)));
 
+  #ifndef QMLUI
     connect(m_vc, SIGNAL(loaded()),
             this, SLOT(slotVCLoaded()));
+  #endif
 }
 
 WebAccess::~WebAccess()
@@ -832,7 +834,7 @@ void WebAccess::slotHandleWebSocketRequest(QHttpConnection *conn, QString data)
                                 m_doc, m_sd, m_sd->getCurrentUniverseIndex(),
                                 (m_sd->getCurrentPage() - 1) * m_sd->getSlidersNumber(), m_sd->getSlidersNumber()));
           #else
-            // TODO
+            wsAPIMessage.append(WebAccessSimpleDesk::getChannelsMessage(m_doc, m_sd, (chNum >> 9), chNum & ~0x1ff, chNum | 0x1ff));
           #endif
         }
         else if (apiCmd == "sdResetUniverse")
@@ -872,10 +874,10 @@ void WebAccess::slotHandleWebSocketRequest(QHttpConnection *conn, QString data)
       #ifndef QMLUI
         m_sd->setAbsoluteChannelValue(absAddress, uchar(value));
       #else
-        // TODO
-        Q_UNUSED(absAddress);
-        Q_UNUSED(value);
-        //m_sd->setValue(quint32 fixtureID, uint channel, uchar value);
+        quint32 fxID = m_doc->fixtureForAddress(absAddress);
+        Fixture* fxi = m_doc->fixture(fxID);
+        if (fxi != NULL)
+            m_sd->setValue(fxID, absAddress-fxi->universeAddress(), value);
       #endif
         return;
     }
