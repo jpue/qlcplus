@@ -196,6 +196,7 @@ private:
 signals:
     void chaserIDChanged(quint32 id);
     void stepsListChanged();
+    void stepNoteChanged(int index, QString note);
 
 private:
     /** The ID of the Chaser attached to this Cue List */
@@ -255,6 +256,10 @@ private slots:
 
     /** Method to update the playback progress status */
     void slotProgressTimeout();
+
+signals:
+    /** progress percent value and text */
+    void progressStateChanged();
 
 private:
     /** Get the index of the next item, based on the chaser direction */

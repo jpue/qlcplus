@@ -111,7 +111,9 @@ protected slots:
     void slotCueIndexChanged(int idx);
     void slotCueStepNoteChanged(int idx, QString note);
     void slotCueProgressStateChanged();
+  #ifndef QMLUI
     void slotCueShowSideFaderPanel();
+  #endif
     void slotCueSideFaderValueChanged();
     void slotCuePlaybackStateChanged();
     void slotCueDisableStateChanged(bool disable);
