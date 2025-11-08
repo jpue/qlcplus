@@ -942,11 +942,10 @@ void WebAccess::slotHandleWebSocketRequest(QHttpConnection *conn, QString data)
                 VCAudioTriggers *triggers = qobject_cast<VCAudioTriggers*>(widget);
                 triggers->toggleEnableButton(value ? true : false);
               #else
-                VCAudioTrigger *trigger = qobject_cast<VCAudioTrigger*>(widget);
-                Q_UNUSED(trigger);
                 // TODO
+                VCAudioTrigger *trigger = qobject_cast<VCAudioTrigger*>(widget);
+                trigger->setDisabled((value == 255) ? false : true);
               #endif
-
             }
             break;
             case VCWidget::CueListWidget:
@@ -2020,8 +2019,9 @@ QString WebAccess::getAudioTriggersHTML(VCAudioTriggers *triggers)
     return str;
 }
 #else
-QString WebAccess::getAudioTriggerHTML(VCAudioTrigger *triggers)
+QString WebAccess::getAudioTriggerHTML(VCAudioTrigger *trigger)
 {
+    /* TODO
     QString str = "<div class=\"vcaudiotriggers\" style=\"left: " + QString::number(triggers->geometry().x()) +
           "px; top: " + QString::number(triggers->geometry().y()) + "px; width: " +
            QString::number(triggers->geometry().width()) +
@@ -2041,12 +2041,13 @@ QString WebAccess::getAudioTriggerHTML(VCAudioTrigger *triggers)
 
     str += "</div></div>\n";
 
-    /* TODO
     connect(triggers, SIGNAL(captureEnabled(bool)),
             this, SLOT(slotAudioTriggersToggled(bool)));
-    */
 
     return str;
+    */
+
+    return getWidgetHTML(trigger);
 }
 #endif
 
