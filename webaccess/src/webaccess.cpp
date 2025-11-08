@@ -1061,64 +1061,44 @@ void WebAccess::slotHandleWebSocketRequest(QHttpConnection *conn, QString data)
                   #ifndef QMLUI
                     matrix->slotSetSliderValue(cmdList[2].toInt());
                   #else
-                {
                     matrix->setFaderLevel(cmdList[2].toInt());
-                    matrix->faderLevelChanged();
-                }
                   #endif
                 if (cmdList[1] == "MATRIX_COMBO_CHANGE")
                   #ifndef QMLUI
                     matrix->slotSetAnimationValue(cmdList[2]);
                   #else
-                {
-                    matrix->setAlgorithmIndex(cmdList[2].toInt());
-                    matrix->algorithmIndexChanged();
-                }
+                    // FIXME: does not work if the algorithm has been changed via the UI combobox since the VC initialisation
+                    matrix->setAlgorithmIndex(matrix->algorithms().indexOf(cmdList[2]));
                   #endif
                 if (cmdList[1] == "MATRIX_COLOR_CHANGE" && cmdList[2] == "COLOR_1")
                   #ifndef QMLUI
                     matrix->slotColor1Changed(cmdList[3].toInt());
                   #else
-                {
                     matrix->setColor1(QColor(cmdList[3].toInt()));
-                    matrix->color1Changed();
-                }
                   #endif
                 if (cmdList[1] == "MATRIX_COLOR_CHANGE" && cmdList[2] == "COLOR_2")
                   #ifndef QMLUI
                     matrix->slotColor2Changed(cmdList[3].toInt());
                   #else
-                {
                     matrix->setColor2(QColor(cmdList[3].toInt()));
-                    matrix->color2Changed();
-                }
                   #endif
                 if (cmdList[1] == "MATRIX_COLOR_CHANGE" && cmdList[2] == "COLOR_3")
                   #ifndef QMLUI
                     matrix->slotColor3Changed(cmdList[3].toInt());
                   #else
-                {
                     matrix->setColor3(QColor(cmdList[3].toInt()));
-                    matrix->color3Changed();
-                }
                   #endif
                 if (cmdList[1] == "MATRIX_COLOR_CHANGE" && cmdList[2] == "COLOR_4")
                   #ifndef QMLUI
                     matrix->slotColor4Changed(cmdList[3].toInt());
                   #else
-                {
                     matrix->setColor4(QColor(cmdList[3].toInt()));
-                    matrix->color4Changed();
-                }
                   #endif
                 if (cmdList[1] == "MATRIX_COLOR_CHANGE" && cmdList[2] == "COLOR_5")
                   #ifndef QMLUI
                     matrix->slotColor5Changed(cmdList[3].toInt());
                   #else
-                {
                     matrix->setColor5(QColor(cmdList[3].toInt()));
-                    matrix->color5Changed();
-                }
                   #endif
                 if (cmdList[1] == "MATRIX_KNOB")
                   #ifndef QMLUI
@@ -2743,7 +2723,11 @@ void WebAccess::slotAnimationFaderLevelChanged()
 }
 #endif
 
+#ifndef QMLUI
 void WebAccess::slotMatrixColorChanged(int index)
+#else
+void WebAccess::slotAnimationColorChanged(int index)
+#endif
 {
   #ifndef QMLUI
     VCMatrix *matrix = qobject_cast<VCMatrix *>(sender());
@@ -2753,13 +2737,36 @@ void WebAccess::slotMatrixColorChanged(int index)
     if ((matrix == NULL) || (index < 1) || (index > 5))
         return;
 
+  #ifdef QMLUI
+    const QString color;
+    switch (index) {
+        case 1:
+          color = matrix->getColor1();
+          break;
+        case 2:
+          color = matrix->getColor1();
+          break;
+        case 3:
+          color = matrix->getColor1();
+          break;
+        case 4:
+          color = matrix->getColor1();
+          break;
+        case 5:
+          color = matrix->getColor1();
+          break;
+        default:
+          color = QStringLiteral("#000000");
+    }
+  #endif
+
     QString wsMessage = QString("%1|MATRIX_COLOR_%2|%3").arg(matrix->id()).arg(index).arg(
       #ifndef QMLUI
         matrix->mtxColor(index-1).name()
       #else
-        "#000000" // TODO
+        color
       #endif
-      .name());
+      );
     sendWebSocketMessage(wsMessage.toUtf8());
 }
 
@@ -2802,7 +2809,7 @@ void WebAccess::slotMatrixControlKnobValueChanged(int controlID, int value)
 #ifndef QMLUI
 QString WebAccess::getMatrixHTML(VCMatrix *matrix)
 #else
-QString WebAccess::getMatrixHTML(VCAnimation *matrix)
+QString WebAccess::getAnimationHTML(VCAnimation *matrix)
 #endif
 {
     const qreal height =
@@ -3063,12 +3070,16 @@ QString WebAccess::getMatrixHTML(VCAnimation *matrix)
   #else
     connect(matrix, SIGNAL(faderLevelChanged()),
             this, SLOT(slotAnimationFaderLevelChanged()));
-    /* TODO
-    connect(matrix, SIGNAL(startColorChanged()),
-            this, SLOT(slotMatrixStartColorChanged()));
-    connect(matrix, SIGNAL(endColorChanged()),
-            this, SLOT(slotMatrixEndColorChanged()));
-    */
+    connect(matrix, SIGNAL(color1Changed()),
+            this, SLOT(slotAnimationColor1Changed()));
+    connect(matrix, SIGNAL(color2Changed()),
+            this, SLOT(slotAnimationColor2Changed()));
+    connect(matrix, SIGNAL(color3Changed()),
+            this, SLOT(slotAnimationColor3Changed()));
+    connect(matrix, SIGNAL(color4Changed()),
+            this, SLOT(slotAnimationColor4Changed()));
+    connect(matrix, SIGNAL(color5Changed()),
+            this, SLOT(slotAnimationColor5Changed()));
     connect(matrix, SIGNAL(algorithmIndexChanged()),
             this, SLOT(slotAnimationAlgorithmChanged()));
   #endif
@@ -3169,7 +3180,7 @@ QString WebAccess::getChildrenHTML(VCWidget *frame, int pagesNum, int currentPag
               #ifndef QMLUI
                 str = getMatrixHTML(qobject_cast<VCMatrix *>(widget));
               #else
-                str = getMatrixHTML(qobject_cast<VCAnimation *>(widget));
+                str = getAnimationHTML(qobject_cast<VCAnimation *>(widget));
               #endif
             break;
             default:
