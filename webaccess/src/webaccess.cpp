@@ -777,8 +777,8 @@ void WebAccess::slotHandleWebSocketRequest(QHttpConnection *conn, QString data)
                     // remove trailing separator
                     wsAPIMessage.truncate(wsAPIMessage.length() - 1);
                   #else
-                    //VCAnimation *animation = qobject_cast<VCAnimation*>(widget);
                     // TODO
+                    //VCAnimation *animation = qobject_cast<VCAnimation*>(widget);
                   #endif
                 }
                 break;
@@ -795,8 +795,8 @@ void WebAccess::slotHandleWebSocketRequest(QHttpConnection *conn, QString data)
                     // remove trailing separator
                     wsAPIMessage.truncate(wsAPIMessage.length() - 1);
                   #else
-                    Q_UNUSED(xypad);
                     // TODO
+                    Q_UNUSED(xypad);
                   #endif
                 }
                 break;
@@ -3197,13 +3197,10 @@ QString WebAccess::getChildrenHTML(VCWidget *frame, int pagesNum, int currentPag
     return unifiedHTML;
 }
 
+#ifndef QMLUI
 void WebAccess::slotGrandMasterValueChanged(uchar value)
 {
-  #ifndef QMLUI
     GrandMaster::ValueMode gmValueMode = m_vc->properties().grandMasterValueMode();
-  #else
-    GrandMaster::ValueMode gmValueMode = m_doc->inputOutputMap()->grandMasterValueMode();
-  #endif
 
     QString gmDisplayValue;
     if (gmValueMode == GrandMaster::Limit)
@@ -3221,19 +3218,12 @@ void WebAccess::slotGrandMasterValueChanged(uchar value)
 
 QString WebAccess::getGrandMasterSliderHTML()
 {
-  #ifndef QMLUI
     if (!m_vc->properties().grandMasterVisible())
         return "";
-  #endif
 
     InputOutputMap* inputOutputMap = m_doc->inputOutputMap();
-  #ifndef QMLUI
     GrandMaster::ValueMode gmValueMode = m_vc->properties().grandMasterValueMode();
     GrandMaster::SliderMode gmSliderMode = m_vc->properties().grandMasterSliderMode();
-  #else
-    GrandMaster::ValueMode gmValueMode = inputOutputMap->grandMasterValueMode();
-    GrandMaster::SliderMode gmSliderMode = GrandMaster::SliderMode::Normal /*inputOutputMap->grandMasterSliderMode()*/;  // TODO
-  #endif
     uchar gmValue = inputOutputMap->grandMasterValue();
 
     QString gmDisplayValue;
@@ -3270,6 +3260,7 @@ QString WebAccess::getGrandMasterSliderHTML()
 
     return str;
 }
+#endif
 
 QString WebAccess::getVCHTML()
 {
@@ -3305,7 +3296,9 @@ QString WebAccess::getVCHTML()
             "</div>\n";
 
     widgetsHTML += "<div id=\"vc\">\n";
+  #ifndef QMLUI
     widgetsHTML += getGrandMasterSliderHTML();
+  #endif
     widgetsHTML += "<div id=\"vcScrollContainer\">\n";
     widgetsHTML += "<div style=\"position: relative; "
             "width: " +
