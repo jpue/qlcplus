@@ -919,9 +919,19 @@ void WebAccess::slotHandleWebSocketRequest(QHttpConnection *conn, QString data)
                 else
                     button->releaseFunction();
               #else
-                if ( (value != 0) &&
-                     ((button->actionType() == VCButton::ButtonAction::Toggle) || (button->actionType() == VCButton::ButtonAction::Blackout)))
-                    button->requestStateChange((button->state() == VCButton::ButtonState::Active) ? false : true);
+                if ((button->actionType() == VCButton::ButtonAction::Toggle) || (button->actionType() == VCButton::ButtonAction::Blackout))
+                {
+                    if (value == 0)
+                        button->requestStateChange((button->state() == VCButton::ButtonState::Active) ? false : true);
+                }
+                else if (button->actionType() == VCButton::ButtonAction::Flash)
+                {
+                    button->requestStateChange((value == 255));
+                }
+                else if (button->actionType() == VCButton::ButtonAction::StopAll)
+                {
+                    button->requestStateChange(true);
+                }
               #endif
             }
             break;
