@@ -97,6 +97,8 @@ class VCWidget : public QObject
     Q_PROPERTY(QVariant externalControlsList READ externalControlsList CONSTANT)
     Q_PROPERTY(QVariantList inputSourcesList READ inputSourcesList NOTIFY inputSourcesListChanged)
 
+    friend class WebAccess;
+
     /*********************************************************************
      * Initialization
      *********************************************************************/
