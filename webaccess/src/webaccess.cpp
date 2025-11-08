@@ -1717,7 +1717,7 @@ QString WebAccess::getButtonHTML(VCButton *btn)
 #ifndef QMLUI
 void WebAccess::slotSliderValueChanged(QString val)
 #else
-void WebAccess::slotSliderValueChanged(int val)
+void WebAccess::slotSliderValueChanged(int value)
 #endif
 {
     VCSlider *slider = qobject_cast<VCSlider *>(sender());
@@ -1725,13 +1725,13 @@ void WebAccess::slotSliderValueChanged(int val)
         return;
 
     // <ID>|SLIDER|<SLIDER VALUE>|<DISPLAY VALUE>
-    QString wsMessage = QString("%1|SLIDER|%2|%3").arg(slider->id()).arg(
+    QString wsMessage = QString("%1|SLIDER|%2|%3").arg(slider->id())
       #ifndef QMLUI
-        slider->sliderValue()
+        .arg(slider->sliderValue()).arg(val);
       #else
-        slider->value()
+        .arg(value)
+        .arg((slider->valueDisplayStyle() == VCSlider::ValueDisplayStyle::DMXValue) ? QString::number(value).rightJustified(3, '0') : QString::number(value * 100 / 255.0, 'f', 0).rightJustified(3, '0').append('%'));
       #endif
-      ).arg(val);
     sendWebSocketMessage(wsMessage);
 }
 
