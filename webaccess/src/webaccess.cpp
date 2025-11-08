@@ -1033,17 +1033,13 @@ void WebAccess::slotHandleWebSocketRequest(QHttpConnection *conn, QString data)
                   #ifndef QMLUI
                     clock->playPauseTimer();
                   #else
-                {
-                    Q_UNUSED(clock);  // TODO
-                }
+                    QMetaObject::invokeMethod(clock->m_item, "startStopReset", Q_ARG(QVariant, false));
                   #endif
                 else if (cmdList[1] == "R")
                   #ifndef QMLUI
                     clock->resetTimer();
                   #else
-                {
-                    Q_UNUSED(clock);  // TODO
-                }
+                    QMetaObject::invokeMethod(clock->m_item, "startStopReset", Q_ARG(QVariant, true));
                   #endif
             }
             break;
@@ -2541,17 +2537,17 @@ QString WebAccess::getCueListHTML(VCCueList *cue)
     return str;
 }
 
-#ifndef QMLUI
 void WebAccess::slotClockTimeChanged(quint32 time)
-#else
-void WebAccess::slotCurrentClockTimeChanged(int time)
-#endif
 {
     VCClock *clock = qobject_cast<VCClock *>(sender());
     if (clock == NULL)
         return;
 
+  #ifndef QMLUI
     QString wsMessage = QString("%1|CLOCK|%2").arg(clock->id()).arg(time);
+  #else
+    QString wsMessage = QString("%1|CLOCK_MS|%2").arg(clock->id()).arg(time);
+  #endif
     sendWebSocketMessage(wsMessage);
 }
 
@@ -2592,17 +2588,12 @@ QString WebAccess::getClockHTML(VCClock *clock)
         str += QString::number(clock->id()) + ", 'S')\" ";
         str += "oncontextmenu=\"javascript:controlWatch(";
         str += QString::number(clock->id()) + ", 'R'); return false;\"";
-      #ifndef QMLUI
         connect(clock, SIGNAL(timeChanged(quint32)),
                 this, SLOT(slotClockTimeChanged(quint32)));
-      #else
-        connect(clock, SIGNAL(currentTimeChanged(int)),
-                this, SLOT(slotCurrentClockTimeChanged(int)));
-      #endif
     }
     else
     {
-        str += " vcclock\" href=\"javascript:void(0)\"";
+        str += " vcclock\"";
     }
 
     str +=  "style=\"width: " + QString::number(

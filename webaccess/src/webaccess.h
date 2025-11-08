@@ -117,11 +117,7 @@ protected slots:
     void slotCueSideFaderValueChanged();
     void slotCuePlaybackStateChanged();
     void slotCueDisableStateChanged(bool disable);
-  #ifndef QMLUI
     void slotClockTimeChanged(quint32 time);
-  #else
-    void slotCurrentClockTimeChanged(int time);
-  #endif
     void slotClockDisableStateChanged(bool disable);
     void slotFramePageChanged(int pageNum);
     void slotFrameDisableStateChanged(bool disable);

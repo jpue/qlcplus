@@ -548,9 +548,11 @@ function controlWatch(id, op) {
  websocket.send(msg);
 }
 
-function wsUpdateClockTime(id, time) {
+function wsUpdateClockTime(id, time, ms = false) {
  var obj = document.getElementById(id);
  var s = time;
+ if (ms)
+  s = Math.floor(time / 1000);
  var h, m;
  h = parseInt(s / 3600, 10);
  s -= (h * 3600);
@@ -558,6 +560,9 @@ function wsUpdateClockTime(id, time) {
  s -= (m * 60);
 
  var timeString = hmsToString(h, m, s);
+ if (ms)
+  timeString += '.' + (time / 100) % 10;
+
  obj.innerHTML = timeString;
 }
 
