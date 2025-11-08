@@ -982,26 +982,23 @@ void WebAccess::slotHandleWebSocketRequest(QHttpConnection *conn, QString data)
                   #ifndef QMLUI
                     cue->slotCurrentStepChanged(cmdList[2].toInt());
                   #else
-                    {;} // cue->slotStepChanged(cmdList[2].toInt());
-                    // TODO
+                    cue->setPlaybackIndex(cmdList[2].toInt());
                   #endif
                 else if (cmdList[1] == "CUE_STEP_NOTE")
                   #ifndef QMLUI
                     cue->slotStepNoteChanged(cmdList[2].toInt(), cmdList[3]);
                   #else
-                    {;} // TODO
+                    cue->setStepNote(cmdList[2].toInt(), cmdList[3]);
                   #endif
+              #ifndef QMLUI
                 else if (cmdList[1] == "CUE_SHOWPANEL")
-                  #ifndef QMLUI
                     cue->slotSideFaderButtonChecked(cmdList[2] == "1" ? false : true);
-                  #else
-                    {;} // TODO
-                  #endif
+              #endif
                 else if (cmdList[1] == "CUE_SIDECHANGE")
                   #ifndef QMLUI
                     cue->slotSetSideFaderValue((cmdList[2]).toInt());
                   #else
-                    {;} // TODO
+                    cue->setSideFaderLevel((cmdList[2]).toInt());
                   #endif
             }
             break;
@@ -2061,33 +2058,30 @@ void WebAccess::slotCueProgressStateChanged()
       #ifndef QMLUI
         cue->progressPercent()
       #else
-        50  // TODO
+        QString::number(cue->m_item->property("progressValue").toDouble() * 100)
       #endif
       ).arg(
       #ifndef QMLUI
         cue->progressText()
       #else
-        "50%" // TODO
+        cue->m_item->property("progressText").toString()
       #endif
       );
+
     sendWebSocketMessage(wsMessage);
 }
 
+#ifndef QMLUI
 void WebAccess::slotCueShowSideFaderPanel()
 {
     VCCueList *cue = qobject_cast<VCCueList *>(sender());
     if (cue == NULL)
         return;
 
-    QString wsMessage = QString("%1|CUE_SHOWPANEL|%2").arg(cue->id()).arg(
-      #ifndef QMLUI
-        cue->sideFaderButtonIsChecked()
-      #else
-        false  // TODO
-      #endif
-      );
+    QString wsMessage = QString("%1|CUE_SHOWPANEL|%2").arg(cue->id()).arg(cue->sideFaderButtonIsChecked());
     sendWebSocketMessage(wsMessage);
 }
+#endif
 
 void WebAccess::slotCueSideFaderValueChanged()
 {
@@ -2105,12 +2099,12 @@ void WebAccess::slotCueSideFaderValueChanged()
                             .arg(cue->primaryTop())
                             .arg(cue->sideFaderValue())
                           #else
-                            .arg(0) // TODO
-                            .arg(0)
-                            .arg(0)
-                            .arg(0)
-                            .arg(0)
-                            .arg(0)
+                            .arg(QString::number(cue->sideFaderLevel()) + "%")
+                            .arg(QString::number(100 - cue->sideFaderLevel()) + "%")
+                            .arg((cue->playbackStatus() != VCCueList::PlaybackStatus::Stopped) ? ("#" + QString::number(cue->primaryTop() ? cue->playbackIndex()+1 : cue->nextStepIndex()+1)) : "")
+                            .arg((cue->playbackStatus() != VCCueList::PlaybackStatus::Stopped) ? ("#" + QString::number(cue->primaryTop() ? cue->nextStepIndex()+1 : cue->playbackIndex()+1)) : "")
+                            .arg(cue->primaryTop())
+                            .arg(cue->sideFaderLevel())
                           #endif
                             .arg(cue->sideFaderMode() == VCCueList::FaderMode::Steps);
 
@@ -2211,30 +2205,29 @@ QString WebAccess::getCueListHTML(VCCueList *cue)
     QString stopButtonImage = "player_stop.png";
     bool stopButtonPaused = false;
 
-    // TODO
     const QString topStepValue =
                                #ifndef QMLUI
                                  cue->topStepValue();
                                #else
-                                 "";
+                                 (cue->playbackStatus() != VCCueList::PlaybackStatus::Stopped) ? QString::number(cue->primaryTop() ? cue->playbackIndex()+1 : cue->nextStepIndex()+1) : "";
                                #endif
     const QString topPercentageValue =
                                      #ifndef QMLUI
                                        cue->topPercentageValue();
                                      #else
-                                       "";
+                                       QString::number(cue->sideFaderLevel()) + "%";
                                      #endif
     const QString bottomStepValue =
                                   #ifndef QMLUI
                                     cue->bottomStepValue();
                                   #else
-                                    "";
+                                    (cue->playbackStatus() != VCCueList::PlaybackStatus::Stopped) ? QString::number(cue->primaryTop() ? cue->nextStepIndex()+1 : cue->playbackIndex()+1) : "";
                                   #endif
     const QString bottomPercentageValue =
                                         #ifndef QMLUI
                                           cue->bottomPercentageValue();
                                         #else
-                                          "";
+                                          QString::number(100 - cue->sideFaderLevel()) + "%";
                                         #endif
     const QString sideFaderValue =
                                  #ifndef QMLUI
@@ -2306,13 +2299,9 @@ QString WebAccess::getCueListHTML(VCCueList *cue)
             str += "</div>";
         }
         str += "</div>";
-        m_JScode += "showPanel[" + QString::number(cue->id()) + "] = " +
-                      #ifndef QMLUI
-                        QString::number(cue->sideFaderButtonIsChecked())
-                      #else
-                        "0"  // TODO
-                      #endif
-                    + ";\n";
+      #ifndef QMLUI
+        m_JScode += "showPanel[" + QString::number(cue->id()) + "] = " + QString::number(cue->sideFaderButtonIsChecked()) + ";\n";
+      #endif
     }
 
     str += "<div style=\"width: 100%;\"><div style=\"width: 100%; height: " + QString::number(height - 54) + "px; overflow: scroll;\" >\n";
@@ -2435,16 +2424,16 @@ QString WebAccess::getCueListHTML(VCCueList *cue)
     str += "<div class=\"vccuelistProgress\">";
     str += "<div class=\"vccuelistProgressBar\" id=\"vccuelistPB" + QString::number(cue->id()) + "\" style=\"width: " +
              #ifndef QMLUI
-               QString::number(cue->progressPercent())
+               cue->progressPercent()
              #else
-               "50%"  // TODO
+               QString::number(cue->m_item->property("progressValue").toDouble() * 100)
              #endif
            + "%; \"></div>";
     str += "<div class=\"vccuelistProgressVal\" id=\"vccuelistPV" + QString::number(cue->id())+"\">" +
              #ifndef QMLUI
-               QString(cue->progressText())
+               cue->progressText()
              #else
-               "50"  // TODO
+               cue->m_item->property("progressText").toString()
              #endif
            + "</div>";
     str += "</div>";
@@ -2452,10 +2441,12 @@ QString WebAccess::getCueListHTML(VCCueList *cue)
     // play, stop, next, and preview buttons
     if (cue->sideFaderMode() != VCCueList::FaderMode::None)
     {
-        str += "<div style=\"width: 100%; display: flex; flex-direction: row; align-items: center; justify-content: space-between; \">";
+        str += "<div style=\"width: 100%; display: flex; flex-direction: row; align-items: center; justify-content: space-between; \">\n";
+      #ifndef QMLUI
         str += "<a class=\"vccuelistFadeButton"+QString(cue->isDisabled() ? " vccuelistFadeButton-disabled" : "") + "\" id=\"fade" + QString::number(cue->id()) + "\" ";
         str += "href=\"javascript:wsShowCrossfadePanel(" + QString::number(cue->id()) + ");\">\n";
         str += "<img src=\"slider.png\" width=\"27\"></a>\n";
+      #endif
     }
     str += "<div style=\"width: 100%; display: flex; flex-direction: row; align-items: center; justify-content: space-between; \">";
 
@@ -2518,8 +2509,6 @@ QString WebAccess::getCueListHTML(VCCueList *cue)
   #ifndef QMLUI
     connect(cue, SIGNAL(stepChanged(int)),
             this, SLOT(slotCueIndexChanged(int)));
-    connect(cue, SIGNAL(stepNoteChanged(int, QString)),
-            this, SLOT(slotCueStepNoteChanged(int, QString)));
     connect(cue, SIGNAL(progressStateChanged()),
             this, SLOT(slotCueProgressStateChanged()));
     connect(cue, SIGNAL(sideFaderButtonChecked()),
@@ -2531,35 +2520,23 @@ QString WebAccess::getCueListHTML(VCCueList *cue)
     connect(cue, SIGNAL(playbackButtonClicked()),
             this, SLOT(slotCuePlaybackStateChanged()));
     connect(cue, SIGNAL(stopButtonClicked()),
-            this, SLOT(slotCuePlaybackStateChanged()));
-    connect(cue, SIGNAL(playbackStatusChanged()),
             this, SLOT(slotCuePlaybackStateChanged()));
     connect(cue, SIGNAL(disableStateChanged(bool)),
             this, SLOT(slotCueDisableStateChanged(bool)));
   #else
     connect(cue, SIGNAL(playbackIndexChanged(int)),
             this, SLOT(slotCueIndexChanged(int)));
-    /* TODO
+    connect(cue, SIGNAL(sideFaderLevelChanged()),
+            this, SLOT(slotCueSideFaderValueChanged()));
+    connect(cue, SIGNAL(disabledStateChanged(bool)),
+            this, SLOT(slotCueDisableStateChanged(bool)));
+  #endif
     connect(cue, SIGNAL(stepNoteChanged(int, QString)),
             this, SLOT(slotCueStepNoteChanged(int, QString)));
     connect(cue, SIGNAL(progressStateChanged()),
             this, SLOT(slotCueProgressStateChanged()));
-    connect(cue, SIGNAL(sideFaderButtonChecked()),
-            this, SLOT(slotSideFaderButtonChecked(bool)));
-    connect(cue, SIGNAL(sideFaderButtonToggled()),
-            this, SLOT(slotCueShowSideFaderPanel()));
-    connect(cue, SIGNAL(sideFaderValueChanged()),
-            this, SLOT(slotCueSideFaderValueChanged()));
-    connect(cue, SIGNAL(playbackButtonClicked()),
-            this, SLOT(slotCuePlaybackStateChanged()));
-    connect(cue, SIGNAL(stopButtonClicked()),
-            this, SLOT(slotCuePlaybackStateChanged()));
     connect(cue, SIGNAL(playbackStatusChanged()),
             this, SLOT(slotCuePlaybackStateChanged()));
-    */
-    connect(cue, SIGNAL(disabledStateChanged(bool)),
-            this, SLOT(slotCueDisableStateChanged(bool)));
-  #endif
 
     return str;
 }

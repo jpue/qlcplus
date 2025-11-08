@@ -431,6 +431,8 @@ void VCCueList::setStepNote(int index, QString text)
 
     QModelIndex mIdx = m_stepsList->index(index, 0, QModelIndex());
     m_stepsList->setDataWithRole(mIdx, "note", text);
+
+    emit stepNoteChanged(index, text);
 }
 
 quint32 VCCueList::chaserID() const
@@ -612,6 +614,7 @@ void VCCueList::setPlaybackIndex(int playbackIndex)
 
     m_nextStepIndex = playbackIndex >= 0 ? ch->computeNextStep(playbackIndex) : -1;
     emit nextStepIndexChanged();
+    emit sideFaderLevelChanged();
 }
 
 VCCueList::PlaybackStatus VCCueList::playbackStatus()
@@ -900,6 +903,7 @@ void VCCueList::slotFunctionStopped(quint32 fid)
             m_item->setProperty("progressStatus", ProgressIdle);
             m_item->setProperty("progressValue", 0);
             m_item->setProperty("progressText", "");
+            emit progressStateChanged();
         }
     }
 }
@@ -955,6 +959,8 @@ void VCCueList::slotProgressTimeout()
     {
         m_item->setProperty("progressValue", 0);
     }
+
+    emit progressStateChanged();
 }
 
 /*********************************************************************
