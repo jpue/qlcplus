@@ -77,7 +77,7 @@ private:
     QString getAudioTriggersHTML(VCAudioTriggers *triggers);
     QString getMatrixHTML(VCMatrix *matrix);
 #else
-    QString getAudioTriggerHTML(VCAudioTrigger *triggers);
+    QString getAudioTriggerHTML(VCAudioTrigger *trigger);
     QString getMatrixHTML(VCAnimation *matrix);
 #endif
     QString getCueListHTML(VCCueList *cue);
