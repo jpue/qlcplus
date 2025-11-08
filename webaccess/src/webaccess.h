@@ -106,7 +106,7 @@ protected slots:
   #ifndef QMLUI
     void slotSliderValueChanged(QString val);
   #else
-    void slotSliderValueChanged(int val);
+    void slotSliderValueChanged(int value);
   #endif
     void slotSliderDisableStateChanged(bool disable);
     void slotAudioTriggersToggled(bool toggle);
