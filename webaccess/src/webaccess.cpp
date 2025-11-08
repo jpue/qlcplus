@@ -3102,7 +3102,7 @@ QString WebAccess::getChildrenHTML(VCWidget *frame, int pagesNum, int currentPag
       #ifndef QMLUI
         if (widget->parentWidget() != frame)
       #else
-        if (false) // TODO
+        if (widget->parent() != frame)
       #endif
             continue;
 
