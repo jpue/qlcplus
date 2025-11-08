@@ -2062,7 +2062,7 @@ void WebAccess::slotCueProgressStateChanged()
 
     QString wsMessage = QString("%1|CUE_PROGRESS|%2|%3").arg(cue->id()).arg(
       #ifndef QMLUI
-        cue->progressPercent()
+        QString::number(cue->progressPercent())
       #else
         QString::number(cue->m_item->property("progressValue").toDouble() * 100)
       #endif
@@ -2430,7 +2430,7 @@ QString WebAccess::getCueListHTML(VCCueList *cue)
     str += "<div class=\"vccuelistProgress\">";
     str += "<div class=\"vccuelistProgressBar\" id=\"vccuelistPB" + QString::number(cue->id()) + "\" style=\"width: " +
              #ifndef QMLUI
-               cue->progressPercent()
+               QString::number(cue->progressPercent())
              #else
                QString::number(cue->m_item->property("progressValue").toDouble() * 100)
              #endif
