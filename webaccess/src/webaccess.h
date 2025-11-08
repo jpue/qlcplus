@@ -82,7 +82,9 @@ private:
 #endif
     QString getCueListHTML(VCCueList *cue);
     QString getClockHTML(VCClock *clock);
+#ifndef QMLUI
     QString getGrandMasterSliderHTML();
+#endif
 
     QString getChildrenHTML(VCWidget *frame, int pagesNum, int currentPageIdx);
     QString getVCHTML();
@@ -131,7 +133,10 @@ protected slots:
     void slotAnimationAlgorithmChanged();
   #endif
     void slotMatrixControlKnobValueChanged(int controlID, int value);
+
+  #ifndef QMLUI
     void slotGrandMasterValueChanged(uchar value);
+  #endif
 
 protected:
     QString m_JScode;
