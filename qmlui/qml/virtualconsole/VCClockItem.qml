@@ -75,6 +75,7 @@ VCWidgetItem
                 if (modify)
                     timeCounter += 100
                 timeString = TimeUtils.msToStringWithPrecision(timeCounter, 1)
+                clockObj.emitTimeChanged(timeCounter)
             break;
             case VCClock.Countdown:
                 if (modify)
@@ -82,10 +83,34 @@ VCWidgetItem
                 timeString = TimeUtils.msToStringWithPrecision(timeCounter, 1)
                 if (timeCounter == 0)
                     clockTimer.running = false
+                clockObj.emitTimeChanged(timeCounter)
             break;
             case VCClock.Clock:
                 timeString = new Date().toLocaleString(locale, "hh:mm:ss");
             break;
+        }
+    }
+
+    function startStopReset(reset)
+    {
+        if (clockType === VCClock.Stopwatch || clockType === VCClock.Countdown)
+        {
+            if (!reset)
+            {
+                if (clockType === VCClock.Countdown && timeCounter <= 0)
+                  return;
+
+                clockTimer.running = !clockTimer.running
+                return;
+            }
+            else
+            {
+                if (clockType === VCClock.Stopwatch)
+                    timeCounter = 0
+                else
+                    timeCounter = clockObj.targetTime
+                updateTime(false)
+            }
         }
     }
 
@@ -109,28 +134,7 @@ VCWidgetItem
             {
                 anchors.fill: parent
                 acceptedButtons: Qt.LeftButton | Qt.RightButton
-                onClicked: (mouse) =>
-                {
-                    if (clockType == VCClock.Stopwatch || clockType == VCClock.Countdown)
-                    {
-                        if (mouse.button === Qt.LeftButton)
-                        {
-                            if (clockType === VCClock.Countdown && timeCounter <= 0)
-                                return;
-
-                            clockTimer.running = !clockTimer.running
-                            return;
-                        }
-                        else
-                        {
-                            if (clockType == VCClock.Stopwatch)
-                                timeCounter = 0
-                            else
-                                timeCounter = clockObj.targetTime
-                            updateTime(false)
-                        }
-                    }
-                }
+                onClicked: (mouse) => startStopReset(mouse.button !== Qt.LeftButton);
             }
 
             Timer

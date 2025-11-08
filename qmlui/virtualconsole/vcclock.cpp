@@ -224,6 +224,11 @@ void VCClock::setTargetTime(int ms)
     emit targetTimeChanged(ms);
 }
 
+void VCClock::emitTimeChanged(quint32 ms)
+{
+    emit timeChanged(ms);
+}
+
 void VCClock::slotTimerTimeout()
 {
     QDateTime currDate = QDateTime::currentDateTime();

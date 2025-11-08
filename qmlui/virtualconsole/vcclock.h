@@ -153,6 +153,9 @@ public:
     int targetTime() const;
     void setTargetTime(int ms);
 
+    /** Wrapper to emit the timeChanged(int) signal */
+    Q_INVOKABLE void emitTimeChanged(quint32 ms);
+
 protected slots:
     void slotTimerTimeout();
 
@@ -162,6 +165,9 @@ signals:
 
     /** Notify the listeners that the clock target time has changed */
     void targetTimeChanged(int ms);
+
+    /** Notify the listeners about the stopwatch/countdown time in milliseconds */
+    void timeChanged(quint32 ms);
 
 private:
     /** the target time in ms of the clock. Used by Countdown and Stopwatch */
