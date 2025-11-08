@@ -78,7 +78,7 @@ private:
     QString getMatrixHTML(VCMatrix *matrix);
 #else
     QString getAudioTriggerHTML(VCAudioTrigger *trigger);
-    QString getMatrixHTML(VCAnimation *matrix);
+    QString getAnimationHTML(VCAnimation *matrix);
 #endif
     QString getCueListHTML(VCCueList *cue);
     QString getClockHTML(VCClock *clock);
@@ -129,8 +129,8 @@ protected slots:
     void slotMatrixAnimationValueChanged(QString name);
   #else
     void slotAnimationFaderLevelChanged();
-    void slotAnimationAlgorithmChanged();
     void slotAnimationColorChanged(int);
+    void slotAnimationAlgorithmChanged();
   #endif
     void slotMatrixControlKnobValueChanged(int controlID, int value);
     void slotGrandMasterValueChanged(uchar value);
