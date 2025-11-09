@@ -119,9 +119,8 @@ QString WebAccessSimpleDesk::getChannelsMessage(Doc *doc, SimpleDesk *sd,
     qDebug() << "Uni addr:" << universeAddr;
 
   #ifdef QMLUI
-    // race condition possible - universe(Filter) not locked
-    const int universeFilter = sd->universeFilter();
-    sd->setUniverseFilter(universe);
+    if (sd->universeFilter() != universe)
+        sd->setUniverseFilter(universe);
   #endif
 
     for (int i = startAddr; i < startAddr + chNumber; i++)
@@ -156,10 +155,6 @@ QString WebAccessSimpleDesk::getChannelsMessage(Doc *doc, SimpleDesk *sd,
     }
     // remove trailing separator
     message.truncate(message.length() - 1);
-
-  #ifdef QMLUI
-    sd->setUniverseFilter(universeFilter);
-  #endif
 
     qDebug() << "Message to send:" << message;
     return message;
