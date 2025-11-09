@@ -87,6 +87,8 @@ void SimpleDesk::setUniverseFilter(quint32 universeFilter)
 {
     PreviewContext::setUniverseFilter(universeFilter);
     updateChannelList();
+    // FIXME: updating the selection of the universe combobox does not work if the universe has been changed via the UI combobox since the Simple Desk initialisation
+    emit universeFilterChanged(universeFilter);
     emit fixtureListChanged();
 }
 

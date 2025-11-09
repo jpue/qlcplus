@@ -827,14 +827,23 @@ void WebAccess::slotHandleWebSocketRequest(QHttpConnection *conn, QString data)
                 return;
 
             quint32 chNum = cmdList[2].toUInt() - 1;
+
+          #ifndef QMLUI
             m_sd->resetChannel(chNum);
+          #else
+            const quint32 universe = chNum >> 9;
+            if (m_sd->universeFilter() != universe)
+                m_sd->setUniverseFilter(universe);
+            m_sd->resetChannel(chNum % 512);
+          #endif
+
             wsAPIMessage = "QLC+API|getChannelsValues|";
           #ifndef QMLUI
             wsAPIMessage.append(WebAccessSimpleDesk::getChannelsMessage(
                                 m_doc, m_sd, m_sd->getCurrentUniverseIndex(),
                                 (m_sd->getCurrentPage() - 1) * m_sd->getSlidersNumber(), m_sd->getSlidersNumber()));
           #else
-            wsAPIMessage.append(WebAccessSimpleDesk::getChannelsMessage(m_doc, m_sd, (chNum >> 9), chNum & ~0x1ff, chNum | 0x1ff));
+            wsAPIMessage.append(WebAccessSimpleDesk::getChannelsMessage(m_doc, m_sd, universe, 0, 512));
           #endif
         }
         else if (apiCmd == "sdResetUniverse")
@@ -853,7 +862,7 @@ void WebAccess::slotHandleWebSocketRequest(QHttpConnection *conn, QString data)
                                 m_doc, m_sd, m_sd->getCurrentUniverseIndex(),
                                 0, m_sd->getSlidersNumber()));
           #else
-            // TODO
+            wsAPIMessage.append(WebAccessSimpleDesk::getChannelsMessage(m_doc, m_sd, universeIndex, 0, 512));
           #endif
         }
         //qDebug() << "Simple desk channels:" << wsAPIMessage;
@@ -876,8 +885,15 @@ void WebAccess::slotHandleWebSocketRequest(QHttpConnection *conn, QString data)
       #else
         quint32 fxID = m_doc->fixtureForAddress(absAddress);
         Fixture* fxi = m_doc->fixture(fxID);
+
+        const quint32 universe = absAddress >> 9;
+        if (m_sd->universeFilter() != universe)
+            m_sd->setUniverseFilter(universe);
+
         if (fxi != NULL)
-            m_sd->setValue(fxID, absAddress-fxi->universeAddress(), value);
+            m_sd->setValue(fxID, absAddress - fxi->universeAddress(), value);
+        else
+            m_sd->setValue(-1, absAddress % 512, value);
       #endif
         return;
     }
