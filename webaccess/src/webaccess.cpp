@@ -1715,7 +1715,11 @@ QString WebAccess::getButtonHTML(VCButton *btn)
             "color: " + btn->foregroundColor().name() + "; " +
             getWidgetBackgroundImage(btn) +
             "background-color: " + btn->backgroundColor().name() + "; " + onCSS + "\">" +
-            btn->caption() + "</a>\n</div>\n";
+            btn->caption()
+              #ifdef QMLUI
+                .toHtmlEscaped()
+              #endif
+            + "</a>\n</div>\n";
 
     connect(btn, SIGNAL(stateChanged(int)),
             this, SLOT(slotButtonStateChanged(int)));
@@ -1893,7 +1897,11 @@ QString WebAccess::getSliderHTML(VCSlider *slider)
         m_JScode += "isDisableKnob[" + slID + "] = "+QString::number(slider->isDisabled() ? 1 : 0)+";\n";
     }
 
-    str += "<div id=\"sln" + slID + "\" class=\"vcslLabel" + QString(slider->isDisabled() ? " vcslLabel-disabled" : "") + "\">" +slider->caption() + "</div>";
+    str += "<div id=\"sln" + slID + "\" class=\"vcslLabel" + QString(slider->isDisabled() ? " vcslLabel-disabled" : "") + "\">" + slider->caption()
+             #ifdef QMLUI
+               .toHtmlEscaped()
+             #endif
+           + "</div>";
 
     str += "</div>\n";
     str += "</div>\n";
@@ -1961,7 +1969,11 @@ QString WebAccess::getLabelHTML(VCLabel *label)
             "color: " + label->foregroundColor().name() + "; "
             "background-color: " + label->backgroundColor().name() + "; " +
             getWidgetBackgroundImage(label) + "\">" +
-            label->caption() + "</div>\n</div>\n";
+            label->caption()
+              #ifdef QMLUI
+                .toHtmlEscaped()
+              #endif
+            + "</div>\n</div>\n";
 
   #ifndef QMLUI
     connect(label, SIGNAL(disableStateChanged(bool)),
@@ -2000,7 +2012,11 @@ QString WebAccess::getAudioTriggersHTML(VCAudioTriggers *triggers)
           "background-color: " + triggers->backgroundColor().name() + ";\">\n";
 
     str += "<div class=\"vcaudioHeader\" style=\"color:" +
-            triggers->foregroundColor().name() + "\">" + triggers->caption() + "</div>\n";
+            triggers->foregroundColor().name() + "\">" + triggers->caption()
+              #ifdef QMLUI
+                .toHtmlEscaped()
+              #endif
+            + "</div>\n";
 
     str += "<div class=\"vcatbutton-wrapper\">\n";
     str += "<a  class=\"vcatbutton\" id=\"" + QString::number(triggers->id()) + "\" "
@@ -2028,7 +2044,7 @@ QString WebAccess::getAudioTriggerHTML(VCAudioTrigger *trigger)
           "background-color: " + triggers->backgroundColor().name() + ";\">\n";
 
     str += "<div class=\"vcaudioHeader\" style=\"color:" +
-            triggers->foregroundColor().name() + "\">" + triggers->caption() + "</div>\n";
+            triggers->foregroundColor().name() + "\">" + triggers->caption().toHtmlEscaped() + "</div>\n";
 
     str += "<div class=\"vcatbutton-wrapper\">\n";
     str += "<a  class=\"vcatbutton\" id=\"" + QString::number(triggers->id()) + "\" "
@@ -2086,7 +2102,7 @@ void WebAccess::slotCueProgressStateChanged()
       #ifndef QMLUI
         cue->progressText()
       #else
-        cue->m_item->property("progressText").toString()
+        cue->m_item->property("progressText").toString().toHtmlEscaped()
       #endif
       );
 
@@ -2355,7 +2371,11 @@ QString WebAccess::getCueListHTML(VCCueList *cue)
             Function* function = doc->function(step->fid);
             if (function != NULL)
             {
+              #ifndef QMLUI
                 str += "<td>" + function->name() + "</td>";
+              #else
+                str += "<td>" + function->name().toHtmlEscaped() + "</td>";
+              #endif
 
                 switch (chaser->fadeInMode())
                 {
@@ -2431,9 +2451,17 @@ QString WebAccess::getCueListHTML(VCCueList *cue)
                 }
 
                 str += "<td ondblclick=\"changeCueNoteToEditMode(" + QString::number(cue->id()) + ", " + QString::number(i) + ");\">" +
-                         "<span id=\"cueNoteSpan" + stepID + "\" style=\"display: block;\">" + step->note + "</span>" +
-                         "<input type=\"text\" id=\"cueNoteInput" + stepID + "\" value=\"" + step->note + "\" style=\"display: none; width: 60px;\" " +
-                         "onfocusout=\"changeCueNoteToTextMode(" + QString::number(cue->id()) + ", " + QString::number(i) + ");\" />"
+                       "<span id=\"cueNoteSpan" + stepID + "\" style=\"display: block;\">" + step->note
+                         #ifdef QMLUI
+                           .toHtmlEscaped()
+                         #endif
+                       + "</span>" +
+                       "<input type=\"text\" id=\"cueNoteInput" + stepID + "\" value=\"" + step->note
+                         #ifdef QMLUI
+                           .toHtmlEscaped()
+                         #endif
+                       + "\" style=\"display: none; width: 60px;\" " +
+                       "onfocusout=\"changeCueNoteToTextMode(" + QString::number(cue->id()) + ", " + QString::number(i) + ");\" />"
                        "</td>\n";
             }
             str += "</td>\n";
@@ -2455,7 +2483,7 @@ QString WebAccess::getCueListHTML(VCCueList *cue)
              #ifndef QMLUI
                cue->progressText()
              #else
-               cue->m_item->property("progressText").toString()
+               cue->m_item->property("progressText").toString().toHtmlEscaped()
              #endif
            + "</div>";
     str += "</div>";
@@ -2865,7 +2893,11 @@ QString WebAccess::getAnimationHTML(VCAnimation *matrix)
   #else
     if (matrix->visibilityMask() & VCAnimation::Visibility::Label) {
   #endif
-        str += "<div style=\"text-align: center; width: 100%; margin-top: 4px; margin-bottom: 4px; \">"+matrix->caption()+"</div>";
+        str += "<div style=\"text-align: center; width: 100%; margin-top: 4px; margin-bottom: 4px; \">" + matrix->caption()
+                 #ifdef QMLUI
+                   .toHtmlEscaped()
+                 #endif
+               + "</div>";
     }
     str += "<div style=\"display: flex; flex-direction: row; align-items: center; justify-content: space-around; width: 100%; margin-top: 4px; margin-bottom: 4px; \">";
   #ifndef QMLUI
@@ -2952,7 +2984,7 @@ QString WebAccess::getAnimationHTML(VCAnimation *matrix)
                  #ifndef QMLUI
                    matrix->animationValue()
                  #else
-                   matrix->algorithms()[matrix->algorithmIndex()]
+                   matrix->algorithms()[matrix->algorithmIndex()].toHtmlEscaped()
                  #endif
                    ? "selected" : "")+" >"+list[i]+"</option>";
         }
@@ -3014,7 +3046,11 @@ QString WebAccess::getAnimationHTML(VCAnimation *matrix)
                         while (it.hasNext())
                         {
                             it.next();
+                          #ifndef QMLUI
                             btnLabel += it.value();
+                          #else
+                            btnLabel += it.value().toHtmlEscaped();
+                          #endif
                             if (it.hasNext())
                                 btnLabel += ",";
                         }
