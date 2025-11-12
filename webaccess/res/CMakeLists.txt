@@ -3,6 +3,7 @@ project(webfiles)
 # Set the files for the webfiles target
 set(WEBFILES
     common.css
+    keypad.css
     networkconfig.js
     simpledesk.css
     simpledesk.js
