@@ -85,6 +85,7 @@ case "$ACTION" in
       files_tmp="$(mktemp)"
       if [[ "$FLAVOR" == "qmlui" ]]; then
         find . -type f -path "./qmlui/*" -name "*_${lang}.ts" > "$files_tmp"
+        find . -type f -path "./webaccess/*" -name "*_${lang}.ts" >> "$files_tmp"
       else
         find . -type f -not -path "./qmlui/*" -name "*_${lang}.ts" > "$files_tmp"
       fi
