@@ -5,6 +5,7 @@ TARGET = webfiles
 
 webfiles.files += common.css
 webfiles.files += keypad.css
+webfiles.files += keypad.js
 webfiles.files += networkconfig.js
 webfiles.files += simpledesk.css
 webfiles.files += simpledesk.js
