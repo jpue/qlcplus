@@ -4,6 +4,7 @@ project(webfiles)
 set(WEBFILES
     common.css
     keypad.css
+    keypad.js
     networkconfig.js
     simpledesk.css
     simpledesk.js
