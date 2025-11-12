@@ -1,0 +1,56 @@
+html {
+ height: 100%;
+ background-color: #222;
+}
+
+body {
+ margin: 0px;
+ background-color: #222;
+}
+
+td {
+ width: 80px;
+ height: 60px;
+}
+
+.button-keypad {
+ display: table-cell;
+ width: 80px;
+ height: 60px;
+ cursor: pointer;
+ vertical-align: middle;
+ background: #4477a1;
+ border: 0;
+}
+
+.button-keypad:hover {
+ background: #81a8cb;
+}
+
+.button-enter {
+ display: table-cell;
+ width: 320px;
+ height: 60px;
+ cursor: pointer;
+ vertical-align: middle;
+ background: #4CA145;
+ border: 0;
+}
+
+.button-enter:hover {
+ background: #81a8cb;
+}
+
+.button-reset {
+ display: table-cell;
+ width: 160px;
+ height: 60px;
+ cursor: pointer;
+ vertical-align: middle;
+ background: #c53e3e;
+ border: 0;
+}
+
+.button-reset:hover {
+ background: #cb7e7e;
+}
