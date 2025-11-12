@@ -34,6 +34,7 @@ public:
     static QString getHTML(Doc *doc, SimpleDesk *sd);
     static QString getChannelsMessage(Doc *doc, SimpleDesk *sd,
                                       quint32 universe, int startAddr, int chNumber);
+    static QString getKeypadHTML(Doc *doc, SimpleDesk *sd);
 
 signals:
 
