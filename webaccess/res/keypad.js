@@ -70,6 +70,14 @@ function composeCommand(cmd)
   }
 }
 
+function commandKeyDown(event)
+{
+  if (event.key === 'Enter')
+  {
+    chans_vals(document.getElementById('commInput').value);
+  }
+}
+
 
 function reqChannelsRange(univ, chan, range)
 {

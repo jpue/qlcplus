@@ -182,7 +182,7 @@ QString WebAccessSimpleDesk::getKeypadHTML(Doc *doc, SimpleDesk *sd)
                   "      <div class=\"swInfo\">Q Light Controller Plus</div>\n"
                   "    </div>\n"
                   "    <div style=\"margin: 20px 12px 0 20px; font: bold 27px/1.2em 'Trebuchet MS', Arial, Helvetica; color: #fff;\">\n"
-                  "      Command: <input style=\"height: 22px; vertical-align: middle;\" id=\"commInput\" type=\"text\" value=\"\">\n"
+                  "      Command: <input style=\"height: 22px; vertical-align: middle;\" id=\"commInput\" type=\"text\" value=\"\" onkeydown=\"commandKeyDown(event);\">\n"
                   "    </div>\n"
                   "    <table style=\"margin: 20px;\">\n"
                   "      <tr>\n"
