@@ -219,7 +219,7 @@ QString WebAccessSimpleDesk::getKeypadHTML(Doc *doc, SimpleDesk *sd)
                   "    <br><br>\n"
                   "    <table style=\"margin: 20px;\">\n"
                   "      <tr>\n"
-                  "        <td style=\"width: 165px\"><div class=\"button button-reset\" title=\"Reset All Channels\" onclick=\"resetUniverse();\">Reset All</div></td>\n"
+                  "        <td style=\"width: 165px\"><div class=\"button button-reset\" title=\"Reset All Channels\" onclick=\"resetUniverse(getElementById('commInput').value);\">Reset All</div></td>\n"
                   "        <td style=\"width: 165px\"><div class=\"button button-reset\" title=\"Reset Selected Channel\" onclick=\"resetCh(getElementById('commInput').value);\">Reset Channel</div></td>\n"
                   "      </tr>\n"
                   "    </table>\n"

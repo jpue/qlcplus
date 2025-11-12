@@ -84,11 +84,12 @@ function reqChannelsRange(univ, chan, range)
 }
 
 
-function resetUniverse()
+function resetUniverse(universeNum)
 {
+  document.getElementById('commInput').value = '';
   if (isConnected === true)
   {
-    websocket.send("QLC+API|sdResetUniverse");
+    websocket.send("QLC+API|sdResetUniverse|" + universeNum);
   }
   else
   {
