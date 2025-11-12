@@ -253,7 +253,7 @@ void WebAccess::slotHandleHTTPRequest(QHttpRequest *req, QHttpResponse *resp)
             m_auth->sendUnauthorizedResponse(resp);
             return;
         }
-        content = WebAccessSimpleDesk::getKeypadHTML(m_doc, m_sd);
+        content = WebAccessSimpleDesk::getKeypadHTML();
     }
 #if defined(Q_WS_X11) || defined(Q_OS_LINUX)
     else if (reqUrl == "/system")
