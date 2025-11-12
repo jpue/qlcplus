@@ -42,12 +42,12 @@ QString WebAccessSimpleDesk::getHTML(Doc *doc, SimpleDesk *sd)
     int slidersNumber = sd->getSlidersNumber();
 #else
     const int uni = sd->universeFilter() + 1;
-    const int page = 1; // TODO
-    const int slidersNumber = 512; // TODO
+    const int page = 1;
+    const int slidersNumber = 512;
 #endif
 
-    QString JScode = "<script type=\"text/javascript\" src=\"simpledesk.js\"></script>\n";
-    JScode += "<script type=\"text/javascript\">\n";
+    QString JScode = "<script src=\"simpledesk.js\"></script>\n";
+    JScode += "<script>\n";
     JScode += "var currentUniverse = " + QString::number(uni) + ";\n";
     JScode += "var currentPage = " + QString::number(page) + ";\n";
     JScode += "var channelsPerPage = " + QString::number(slidersNumber) + ";\n";
@@ -63,6 +63,7 @@ QString WebAccessSimpleDesk::getHTML(Doc *doc, SimpleDesk *sd)
                        "</div>\n";
 
     bodyHTML += "<div style=\"margin: 20px; font: bold 27px/1.2em 'Trebuchet MS',Arial, Helvetica; color: #fff;\">\n";
+  #ifndef QMLUI
     bodyHTML += tr("Page") + "  <a class=\"sdButton\" href=\"javascript:previousPage();\">\n"
                 "<img src=\"back.png\" title=\""+tr("Previous page")+"\" width=\"27\" ></a>\n";
 
@@ -78,28 +79,42 @@ QString WebAccessSimpleDesk::getHTML(Doc *doc, SimpleDesk *sd)
                 "<img src=\"fileclose.png\" title=\""+tr("Reset universe")+"\" width=\"27\"></a>\n";
 
     bodyHTML += "<div style=\"display: inline-block; margin-left: 50px;\">" + tr("Universe") + "</div>\n"
+  #else
+    bodyHTML += "<div id=\"pageDiv\" style=\"display: none;\"></div>\n";
+    bodyHTML += "<div style=\"display: inline-block;\">" + tr("Universe") + "</div>\n"
+  #endif
                 "<div class=\"styled-select\" style=\"display: inline-block;\">\n"
                 "<select onchange=\"universeChanged(this.value);\">\n";
 
-#ifndef QMLUI
+  #ifndef QMLUI
     QStringList uniList = doc->inputOutputMap()->universeNames();
     for (int i = 0; i < uniList.count(); i++)
     {
         bodyHTML += "<option value=\"" + QString::number(i) + "\">" + uniList.at(i) + "</option>\n";
     }
-#else
+  #else
     for (const QVariant& universe : sd->universesListModel().toList())
     {
         const QVariantMap& universeMap = universe.toMap();
         bodyHTML += "<option value=\"" + QString::number(universeMap.value("mValue", 0).toInt()) + "\">" +
                     universeMap.value("mLabel", "").toString().toHtmlEscaped() + "</option>\n";
     }
-#endif
+  #endif
 
     bodyHTML += "</select></div>\n";
+
+  #ifdef QMLUI
+    bodyHTML += "<a class=\"sdButton\" style=\"margin-left: 15px;\" href=\"javascript:resetUniverse();\">\n"
+                "<img src=\"fileclose.png\" title=\""+tr("Reset universe")+"\" width=\"27\"></a>\n";
+  #endif
+
     bodyHTML += "</div>\n";
 
+  #ifndef QMLUI
     bodyHTML += "<div id=\"slidersContainer\"></div>\n\n";
+  #else
+    bodyHTML += "<div id=\"slidersContainer\" style=\"display: flex; overflow: auto;\"></div>\n\n";
+  #endif
 
     QString str = HTML_HEADER + JScode + CSScode + "</head>\n<body>\n" + bodyHTML + "</body>\n</html>";
 
