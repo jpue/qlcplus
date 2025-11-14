@@ -29,12 +29,11 @@ class WebAccessNetwork;
 class WebAccessAuth;
 
 #ifndef QMLUI
-  class VCAudioTriggers;
   class VCMatrix;
 #else
-  class VCAudioTrigger;
   class VCAnimation;
 #endif
+class VCAudioTriggers;
 class VirtualConsole;
 class VCSoloFrame;
 class SimpleDesk;
@@ -73,11 +72,10 @@ private:
     QString getButtonHTML(VCButton *btn);
     QString getSliderHTML(VCSlider *slider);
     QString getLabelHTML(VCLabel *label);
-#ifndef QMLUI
     QString getAudioTriggersHTML(VCAudioTriggers *triggers);
+#ifndef QMLUI
     QString getMatrixHTML(VCMatrix *matrix);
 #else
-    QString getAudioTriggerHTML(VCAudioTrigger *trigger);
     QString getAnimationHTML(VCAnimation *matrix);
 #endif
     QString getCueListHTML(VCCueList *cue);
@@ -109,7 +107,11 @@ protected slots:
     void slotSliderValueChanged(int value);
   #endif
     void slotSliderDisableStateChanged(bool disable);
+  #ifndef QMLUI
     void slotAudioTriggersToggled(bool toggle);
+  #else
+    void slotAudioTriggersToggled();
+  #endif
     void slotCueIndexChanged(int idx);
     void slotCueStepNoteChanged(int idx, QString note);
     void slotCueProgressStateChanged();

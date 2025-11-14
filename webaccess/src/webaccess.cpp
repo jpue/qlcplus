@@ -46,6 +46,7 @@
 #include "vclabel.h"
 #include "vcframe.h"
 #include "vcclock.h"
+#include "vcaudiotriggers.h"
 #include "vcxypad.h"
 #include "qlcfile.h"
 #include "chaser.h"
@@ -53,12 +54,10 @@
 #include "grandmaster.h"
 
 #ifndef QMLUI
-  #include "vcaudiotriggers.h"
   #include "vcmatrix.h"
   #include "vcframepageshortcut.h"
 #else
   #include "vcanimation.h"
-  #include "vcaudiotrigger.h"
   #include "vcpage.h"
 #endif
 
@@ -973,13 +972,11 @@ void WebAccess::slotHandleWebSocketRequest(QHttpConnection *conn, QString data)
             break;
             case VCWidget::AudioTriggersWidget:
             {
-              #ifndef QMLUI
                 VCAudioTriggers *triggers = qobject_cast<VCAudioTriggers*>(widget);
+              #ifndef QMLUI
                 triggers->toggleEnableButton(value ? true : false);
               #else
-                // TODO
-                VCAudioTrigger *trigger = qobject_cast<VCAudioTrigger*>(widget);
-                trigger->setDisabled((value == 255) ? false : true);
+                triggers->setCaptureEnabled((value == 255) ? true : false);
               #endif
             }
             break;
@@ -1995,30 +1992,57 @@ QString WebAccess::getLabelHTML(VCLabel *label)
     return str;
 }
 
+#ifndef QMLUI
 void WebAccess::slotAudioTriggersToggled(bool toggle)
+#else
+void WebAccess::slotAudioTriggersToggled()
+#endif
 {
-  #ifndef QMLUI
     VCAudioTriggers *triggers = qobject_cast<VCAudioTriggers*>(sender());
-  #else
-    VCAudioTrigger  *triggers = qobject_cast<VCAudioTrigger* >(sender());
-  #endif
     if (triggers == NULL)
         return;
 
+  #ifndef QMLUI
     qDebug() << "AudioTriggers state changed " << toggle;
 
     QString wsMessage = QString("%1|AUDIOTRIGGERS|%2").arg(triggers->id()).arg(toggle ? 255 : 0);
+  #else
+    qDebug() << "AudioTriggers state changed " << triggers->captureEnabled();
+
+    QString wsMessage = QString("%1|AUDIOTRIGGERS|%2").arg(triggers->id()).arg(triggers->captureEnabled() ? 255 : 0);
+  #endif
     sendWebSocketMessage(wsMessage);
 }
 
-#ifndef QMLUI
 QString WebAccess::getAudioTriggersHTML(VCAudioTriggers *triggers)
 {
-    QString str = "<div class=\"vcaudiotriggers\" style=\"left: " + QString::number(triggers->x()) +
-          "px; top: " + QString::number(triggers->y()) + "px; width: " +
-           QString::number(triggers->width()) +
-          "px; height: " + QString::number(triggers->height()) + "px; "
-          "background-color: " + triggers->backgroundColor().name() + ";\">\n";
+    const int width =
+                      #ifndef QMLUI
+                        triggers->width();
+                      #else
+                        triggers->geometry().width();
+                      #endif
+    const int height =
+                       #ifndef QMLUI
+                         triggers->height();
+                       #else
+                         triggers->geometry().height();
+                       #endif
+
+    QString str = "<div class=\"vcaudiotriggers\" style=\"left: " + QString::number(
+                    #ifndef QMLUI
+                      triggers->x()
+                    #else
+                      triggers->geometry().x()
+                    #endif
+                  ) + "px; top: " + QString::number(
+                    #ifndef QMLUI
+                      triggers->y()
+                    #else
+                      triggers->geometry().y()
+                    #endif
+                  ) + "px; width: " + QString::number(width) + "px; height: " + QString::number(height) + "px;"
+                  "background-color: " + triggers->backgroundColor().name() + ";\">\n";
 
     str += "<div class=\"vcaudioHeader\" style=\"color:" +
             triggers->foregroundColor().name() + "\">" + triggers->caption()
@@ -2031,49 +2055,22 @@ QString WebAccess::getAudioTriggersHTML(VCAudioTriggers *triggers)
     str += "<a  class=\"vcatbutton\" id=\"" + QString::number(triggers->id()) + "\" "
             "href=\"javascript:atButtonClick(" + QString::number(triggers->id()) + ");\" "
             "style=\""
-            "width: " + QString::number(triggers->width() - 2) + "px; "
-            "height: " + QString::number(triggers->height() - 42) + "px;\">"
+            "width: " + QString::number(width - 2) + "px; "
+            "height: " + QString::number(height - 42) + "px;\">"
             + tr("Enable") + "</a>\n";
 
     str += "</div></div>\n";
 
+  #ifndef QMLUI
     connect(triggers, SIGNAL(captureEnabled(bool)),
             this, SLOT(slotAudioTriggersToggled(bool)));
+  #else
+    connect(triggers, SIGNAL(captureEnabledChanged()),
+            this, SLOT(slotAudioTriggersToggled()));
+  #endif
 
     return str;
 }
-#else
-QString WebAccess::getAudioTriggerHTML(VCAudioTrigger *trigger)
-{
-    /* TODO
-    QString str = "<div class=\"vcaudiotriggers\" style=\"left: " + QString::number(triggers->geometry().x()) +
-          "px; top: " + QString::number(triggers->geometry().y()) + "px; width: " +
-           QString::number(triggers->geometry().width()) +
-          "px; height: " + QString::number(triggers->geometry().height()) + "px; "
-          "background-color: " + triggers->backgroundColor().name() + ";\">\n";
-
-    str += "<div class=\"vcaudioHeader\" style=\"color:" +
-            triggers->foregroundColor().name() + "\">" + triggers->caption().toHtmlEscaped() + "</div>\n";
-
-    str += "<div class=\"vcatbutton-wrapper\">\n";
-    str += "<a  class=\"vcatbutton\" id=\"" + QString::number(triggers->id()) + "\" "
-            "href=\"javascript:atButtonClick(" + QString::number(triggers->id()) + ");\" "
-            "style=\""
-            "width: " + QString::number(triggers->geometry().width() - 2) + "px; "
-            "height: " + QString::number(triggers->geometry().height() - 42) + "px;\">"
-            + tr("Enable") + "</a>\n";
-
-    str += "</div></div>\n";
-
-    connect(triggers, SIGNAL(captureEnabled(bool)),
-            this, SLOT(slotAudioTriggersToggled(bool)));
-
-    return str;
-    */
-
-    return getWidgetHTML(trigger);
-}
-#endif
 
 void WebAccess::slotCueIndexChanged(int idx)
 {
@@ -3203,11 +3200,7 @@ QString WebAccess::getChildrenHTML(VCWidget *frame, int pagesNum, int currentPag
                 str = getLabelHTML(qobject_cast<VCLabel *>(widget));
             break;
             case VCWidget::AudioTriggersWidget:
-              #ifndef QMLUI
                 str = getAudioTriggersHTML(qobject_cast<VCAudioTriggers *>(widget));
-              #else
-                str = getAudioTriggerHTML(qobject_cast<VCAudioTrigger *>(widget));
-              #endif
             break;
             case VCWidget::CueListWidget:
                 str = getCueListHTML(qobject_cast<VCCueList *>(widget));
