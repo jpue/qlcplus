@@ -30,7 +30,6 @@
 #include "webaccesssimpledesk.h"
 #include "webaccessnetwork.h"
 
-#include "virtualconsole.h"
 #include "rgbalgorithm.h"
 #include "commonjscss.h"
 #include "vcsoloframe.h"
@@ -112,6 +111,8 @@ WebAccess::WebAccess(Doc *doc, VirtualConsole *vcInstance, SimpleDesk *sdInstanc
   #ifndef QMLUI
     connect(m_vc, SIGNAL(loaded()),
             this, SLOT(slotVCLoaded()));
+  #else
+    connect(m_vc, SIGNAL(loadStatusChanged(VirtualConsole::LoadStatus)), this, SLOT(slotVCLoadStatusChanged(VirtualConsole::LoadStatus)));
   #endif
 }
 
@@ -190,7 +191,11 @@ void WebAccess::slotHandleHTTPRequest(QHttpRequest *req, QHttpResponse *resp)
 
         m_pendingProjectLoaded = false;
 
+      #ifndef QMLUI
         emit loadProject(QString(projectXML).toUtf8());
+      #else
+        emit loadProject(projectXML);
+      #endif
 
         return;
     }
@@ -370,7 +375,9 @@ void WebAccess::slotHandleWebSocketRequest(QHttpConnection *conn, QString data)
             return;
 
         if (cmdList[1] == "opMode")
+          #ifndef QMLUI
             emit toggleDocMode();
+          #endif
 
         return;
     }
@@ -550,8 +557,10 @@ void WebAccess::slotHandleWebSocketRequest(QHttpConnection *conn, QString data)
             QString asName = QString("%1/%2/%3").arg(getenv("HOME")).arg(USERQLCPLUSDIR).arg(AUTOSTART_PROJECT_NAME);
             if (cmdList.at(2) == "none")
                 QFile::remove(asName);
+          #ifndef QMLUI
             else
                 emit storeAutostartProject(asName);
+          #endif
             QString wsMessage = QString("ALERT|" + tr("Autostart configuration changed"));
             conn->webSocketWrite(wsMessage);
             return;
@@ -2653,7 +2662,7 @@ QString WebAccess::getClockHTML(VCClock *clock)
     }
     else
     {
-        str += " vcclock\"";
+        str += " vcclock\" ";
     }
 
     str +=  "style=\"width: " + QString::number(
@@ -3395,7 +3404,14 @@ QString WebAccess::getSimpleDeskHTML()
     return str;
 }
 
+#ifndef QMLUI
 void WebAccess::slotVCLoaded()
 {
     m_pendingProjectLoaded = true;
 }
+#else
+void WebAccess::slotVCLoadStatusChanged(VirtualConsole::LoadStatus status)
+{
+    m_pendingProjectLoaded = (status != VirtualConsole::LoadStatus::Loading);
+}
+#endif

@@ -22,6 +22,8 @@
 
 #include <QObject>
 
+#include "virtualconsole.h"
+
 #if defined(Q_WS_X11) || defined(Q_OS_LINUX)
 class WebAccessNetwork;
 #endif
@@ -34,7 +36,6 @@ class WebAccessAuth;
   class VCAnimation;
 #endif
 class VCAudioTriggers;
-class VirtualConsole;
 class VCSoloFrame;
 class SimpleDesk;
 class VCCueList;
@@ -97,7 +98,11 @@ protected slots:
     void slotFunctionStarted(quint32 fid);
     void slotFunctionStopped(quint32 fid);
 
+  #ifndef QMLUI
     void slotVCLoaded();
+  #else
+    void slotVCLoadStatusChanged(VirtualConsole::LoadStatus);
+  #endif
     void slotButtonStateChanged(int state);
     void slotButtonDisableStateChanged(bool disable);
     void slotLabelDisableStateChanged(bool disable);
@@ -159,9 +164,15 @@ protected:
     bool m_pendingProjectLoaded;
 
 signals:
+  #ifndef QMLUI
     void toggleDocMode();
     void loadProject(QString xmlData);
     void storeAutostartProject(QString filename);
+  #else
+    void loadProject(QByteArray&);
+    // TODO
+    //void storeAutostartProject(QString filename);
+  #endif
 
 public slots:
 
