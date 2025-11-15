@@ -725,8 +725,12 @@ void App::slotLoadDocFromMemory(QByteArray &xmlData)
     if (xmlData.isEmpty())
         return;
 
+    m_contextManager->resetContexts();
+
     /* Clear existing document data */
     clearDocument();
+    m_docLoaded = false;
+    emit docLoadedChanged();
 
     QBuffer databuf;
     databuf.setData(xmlData);
@@ -753,9 +757,39 @@ void App::slotLoadDocFromMemory(QByteArray &xmlData)
     }
 
     if (doc.dtdName() == KXMLQLCWorkspace)
+    {
         loadXML(doc, true, true);
+
+        setTitle(QString("%1 - [%2]").arg(APPNAME).arg(tr("loaded via webaccess")));
+        setFileName("");
+        m_docLoaded = true;
+        emit docLoadedChanged();
+        m_doc->resetModified();
+        m_videoProvider = new VideoProvider(this, m_doc);
+        m_contextManager->resetContexts();
+
+        // autostart Function if set
+        if (m_doc->startupFunction() != Function::invalidId())
+        {
+            Function *func = m_doc->function(m_doc->startupFunction());
+            if (func != nullptr)
+            {
+                qDebug() << Q_FUNC_INFO << "Starting startup function. (" << m_doc->startupFunction() << ")";
+                func->start(m_doc->masterTimer(), FunctionParent::master());
+            }
+            else
+            {
+                qWarning() << Q_FUNC_INFO << "Startup function does not exist, erasing. (" << m_doc->startupFunction() << ")";
+                m_doc->setStartupFunction(Function::invalidId());
+            }
+        }
+
+        m_doc->inputOutputMap()->startUniverses();
+    }
     else
+    {
         qDebug() << "XML doesn't have a Workspace tag";
+    }
 }
 
 bool App::saveWorkspace(const QString &fileName)
