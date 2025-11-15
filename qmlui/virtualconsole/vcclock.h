@@ -153,7 +153,7 @@ public:
     int targetTime() const;
     void setTargetTime(int ms);
 
-    /** Wrapper to emit the timeChanged(int) signal */
+    /** Wrapper to emit the timeChanged(quint32) signal */
     Q_INVOKABLE void emitTimeChanged(quint32 ms);
 
 protected slots:
