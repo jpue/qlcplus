@@ -2486,19 +2486,32 @@ QString WebAccess::getCueListHTML(VCCueList *cue)
     str += "</div>\n";
 
     // progress bar
+    #ifdef QMLUI
+      QVariant progressValue(0.0);
+      QVariant progressText("");
+      if (cue->m_item != NULL)
+      {
+          progressValue = cue->m_item->property("progressValue");
+          progressText = cue->m_item->property("progressText");
+          if (!progressValue.isValid())
+              progressValue = 0.0;
+          if (!progressText.isValid())
+              progressText = "";
+      }
+    #endif
     str += "<div class=\"vccuelistProgress\">";
     str += "<div class=\"vccuelistProgressBar\" id=\"vccuelistPB" + QString::number(cue->id()) + "\" style=\"width: " +
              #ifndef QMLUI
                QString::number(cue->progressPercent())
              #else
-               QString::number(cue->m_item->property("progressValue").toDouble() * 100)
+               QString::number(progressValue.toDouble() * 100)
              #endif
            + "%; \"></div>";
     str += "<div class=\"vccuelistProgressVal\" id=\"vccuelistPV" + QString::number(cue->id())+"\">" +
              #ifndef QMLUI
                cue->progressText()
              #else
-               cue->m_item->property("progressText").toString().toHtmlEscaped()
+               progressText.toString().toHtmlEscaped()
              #endif
            + "</div>";
     str += "</div>";
