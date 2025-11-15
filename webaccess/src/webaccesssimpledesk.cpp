@@ -127,8 +127,6 @@ QString WebAccessSimpleDesk::getChannelsMessage(Doc *doc, SimpleDesk *sd,
     if ((doc == NULL) || (sd == NULL))
         return QString("");
 
-    qDebug() << "getChannelsMessage" << universe << startAddr << chNumber;
-
     QString message;
     quint32 universeAddr = (universe << 9);
     qDebug() << "Uni addr:" << universeAddr;
