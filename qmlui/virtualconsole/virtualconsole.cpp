@@ -137,6 +137,7 @@ void VirtualConsole::resetContents()
     m_latestWidgetId = 0;
     m_selectedPage = 0;
     m_loadStatus = Cleared;
+    emit loadStatusChanged(m_loadStatus);
 }
 
 
@@ -1260,6 +1261,7 @@ bool VirtualConsole::loadXML(QXmlStreamReader &root)
     }
 
     m_loadStatus = Loading;
+    emit loadStatusChanged(m_loadStatus);
 
     while (root.readNextStartElement())
     {
@@ -1301,6 +1303,7 @@ bool VirtualConsole::loadXML(QXmlStreamReader &root)
     updatePageInputs();
 
     m_loadStatus = Loaded;
+    emit loadStatusChanged(m_loadStatus);
 
     return true;
 }

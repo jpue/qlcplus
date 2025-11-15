@@ -203,10 +203,8 @@ int main(int argc, char *argv[])
                                              parser.value(webAccessPortOption).toInt(), parser.isSet(enableWebAuthOption),
                                              parser.value(webAuthFileOption));
 
+        QObject::connect(webAccess, SIGNAL(loadProject(QByteArray&)), &qlcplusApp, SLOT(slotLoadDocFromMemory(QByteArray&)));
         // TODO
-        Q_UNUSED(webAccess);
-        //QObject::connect(webAccess, SIGNAL(toggleDocMode()), &app, SLOT(slotModeToggle()));
-        //QObject::connect(webAccess, SIGNAL(loadProject(QString)), &app, SLOT(slotLoadDocFromMemory(QString)));
         //QObject::connect(webAccess, SIGNAL(storeAutostartProject(QString)), &app, SLOT(slotSaveAutostart(QString)));
     }
 

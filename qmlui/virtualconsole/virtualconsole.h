@@ -88,6 +88,7 @@ public:
 signals:
     void editModeChanged(bool editMode);
     void snappingChanged(bool enable);
+    void loadStatusChanged(VirtualConsole::LoadStatus status);
 
 protected:
     bool m_editMode;
