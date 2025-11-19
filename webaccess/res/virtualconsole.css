@@ -265,9 +265,6 @@ input[type="range"].vVertical-disabled {
  background-color: #ccc!important;
 }
 
-/* There seems to be a bug in Chrome/Edge/... that prevents
-   the following code from working if there is more than one
-   CSS selector. That is why this code exists twice. */
 /* Chrome, Edge, Opera */
 input[type="range"]::-webkit-slider-thumb {
  appearance: none;
