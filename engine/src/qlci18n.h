@@ -45,6 +45,10 @@ public:
     /** Get the folder path where translation are loaded from */
     static QString translationFilePath();
 
+    static void setLoadedLanguage(const QString& language);
+
+    static QString loadedLanguage();
+
     /**
      * Load translation for a component. The translation file that this method
      * attempts to load takes the following form: "<component>_<locale>.qm". For
@@ -55,10 +59,12 @@ public:
      * @return true if translation was loaded successfully, otherwise false
      */
     static bool loadTranslation(const QString& component);
+    static bool loadQtTranslation(const QString& component);
 
 private:
     static QString s_defaultLocale;
     static QString s_translationFilePath;
+    static QString s_loadedLanguage;
 };
 
 /** @} */
