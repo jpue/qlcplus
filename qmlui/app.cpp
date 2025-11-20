@@ -77,6 +77,7 @@ App::App()
     , m_forceQuit(false)
     , m_accessMask(defaultMask())
     , m_translator(nullptr)
+    , m_qt_translator(nullptr)
     , m_fixtureBrowser(nullptr)
     , m_fixtureManager(nullptr)
     , m_contextManager(nullptr)
@@ -122,6 +123,9 @@ App::~App()
     QFile asFile(autoSaveFileName());
     if (asFile.exists())
         asFile.remove();
+
+    deleteTranslator(m_translator);
+    deleteTranslator(m_qt_translator);
 }
 
 QString App::appName() const
@@ -250,26 +254,48 @@ void App::toggleFullscreen()
 
 void App::setLanguage(QString locale)
 {
-    if (m_translator != nullptr)
-    {
-        QCoreApplication::removeTranslator(m_translator);
-        delete m_translator;
-    }
+    deleteTranslator(m_translator);
+    deleteTranslator(m_qt_translator);
 
-    QString translationPath = QLCFile::systemDirectory(TRANSLATIONDIR).absolutePath();
-
-    if (locale.isEmpty() == true)
+    if (locale.isEmpty())
         locale = QLocale::system().name();
 
-    QString file(QString("%1_%2").arg("qlcplus").arg(locale));
-    m_translator = new QTranslator(QCoreApplication::instance());
-    if (m_translator->load(file, translationPath) == true)
-        QCoreApplication::installTranslator(m_translator);
+    m_translator = loadLocale(QStringLiteral("qlcplus"), locale, QLCFile::systemDirectory(TRANSLATIONDIR).absolutePath());
+    m_qt_translator = loadLocale(QStringLiteral("qt"), locale);
 
     QSettings settings;
     settings.setValue(SETTINGS_LANGUAGE, locale);
 
     engine()->retranslate();
+}
+
+void App::deleteTranslator(QTranslator* translator) const
+{
+    if (translator != nullptr)
+    {
+        QCoreApplication::removeTranslator(translator);
+        delete translator;
+    }
+}
+
+QTranslator* App::loadLocale(const QString& component, const QString& locale, const QString& translationPath) const
+{
+    if (locale.isEmpty())
+        return nullptr;
+
+    const QString file(QStringLiteral("%1_%2").arg(component).arg(locale));
+
+    QTranslator* qtTranslator = new QTranslator(QCoreApplication::instance());
+    if (qtTranslator->load(file, translationPath))
+    {
+        QCoreApplication::installTranslator(qtTranslator);
+        return qtTranslator;
+    }
+    else
+    {
+        delete qtTranslator;
+        return nullptr;
+    }
 }
 
 QString App::goboSystemPath() const
