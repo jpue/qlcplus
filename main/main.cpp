@@ -328,6 +328,8 @@ int main(int argc, char** argv)
 
     /* Load translation for main application */
     QLCi18n::loadTranslation("qlcplus");
+    QLCi18n::loadQtTranslation("qt");
+    QLCi18n::loadQtTranslation("qtbase");
 
     /* Handle debug messages */
     qInstallMessageHandler(qlcMessageHandler);
