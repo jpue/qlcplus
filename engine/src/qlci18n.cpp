@@ -23,6 +23,7 @@
 #include <QString>
 #include <QDebug>
 #include <QDir>
+#include <QLibraryInfo>
 
 #include "qlcconfig.h"
 #include "qlcfile.h"
@@ -30,6 +31,7 @@
 
 QString QLCi18n::s_defaultLocale = QString();
 QString QLCi18n::s_translationFilePath = QString();
+QString QLCi18n::s_loadedLanguage = QString();
 
 void QLCi18n::init()
 {
@@ -57,6 +59,16 @@ QString QLCi18n::translationFilePath()
     return s_translationFilePath;
 }
 
+void QLCi18n::setLoadedLanguage(const QString& language)
+{
+    s_loadedLanguage = language;
+}
+
+QString QLCi18n::loadedLanguage()
+{
+    return s_loadedLanguage;
+}
+
 bool QLCi18n::loadTranslation(const QString& component)
 {
     QString lc;
@@ -71,10 +83,35 @@ bool QLCi18n::loadTranslation(const QString& component)
     if (translator->load(file, translationFilePath()) == true)
     {
         QCoreApplication::installTranslator(translator);
+        setLoadedLanguage(lc);
         return true;
     }
     else
     {
+        setLoadedLanguage("en");
+        return false;
+    }
+}
+
+
+bool QLCi18n::loadQtTranslation(const QString& component)
+{
+  #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    const QString qtTranslationsPath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+  #else
+    const QString qtTranslationsPath = QLibraryInfo::path(QLibraryInfo::TranslationsPath);
+  #endif
+
+    const QString file(QString("%1_%2").arg(component).arg(QLocale::system().name()));
+    QTranslator* qtTranslator = new QTranslator(QCoreApplication::instance());
+    if (qtTranslator->load(file, qtTranslationsPath))
+    {
+        QCoreApplication::installTranslator(qtTranslator);
+        return true;
+    }
+    else
+    {
+        setLoadedLanguage("en");
         return false;
     }
 }
