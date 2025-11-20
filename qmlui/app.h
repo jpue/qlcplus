@@ -23,6 +23,7 @@
 #include <QQmlEngine>
 #include <QQuickView>
 #include <QQuickItem>
+#include <QLibraryInfo>
 #include <QObject>
 #include "doc.h"
 
@@ -182,6 +183,10 @@ protected:
 
     Q_INVOKABLE void exit(bool force = false);
 
+private:
+    void deleteTranslator(QTranslator* translator) const;
+    QTranslator* loadLocale(const QString& component, const QString& locale, const QString& translationPath = QLibraryInfo::path(QLibraryInfo::TranslationsPath)) const;
+
 public slots:
     void setAccessMask(int mask);
 
@@ -212,6 +217,7 @@ private:
     int m_accessMask;
 
     QTranslator *m_translator;
+    QTranslator *m_qt_translator;
 
     FixtureBrowser *m_fixtureBrowser;
     FixtureManager *m_fixtureManager;
