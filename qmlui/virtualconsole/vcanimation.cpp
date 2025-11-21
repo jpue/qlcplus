@@ -231,12 +231,17 @@ void VCAnimation::setInstantChanges(bool newInstantChanges)
  * Colors and presets
  *********************************************************************/
 
-QColor VCAnimation::getColor1() const
+QColor VCAnimation::getColor(int index) const
 {
-    if (m_matrix == NULL)
+    if ((m_matrix == NULL) || (index < 1) || (index > 5))
         return QColor();
 
-    return m_matrix->getColor(0);
+    return m_matrix->getColor(index-1);
+}
+
+QColor VCAnimation::getColor1() const
+{
+    return getColor(1);
 }
 
 void VCAnimation::setColor1(QColor color)
@@ -255,10 +260,7 @@ void VCAnimation::setColor1(QColor color)
 
 QColor VCAnimation::getColor2() const
 {
-    if (m_matrix == NULL)
-        return QColor();
-
-    return m_matrix->getColor(1);
+    return getColor(2);
 }
 
 void VCAnimation::setColor2(QColor color)
@@ -277,10 +279,7 @@ void VCAnimation::setColor2(QColor color)
 
 QColor VCAnimation::getColor3() const
 {
-    if (m_matrix == NULL)
-        return QColor();
-
-    return m_matrix->getColor(2);
+    return getColor(3);
 }
 
 void VCAnimation::setColor3(QColor color)
@@ -297,10 +296,7 @@ void VCAnimation::setColor3(QColor color)
 
 QColor VCAnimation::getColor4() const
 {
-    if (m_matrix == NULL)
-        return QColor();
-
-    return m_matrix->getColor(3);
+    return getColor(4);
 }
 
 void VCAnimation::setColor4(QColor color)
@@ -317,10 +313,7 @@ void VCAnimation::setColor4(QColor color)
 
 QColor VCAnimation::getColor5() const
 {
-    if (m_matrix == NULL)
-        return QColor();
-
-    return m_matrix->getColor(4);
+    return getColor(5);
 }
 
 void VCAnimation::setColor5(QColor color)

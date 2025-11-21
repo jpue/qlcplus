@@ -137,6 +137,11 @@ protected slots:
   #else
     void slotAnimationFaderLevelChanged();
     void slotAnimationColorChanged(int);
+    void slotAnimationColor1Changed();
+    void slotAnimationColor2Changed();
+    void slotAnimationColor3Changed();
+    void slotAnimationColor4Changed();
+    void slotAnimationColor5Changed();
     void slotAnimationAlgorithmChanged();
   #endif
     void slotMatrixControlKnobValueChanged(int controlID, int value);
