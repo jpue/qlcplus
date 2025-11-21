@@ -2787,38 +2787,42 @@ void WebAccess::slotAnimationColorChanged(int index)
     if ((matrix == NULL) || (index < 1) || (index > 5))
         return;
 
-  #ifdef QMLUI
-    const QString color;
-    switch (index) {
-        case 1:
-          color = matrix->getColor1();
-          break;
-        case 2:
-          color = matrix->getColor1();
-          break;
-        case 3:
-          color = matrix->getColor1();
-          break;
-        case 4:
-          color = matrix->getColor1();
-          break;
-        case 5:
-          color = matrix->getColor1();
-          break;
-        default:
-          color = QStringLiteral("#000000");
-    }
-  #endif
-
     QString wsMessage = QString("%1|MATRIX_COLOR_%2|%3").arg(matrix->id()).arg(index).arg(
       #ifndef QMLUI
-        matrix->mtxColor(index-1).name()
+        matrix->mtxColor(index-1)
       #else
-        color
+        matrix->getColor(index)
       #endif
-      );
+      .name());
     sendWebSocketMessage(wsMessage.toUtf8());
 }
+
+#ifdef QMLUI
+void WebAccess::slotAnimationColor1Changed()
+{
+    slotAnimationColorChanged(1);
+}
+
+void WebAccess::slotAnimationColor2Changed()
+{
+    slotAnimationColorChanged(2);
+}
+
+void WebAccess::slotAnimationColor3Changed()
+{
+    slotAnimationColorChanged(3);
+}
+
+void WebAccess::slotAnimationColor4Changed()
+{
+    slotAnimationColorChanged(4);
+}
+
+void WebAccess::slotAnimationColor5Changed()
+{
+    slotAnimationColorChanged(5);
+}
+#endif
 
 #ifndef QMLUI
 void WebAccess::slotMatrixAnimationValueChanged(QString name)
@@ -2905,7 +2909,7 @@ QString WebAccess::getAnimationHTML(VCAnimation *matrix)
                 "ontouchmove=\"matrixSliderValueChange(" + QString::number(matrix->id()) + ");\" "
                 "style=\"width: " + QString::number(height - 20) + "px; "
                 "margin-top: " + QString::number(height - 10) + "px; margin-left: 25px; \""
-                "min=\"1\" max=\"255\" step=\"1\" value=\"" +
+                "min=\"0\" max=\"255\" step=\"1\" value=\"" +
                   #ifndef QMLUI
                     QString::number(matrix->sliderValue())
                   #else

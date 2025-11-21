@@ -22,12 +22,12 @@
 
 #include "vcwidget.h"
 
-#define KXMLQLCVCAnimation             QStringLiteral("Matrix")
-#define KXMLQLCVCAnimationFunction     QStringLiteral("Function")
-#define KXMLQLCVCAnimationFunctionID   QStringLiteral("ID")
-#define KXMLQLCVCAnimationInstantApply QStringLiteral("InstantApply")
-#define KXMLQLCVCAnimationStartColor   QStringLiteral("StartColor")
-#define KXMLQLCVCAnimationEndColor     QStringLiteral("EndColor")
+#define KXMLQLCVCAnimation               QStringLiteral("Matrix")
+#define KXMLQLCVCAnimationFunction       QStringLiteral("Function")
+#define KXMLQLCVCAnimationFunctionID     QStringLiteral("ID")
+#define KXMLQLCVCAnimationInstantApply   QStringLiteral("InstantApply")
+#define KXMLQLCVCAnimationStartColor     QStringLiteral("StartColor")
+#define KXMLQLCVCAnimationEndColor       QStringLiteral("EndColor")
 #define KXMLQLCVCAnimationVisibilityMask QStringLiteral("Visibility")
 
 class RGBMatrix;
@@ -140,6 +140,9 @@ private:
      * Colors and presets
      *********************************************************************/
 public:
+    /** Get color at index of the current algorithm */
+    QColor getColor(int index) const;
+
     /** Get/set color 1 of the current algorithm */
     QColor getColor1() const;
     void setColor1(QColor color);
