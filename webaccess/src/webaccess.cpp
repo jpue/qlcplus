@@ -374,10 +374,10 @@ void WebAccess::slotHandleWebSocketRequest(QHttpConnection *conn, QString data)
         if (cmdList.count() < 2)
             return;
 
+      #ifndef QMLUI
         if (cmdList[1] == "opMode")
-          #ifndef QMLUI
             emit toggleDocMode();
-          #endif
+      #endif
 
         return;
     }
