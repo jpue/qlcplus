@@ -144,8 +144,8 @@ VCWidgetItem
             from: 0
             to: 1000
             wrap: true
-            
-            onMoved: 
+
+            onMoved:
             {
                 if (speedObj)
                 {
