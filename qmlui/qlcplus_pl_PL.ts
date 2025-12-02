@@ -2786,7 +2786,7 @@ Changes will be lost if you don&apos;t save them.</source>
     <message>
         <location filename="qml/popup/PopupChannelWizard.qml" line="174"/>
         <source>Amount</source>
-        <translation>	Ilość</translation>
+        <translation>Ilość</translation>
     </message>
     <message>
         <location filename="qml/popup/PopupChannelWizard.qml" line="189"/>
