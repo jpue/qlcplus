@@ -436,7 +436,7 @@ void VCXYPadArea::keyPressEvent(QKeyEvent *e)
 }
 
 
-void VCXYPadArea::keyReleaseEvent (QKeyEvent * e)
+void VCXYPadArea::keyReleaseEvent(QKeyEvent * e)
 {
     QFrame::keyReleaseEvent(e);
 }

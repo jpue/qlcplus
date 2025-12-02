@@ -161,7 +161,7 @@ QLCFixtureDef::FixtureType QLCFixtureDef::stringToType(const QString& type)
 
 QString QLCFixtureDef::typeToString(QLCFixtureDef::FixtureType type)
 {
-    switch(type)
+    switch (type)
     {
         case ColorChanger: return "Color Changer";
         case Dimmer: return "Dimmer";

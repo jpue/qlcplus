@@ -528,7 +528,7 @@ void ChaserEditor::setSelectedValue(Function::PropType type, QString param, uint
             uint duration = m_chaser->durationMode() == Chaser::Common ? m_chaser->duration() : step.duration;
 
             /* Now update also the Chaser step */
-            switch(type)
+            switch (type)
             {
                 case Function::FadeIn:
                 {

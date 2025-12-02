@@ -616,7 +616,7 @@ bool RGBScript::loadProperties()
             else if (key == QStringLiteral("values"))
             {
                 QStringList values = value.split(",");
-                switch(newCap.m_type)
+                switch (newCap.m_type)
                 {
                     case RGBScriptProperty::List:
                         newCap.m_listValues = values;

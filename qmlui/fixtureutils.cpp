@@ -82,7 +82,7 @@ QPointF FixtureUtils::item2DPosition(MonitorProperties *monProps, int pointOfVie
     QPointF point(0, 0);
     float gridUnits = monProps->gridUnits() == MonitorProperties::Meters ? 1000.0 : 304.8;
 
-    switch(pointOfView)
+    switch (pointOfView)
     {
         case MonitorProperties::TopView:
             point.setX(pos.x());
@@ -109,7 +109,7 @@ QPointF FixtureUtils::item2DPosition(MonitorProperties *monProps, int pointOfVie
 
 float FixtureUtils::item2DRotation(int pointOfView, QVector3D rot)
 {
-    switch(pointOfView)
+    switch (pointOfView)
     {
         case MonitorProperties::TopView:
             return rot.y();
@@ -141,7 +141,7 @@ QSizeF FixtureUtils::item2DDimension(QLCFixtureMode *fxMode, int pointOfView)
     if (phy.depth() == 0)
         phy.setDepth(300);
 
-    switch(pointOfView)
+    switch (pointOfView)
     {
         case MonitorProperties::TopView:
             size.setWidth(phy.width());
@@ -164,34 +164,46 @@ QSizeF FixtureUtils::item2DDimension(QLCFixtureMode *fxMode, int pointOfView)
 
 void FixtureUtils::alignItem(QVector3D refPos, QVector3D &origPos, int pointOfView, int alignment)
 {
-    switch(pointOfView)
+    switch (pointOfView)
     {
         case MonitorProperties::TopView:
         {
-            switch(alignment)
+            switch (alignment)
             {
-                case Qt::AlignTop: origPos.setZ(refPos.z()); break;
-                case Qt::AlignLeft: origPos.setX(refPos.x()); break;
+                case Qt::AlignTop:
+                    origPos.setZ(refPos.z());
+                break;
+                case Qt::AlignLeft:
+                    origPos.setX(refPos.x());
+                break;
             }
         }
         break;
         case MonitorProperties::Undefined:
         case MonitorProperties::FrontView:
         {
-            switch(alignment)
+            switch (alignment)
             {
-                case Qt::AlignTop: origPos.setY(refPos.y()); break;
-                case Qt::AlignLeft: origPos.setX(refPos.x()); break;
+                case Qt::AlignTop:
+                    origPos.setY(refPos.y());
+                break;
+                case Qt::AlignLeft:
+                    origPos.setX(refPos.x());
+                break;
             }
         }
         break;
         case MonitorProperties::RightSideView:
         case MonitorProperties::LeftSideView:
         {
-            switch(alignment)
+            switch (alignment)
             {
-                case Qt::AlignTop: origPos.setY(refPos.y()); break;
-                case Qt::AlignLeft: origPos.setZ(refPos.z()); break;
+                case Qt::AlignTop:
+                    origPos.setY(refPos.y());
+                break;
+                case Qt::AlignLeft:
+                    origPos.setZ(refPos.z());
+                break;
             }
         }
         break;
@@ -202,7 +214,7 @@ QVector3D FixtureUtils::item3DPosition(MonitorProperties *monProps, QPointF poin
 {
     QVector3D pos(point.x(), point.y(), thirdVal);
 
-    switch(monProps->pointOfView())
+    switch (monProps->pointOfView())
     {
         case MonitorProperties::TopView:
             pos = QVector3D(point.x(), thirdVal, point.y());

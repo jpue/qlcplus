@@ -347,7 +347,7 @@ QVariant TreeModel::data(const QModelIndex &index, int role) const
 
     TreeModelItem *item = m_items.at(itemRow);
 
-    switch(role)
+    switch (role)
     {
         case LabelRole:
             return item->label();
@@ -384,7 +384,7 @@ bool TreeModel::setData(const QModelIndex &index, const QVariant &value, int rol
 
     //qDebug() << "Setting role" << role << "on row" << itemRow << "with value" << value;
 
-    switch(role)
+    switch (role)
     {
         case LabelRole:
             item->setLabel(value.toString());
@@ -432,7 +432,7 @@ void TreeModel::slotRoleChanged(TreeModelItem *item, int role, const QVariant &v
     if (item == nullptr)
         return;
 
-    switch(role)
+    switch (role)
     {
         case IsSelectedRole:
         {

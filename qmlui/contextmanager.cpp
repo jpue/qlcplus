@@ -469,7 +469,7 @@ void ContextManager::handleKeyPress(QKeyEvent *e)
 
     if (e->modifiers() & Qt::ControlModifier)
     {
-        switch(e->key())
+        switch (e->key())
         {
             case Qt::Key_A:
                 toggleFixturesSelection();
@@ -1027,7 +1027,7 @@ void ContextManager::setFixturesDistribution(int direction)
         // the first and last fixture don't need any adjustment
         if (idx > 0 && idx < sortedIDs.count() - 1)
         {
-            switch(m_monProps->pointOfView())
+            switch (m_monProps->pointOfView())
             {
                 case MonitorProperties::TopView:
                     if (direction == Qt::Horizontal)

@@ -138,7 +138,7 @@ void FunctionWizard::accept()
 
 void FunctionWizard::checkTabsAndButtons()
 {
-    switch(m_tabWidget->currentIndex())
+    switch (m_tabWidget->currentIndex())
     {
         case 0:
         {
@@ -823,7 +823,7 @@ VCWidget *FunctionWizard::createWidget(int type, VCWidget *parent, int xpos, int
     if (parent == NULL)
         return NULL;
 
-    switch(type)
+    switch (type)
     {
         case VCWidget::FrameWidget:
         {

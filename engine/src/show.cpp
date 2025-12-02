@@ -160,7 +160,7 @@ Show::TimeDivision Show::timeDivisionType()
 
 int Show::beatsDivision()
 {
-    switch(m_timeDivisionType)
+    switch (m_timeDivisionType)
     {
         case BPM_2_4: return 2;
         case BPM_3_4: return 3;
@@ -186,7 +186,7 @@ void Show::setTimeDivisionBPM(int BPM)
 
 QString Show::tempoToString(Show::TimeDivision type)
 {
-    switch(type)
+    switch (type)
     {
         case Time: return QString("Time"); break;
         case BPM_4_4: return QString("BPM_4_4"); break;

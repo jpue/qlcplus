@@ -1452,7 +1452,7 @@ bool FixtureManager::addRGBPanel(QString name, qreal xPos, qreal yPos)
     {
         if (docGroup->name() == name)
         {
-            name = QString ("%1 [%2]").arg(name).arg(grp->id());
+            name = QString("%1 [%2]").arg(name).arg(grp->id());
             break;
         }
     }

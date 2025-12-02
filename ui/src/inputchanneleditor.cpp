@@ -321,34 +321,34 @@ QString InputChannelEditor::noteToString(int note)
     int octave = note / 12 - 1;
     int pitch = note % 12;
 
-    switch(pitch)
+    switch (pitch)
     {
-    case 0:
-        return QString("C%1").arg(octave);
-    case 1:
-        return QString("C#%1").arg(octave);
-    case 2:
-        return QString("D%1").arg(octave);
-    case 3:
-        return QString("D#%1").arg(octave);
-    case 4:
-        return QString("E%1").arg(octave);
-    case 5:
-        return QString("F%1").arg(octave);
-    case 6:
-        return QString("F#%1").arg(octave);
-    case 7:
-        return QString("G%1").arg(octave);
-    case 8:
-        return QString("G#%1").arg(octave);
-    case 9:
-        return QString("A%1").arg(octave);
-    case 10:
-        return QString("A#%1").arg(octave);
-    case 11:
-        return QString("B%1").arg(octave);
-    default:
-        return "--";
+        case 0:
+            return QString("C%1").arg(octave);
+        case 1:
+            return QString("C#%1").arg(octave);
+        case 2:
+            return QString("D%1").arg(octave);
+        case 3:
+            return QString("D#%1").arg(octave);
+        case 4:
+            return QString("E%1").arg(octave);
+        case 5:
+            return QString("F%1").arg(octave);
+        case 6:
+            return QString("F#%1").arg(octave);
+        case 7:
+            return QString("G%1").arg(octave);
+        case 8:
+            return QString("G#%1").arg(octave);
+        case 9:
+            return QString("A%1").arg(octave);
+        case 10:
+            return QString("A#%1").arg(octave);
+        case 11:
+            return QString("B%1").arg(octave);
+        default:
+            return "--";
     }
 }
 
