@@ -23,7 +23,7 @@
 #include "dmxinterface.h"
 
 typedef void *PVOID;
-typedef PVOID	FT_HANDLE;
+typedef PVOID FT_HANDLE;
 
 class FTD2XXInterface : public DMXInterface
 {
