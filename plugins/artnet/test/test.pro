@@ -14,10 +14,10 @@ INCLUDEPATH += ../src
 DEPENDPATH  += ../src
 
 HEADERS += ../../interfaces/qlcioplugin.h \
-		   ../../interfaces/rdmprotocol.h
+           ../../interfaces/rdmprotocol.h
 
 SOURCES += ../../interfaces/qlcioplugin.cpp \
-		   ../../interfaces/rdmprotocol.cpp
+           ../../interfaces/rdmprotocol.cpp
 
 # Test sources
 HEADERS += artnet_test.h 
