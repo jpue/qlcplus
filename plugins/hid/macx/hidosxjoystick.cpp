@@ -104,10 +104,10 @@ void HIDOSXJoystick::init()
                elemType == kIOHIDElementTypeInput_Axis ||
                elemType == kIOHIDElementTypeInput_ScanCodes)
             {
-                switch(usagePage)
+                switch (usagePage)
                 {
                     case kHIDPage_GenericDesktop:
-                        switch(usage)
+                        switch (usage)
                         {
                             case kHIDUsage_GD_X:
                             case kHIDUsage_GD_Y:

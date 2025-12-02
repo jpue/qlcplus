@@ -130,20 +130,20 @@ QVariant CueStackModel::headerData(int section, Qt::Orientation orientation, int
     if (role != Qt::DisplayRole || orientation != Qt::Horizontal)
         return QVariant();
 
-    switch(section)
+    switch (section)
     {
-    case IndexColumn:
-        return tr("Number");
-    case FadeInColumn:
-        return tr("Fade In");
-    case FadeOutColumn:
-        return tr("Fade Out");
-    case DurationColumn:
-        return tr("Duration");
-    case NameColumn:
-        return tr("Cue");
-    default:
-        return QVariant();
+        case IndexColumn:
+            return tr("Number");
+        case FadeInColumn:
+            return tr("Fade In");
+        case FadeOutColumn:
+            return tr("Fade Out");
+        case DurationColumn:
+            return tr("Duration");
+        case NameColumn:
+            return tr("Cue");
+        default:
+            return QVariant();
     }
 }
 

@@ -722,7 +722,8 @@ QString Script::handleWaitFunction(const QList<QStringList> &tokens, bool start)
 
 void Script::slotWaitFunctionStarted(quint32 fid)
 {
-    if (m_waitFunction != NULL && m_waitFunction->id() == fid) {
+    if (m_waitFunction != NULL && m_waitFunction->id() == fid)
+    {
         disconnect(m_waitFunction, SIGNAL(running(quint32)), this, SLOT(slotWaitFunctionStarted(quint32)));
         m_waitFunction = NULL;
     }
@@ -730,7 +731,8 @@ void Script::slotWaitFunctionStarted(quint32 fid)
 
 void Script::slotWaitFunctionStopped(quint32 fid)
 {
-    if (m_waitFunction != NULL && m_waitFunction->id() == fid) {
+    if (m_waitFunction != NULL && m_waitFunction->id() == fid)
+    {
         disconnect(m_waitFunction, SIGNAL(stopped(quint32)), this, SLOT(slotWaitFunctionStopped(quint32)));
         m_startedFunctions.removeAll(m_waitFunction);
         m_waitFunction = NULL;

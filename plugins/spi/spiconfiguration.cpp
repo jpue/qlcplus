@@ -43,7 +43,7 @@ SPIConfiguration::SPIConfiguration(SPIPlugin* plugin, QWidget* parent)
     if (value.isValid() == true)
     {
         int speed = value.toUInt();
-        switch(speed)
+        switch (speed)
         {
             case 2000000: m_freqCombo->setCurrentIndex(1); break;
             case 4000000: m_freqCombo->setCurrentIndex(2); break;
@@ -73,7 +73,7 @@ void SPIConfiguration::accept()
 quint32 SPIConfiguration::frequency()
 {
     int fIdx = m_freqCombo->currentIndex();
-    switch(fIdx)
+    switch (fIdx)
     {
         default:
         case 0: return 1000000; break;

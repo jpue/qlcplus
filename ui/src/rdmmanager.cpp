@@ -153,7 +153,7 @@ void RDMManager::slotReadPID()
 
     if (args.length())
     {
-        switch(m_dataTypeCombo->currentIndex())
+        switch (m_dataTypeCombo->currentIndex())
         {
             case ByteArg:
                 params.append(uchar(1));
@@ -228,7 +228,7 @@ void RDMManager::slotWritePID()
             {
                 QString arg = argList.at(i);
 
-                switch(m_dataTypeCombo->currentIndex())
+                switch (m_dataTypeCombo->currentIndex())
                 {
                     case ByteArg:
                         params.append(uchar(1));
@@ -311,7 +311,7 @@ void RDMManager::updateRDMTreeItem(QString UID, UIDInfo info)
         item->setText(KColumnRDMUID, UID);
     }
 
-    item->setText(KColumnRDMModel, QString ("%1 - %2").arg(info.manufacturer).arg(info.name));
+    item->setText(KColumnRDMModel, QString("%1 - %2").arg(info.manufacturer).arg(info.name));
     item->setText(KColumnRDMUniverse, QString::number(info.universe + 1));
     item->setText(KColumnRDMAddress,  QString::number(info.dmxAddress));
     item->setText(KColumnRDMChannels, QString::number(info.channels));

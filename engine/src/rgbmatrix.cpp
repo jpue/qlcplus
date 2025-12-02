@@ -1002,7 +1002,7 @@ RGBMatrix::ControlMode RGBMatrix::stringToControlMode(QString mode)
 
 QString RGBMatrix::controlModeToString(RGBMatrix::ControlMode mode)
 {
-    switch(mode)
+    switch (mode)
     {
         default:
         case ControlModeRgb:
