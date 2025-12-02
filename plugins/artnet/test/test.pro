@@ -20,7 +20,7 @@ SOURCES += ../../interfaces/qlcioplugin.cpp \
            ../../interfaces/rdmprotocol.cpp
 
 # Test sources
-HEADERS += artnet_test.h 
+HEADERS += artnet_test.h
 
 SOURCES += artnet_test.cpp \
-           ../src/artnetpacketizer.cpp 
+           ../src/artnetpacketizer.cpp

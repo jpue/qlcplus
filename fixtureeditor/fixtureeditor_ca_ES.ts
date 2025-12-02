@@ -577,7 +577,7 @@
         <location filename="editphysical.ui" line="113"/>
         <source>Layout
 (Columns x Rows)</source>
-        <translation>Disposició 
+        <translation>Disposició
 (Columnes x Files)</translation>
     </message>
     <message>
