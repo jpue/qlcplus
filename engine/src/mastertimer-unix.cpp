@@ -2,7 +2,7 @@
   Q Light Controller Plus
   mastertimer-unix.cpp
 
-  Copyright (C) Heikki Junnila
+  Copyright (c) Heikki Junnila
                 Christopher Staite
                 Massimo Callegari
 

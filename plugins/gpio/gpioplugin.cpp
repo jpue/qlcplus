@@ -242,7 +242,7 @@ QList<GPIOLineInfo *> GPIOPlugin::gpioList() const
 
 QString GPIOPlugin::lineDirectionToString(GPIOPlugin::LineDirection usage)
 {
-    switch(usage)
+    switch (usage)
     {
         case OutputDirection: return QString("Output"); break;
         case InputDirection: return QString("Input"); break;

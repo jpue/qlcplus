@@ -130,7 +130,7 @@ SpeedDial::SpeedDial(QWidget* parent)
     taVBox3->addWidget(m_tap);
     connect(m_tap, SIGNAL(clicked()), this, SLOT(slotTapClicked()));
 
-    topHBox->addItem (taVBox3);
+    topHBox->addItem(taVBox3);
 
     QHBoxLayout* timeHBox = new QHBoxLayout();
     layout()->addItem(timeHBox);

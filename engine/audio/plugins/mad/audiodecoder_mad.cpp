@@ -101,7 +101,7 @@ bool AudioDecoderMAD::initialize(const QString &path)
     {
         if (!m_input.open(QIODevice::ReadOnly))
         {
-            qWarning("DecoderMAD: %s", qPrintable(m_input.errorString ()));
+            qWarning("DecoderMAD: %s", qPrintable(m_input.errorString()));
             return false;
         }
     }
@@ -228,7 +228,7 @@ bool AudioDecoderMAD::findHeader()
             if (m_stream.next_frame)
             {
                 remaining = m_stream.bufend - m_stream.next_frame;
-                memmove (m_input_buf, m_stream.next_frame, remaining);
+                memmove(m_input_buf, m_stream.next_frame, remaining);
             }
 
             m_input_bytes = m_input.read(m_input_buf + remaining, INPUT_BUFFER_SIZE - remaining);
@@ -266,7 +266,7 @@ bool AudioDecoderMAD::findHeader()
             }
             else
             {
-                qDebug ("DecoderMAD: Can't decode header: %s", mad_stream_errorstr(&m_stream));
+                qDebug("DecoderMAD: Can't decode header: %s", mad_stream_errorstr(&m_stream));
                 break;
             }
         }
@@ -285,7 +285,7 @@ bool AudioDecoderMAD::findHeader()
             {
                 is_vbr = true;
 
-                qDebug ("DecoderMAD: Xing header detected");
+                qDebug("DecoderMAD: Xing header detected");
 
                 if (xing.flags & XING_FRAMES)
                 {
@@ -301,7 +301,7 @@ bool AudioDecoderMAD::findHeader()
         {
             if (m_bitrate && header.bitrate != m_bitrate)
             {
-                qDebug ("DecoderMAD: VBR detected");
+                qDebug("DecoderMAD: VBR detected");
                 is_vbr = true;
             }
             else
@@ -309,7 +309,7 @@ bool AudioDecoderMAD::findHeader()
         }
         else if (!is_vbr)
         {
-            qDebug ("DecoderMAD: Fixed rate detected");
+            qDebug("DecoderMAD: Fixed rate detected");
             break;
         }
         mad_timer_add (&duration, header.duration);
@@ -334,7 +334,7 @@ bool AudioDecoderMAD::findHeader()
     }
 
     m_totalTime = mad_timer_count(duration, MAD_UNITS_MILLISECONDS);
-    qDebug ("DecoderMAD: Total time: %ld", long(m_totalTime));
+    qDebug("DecoderMAD: Total time: %ld", long(m_totalTime));
     m_freq = header.samplerate;
     m_channels = MAD_NCHANNELS(&header);
     m_bitrate = header.bitrate / 1000;
@@ -366,29 +366,29 @@ qint64 AudioDecoderMAD::read(char *data, qint64 size)
         }
         if (mad_frame_decode(&m_frame, &m_stream) < 0)
         {
-            switch((int) m_stream.error)
+            switch ((int) m_stream.error)
             {
-            case MAD_ERROR_LOSTSYNC:
-            {
-                //skip ID3v2 tag
-                uint tagSize = findID3v2((uchar *)m_stream.this_frame,
-                                         (ulong) (m_stream.bufend - m_stream.this_frame));
-                if (tagSize > 0)
+                case MAD_ERROR_LOSTSYNC:
                 {
-                    mad_stream_skip(&m_stream, tagSize);
-                    qDebug("DecoderMAD: %d bytes skipped", tagSize);
-                }
-                continue;
-            }
-            case MAD_ERROR_BUFLEN:
-                if (m_eof)
-                    return 0;
-                continue;
-            default:
-                if (!MAD_RECOVERABLE(m_stream.error))
-                    return 0;
-                else
+                    //skip ID3v2 tag
+                    uint tagSize = findID3v2((uchar *)m_stream.this_frame,
+                                             (ulong) (m_stream.bufend - m_stream.this_frame));
+                    if (tagSize > 0)
+                    {
+                        mad_stream_skip(&m_stream, tagSize);
+                        qDebug("DecoderMAD: %d bytes skipped", tagSize);
+                    }
                     continue;
+                }
+                case MAD_ERROR_BUFLEN:
+                    if (m_eof)
+                        return 0;
+                    continue;
+                default:
+                    if (!MAD_RECOVERABLE(m_stream.error))
+                        return 0;
+                    else
+                        continue;
             }
         }
         if (m_skip_frames)

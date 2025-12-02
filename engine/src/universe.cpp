@@ -473,7 +473,7 @@ Universe::BlendMode Universe::stringToBlendMode(QString mode)
 
 QString Universe::blendModeToString(Universe::BlendMode mode)
 {
-    switch(mode)
+    switch (mode)
     {
         default:
         case NormalBlend:

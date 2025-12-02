@@ -31,8 +31,8 @@
 
 #define M_2PI       6.28318530718           /* 2*pi */
 
-AudioCapture::AudioCapture (QObject* parent)
-    : QThread (parent)
+AudioCapture::AudioCapture(QObject* parent)
+    : QThread(parent)
     , m_userStop(true)
     , m_pause(false)
     , m_captureSize(0)
