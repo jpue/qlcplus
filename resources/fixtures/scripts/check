@@ -6,11 +6,11 @@ set -e
 xmllint --noout --schema "$DIR"/../../schemas/fixture.xsd $(find "$DIR"/.. -name *.qxf) >/dev/null 2>&1 
 RES=$?
 if [ $RES -ne 0 ]; then
-	# Re-Validate to print the error cause
-	xmllint --noout --schema "$DIR"/../../schemas/fixture.xsd $(find "$DIR"/.. -name *.qxf) 2>&1 | grep -v " validates$"
-	exit $RES
+    # Re-Validate to print the error cause
+    xmllint --noout --schema "$DIR"/../../schemas/fixture.xsd $(find "$DIR"/.. -name *.qxf) 2>&1 | grep -v " validates$"
+    exit $RES
 else
-	echo "Fixtures: OK"
+    echo "Fixtures: OK"
 fi
 
 cd "$DIR"/.. && ./scripts/fixtures-tool.py --validate || exit $?
@@ -20,11 +20,11 @@ cd - >>/dev/null
 xmllint --noout --schema "$DIR"/../../schemas/fixturesmap.xsd "$DIR"/../FixturesMap.xml >/dev/null 2>&1
 RES=$?
 if [ $RES -ne 0 ]; then
-	# Re-Validate to print the error cause
-	xmllint --noout --schema "$DIR"/../../schemas/fixturesmap.xsd "$DIR"/../FixturesMap.xml 2>&1
-	exit $RES
+    # Re-Validate to print the error cause
+    xmllint --noout --schema "$DIR"/../../schemas/fixturesmap.xsd "$DIR"/../FixturesMap.xml 2>&1
+    exit $RES
 else
-	echo "Fixturesmap: OK"
+    echo "Fixturesmap: OK"
 fi
 
 

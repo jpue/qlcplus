@@ -1516,7 +1516,7 @@ QString Fixture::status() const
     info += QString("<TD CLASS='subhi'>%1</TD></TR>").arg(tr("Name"));
 
     // Fill table with the fixture's channels
-    for (quint32 ch = 0; ch < channels();	ch++)
+    for (quint32 ch = 0; ch < channels(); ch++)
     {
         QString chInfo("<TR><TD>%1</TD><TD>%2</TD><TD>%3</TD></TR>");
         info += chInfo.arg(ch + 1).arg(address() + ch + 1)
