@@ -618,7 +618,7 @@ void MainView2D::updateFixtureRotation(quint32 itemID, QVector3D degrees)
 
     QQuickItem *fxItem = m_itemsMap[itemID];
 
-    switch(m_monProps->pointOfView())
+    switch (m_monProps->pointOfView())
     {
         case MonitorProperties::FrontView:
             fxItem->setProperty("rotation", degrees.z());
@@ -688,7 +688,7 @@ QSize MainView2D::gridSize() const
 
 void MainView2D::setGridSize(QVector3D sz)
 {
-    switch(m_monProps->pointOfView())
+    switch (m_monProps->pointOfView())
     {
         case MonitorProperties::TopView:
             m_gridSize = QSize(sz.x(), sz.z());

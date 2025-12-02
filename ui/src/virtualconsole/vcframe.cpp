@@ -412,9 +412,9 @@ void VCFrame::setMultipageMode(bool enable)
         m_nextPageBtn->setStyleSheet(btnSS);
         m_hbox->addWidget(m_nextPageBtn);
 
-        connect (m_prevPageBtn, SIGNAL(clicked()), this, SLOT(slotPreviousPage()));
-        connect (m_pageCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(slotSetPage(int)));
-        connect (m_nextPageBtn, SIGNAL(clicked()), this, SLOT(slotNextPage()));
+        connect(m_prevPageBtn, SIGNAL(clicked()), this, SLOT(slotPreviousPage()));
+        connect(m_pageCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(slotSetPage(int)));
+        connect(m_nextPageBtn, SIGNAL(clicked()), this, SLOT(slotNextPage()));
 
         if (this->isCollapsed() == false)
         {

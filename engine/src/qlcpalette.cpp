@@ -133,7 +133,7 @@ QString QLCPalette::iconResource(bool svg) const
     QString prefix = svg ? "qrc" : "";
     QString ext = svg ? "svg" : "png";
 
-    switch(type())
+    switch (type())
     {
         case Dimmer: return QString("%1:/intensity.%2").arg(prefix).arg(ext);
         case Color: return QString("%1:/color.%2").arg(prefix).arg(ext);
@@ -307,7 +307,7 @@ QList<SceneValue> QLCPalette::valuesFromFixtures(Doc *doc, QList<quint32> fixtur
             QVector3D posA = mProps->fixturePosition(a, 0, 0);
             QVector3D posB = mProps->fixturePosition(b, 0, 0);
 
-            switch(fLayout)
+            switch (fLayout)
             {
                 case XAscending: return posA.x() < posB.x();
                 case XDescending: return posB.x() < posA.x();
@@ -377,7 +377,7 @@ QList<SceneValue> QLCPalette::valuesFromFixtures(Doc *doc, QList<quint32> fixtur
             }
         }
 
-        switch(type())
+        switch (type())
         {
             case Dimmer:
             {

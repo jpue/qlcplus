@@ -420,7 +420,7 @@ bool QLCCapability::loadXML(QXmlStreamReader &doc)
         setPreset(stringToPreset(str));
     }
 
-    switch(presetType())
+    switch (presetType())
     {
         case Picture:
         {

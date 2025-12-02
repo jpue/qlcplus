@@ -76,12 +76,12 @@ bool AudioDecoderSndFile::initialize(const QString &path)
     m_freq = snd_info.samplerate;
     int chan = snd_info.channels;
     m_totalTime = snd_info.frames * 1000 / m_freq;
-    m_bitrate =  QFileInfo(m_path).size () * 8.0 / m_totalTime + 0.5;
+    m_bitrate =  QFileInfo(m_path).size() * 8.0 / m_totalTime + 0.5;
 
     if ((snd_info.format & SF_FORMAT_SUBMASK) == SF_FORMAT_FLOAT)
     {
         qDebug() << "DecoderSndFile: Float audio format";
-        sf_command (m_sndfile, SFC_SET_SCALE_FLOAT_INT_READ, NULL, SF_TRUE);
+        sf_command(m_sndfile, SFC_SET_SCALE_FLOAT_INT_READ, NULL, SF_TRUE);
     }
 
     /* Enable libsndfile clipping correction for MP3 decoding to avoid
@@ -89,13 +89,22 @@ bool AudioDecoderSndFile::initialize(const QString &path)
     sf_command(m_sndfile, SFC_SET_CLIPPING, NULL, SF_TRUE);
 
     AudioFormat pcmFormat = PCM_S16LE;
-    switch(snd_info.format & SF_FORMAT_SUBMASK)
+    switch (snd_info.format & SF_FORMAT_SUBMASK)
     {
-        case SF_FORMAT_PCM_S8: pcmFormat = PCM_S8; break;
-        case SF_FORMAT_PCM_16: pcmFormat = PCM_S16LE; break;
-        case SF_FORMAT_PCM_24: pcmFormat = PCM_S24LE; break;
-        case SF_FORMAT_PCM_32: pcmFormat = PCM_S32LE; break;
-        default: pcmFormat = PCM_S16LE; break;
+        case SF_FORMAT_PCM_S8:
+            pcmFormat = PCM_S8;
+            break;
+        case SF_FORMAT_PCM_16:
+            pcmFormat = PCM_S16LE;
+            break;
+        case SF_FORMAT_PCM_24:
+            pcmFormat = PCM_S24LE;
+            break;
+        case SF_FORMAT_PCM_32:
+            pcmFormat = PCM_S32LE;
+            break;
+        default:
+            pcmFormat = PCM_S16LE;
     }
 
     configure(m_freq, chan, pcmFormat);
@@ -131,7 +140,7 @@ QStringList AudioDecoderSndFile::supportedFormats()
     SF_FORMAT_INFO format_info;
     int k, count ;
 
-    sf_command (0, SFC_GET_SIMPLE_FORMAT_COUNT, &count, sizeof (int)) ;
+    sf_command(0, SFC_GET_SIMPLE_FORMAT_COUNT, &count, sizeof (int));
 
     for (k = 0 ; k < count ; k++)
     {

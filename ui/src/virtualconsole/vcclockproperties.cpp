@@ -55,7 +55,7 @@ VCClockProperties::VCClockProperties(VCClock *clock, Doc *doc)
 
     m_noControlLabel->hide();
 
-    switch(m_clock->clockType())
+    switch (m_clock->clockType())
     {
         case VCClock::Stopwatch:
             m_stopWatchRadio->setChecked(true);

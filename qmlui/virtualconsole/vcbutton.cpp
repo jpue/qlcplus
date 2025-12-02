@@ -365,7 +365,7 @@ void VCButton::requestStateChange(bool pressed)
 {
     qDebug() << "Requested button state" << pressed;
 
-    switch(actionType())
+    switch (actionType())
     {
         case Toggle:
         {

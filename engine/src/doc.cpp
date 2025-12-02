@@ -1137,7 +1137,7 @@ QList<quint32> Doc::getUsage(quint32 fid)
         if (f->id() == fid)
             continue;
 
-        switch(f->type())
+        switch (f->type())
         {
             case Function::CollectionType:
             {
@@ -1183,7 +1183,8 @@ QList<quint32> Doc::getUsage(quint32 fid)
                 {
                     if (l.at(i) == fid)
                     {
-                        if (i + 1 >= l.count()) {
+                        if (i + 1 >= l.count())
+                        {
                             qDebug() << "Doc::getUsage: Index entry missing on " << f->name();
                             break;
                         }

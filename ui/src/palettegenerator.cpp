@@ -94,14 +94,20 @@ PaletteGenerator::PaletteSubType PaletteGenerator::subType()
 
 QString PaletteGenerator::typetoString(PaletteGenerator::PaletteType type)
 {
-    switch(type)
+    switch (type)
     {
-        case PrimaryColors: return tr("Primary colours"); break;
-        case SixteenColors: return tr("16 Colours"); break;
-        case Shutter: return tr("Shutter macros");
-        case Gobos: return tr("Gobo macros");
-        case ColourMacro: return tr("Colour macros");
-        case Animation: return tr("Animations");
+        case PrimaryColors:
+            return tr("Primary colours");
+        case SixteenColors:
+            return tr("16 Colours");
+        case Shutter:
+            return tr("Shutter macros");
+        case Gobos:
+            return tr("Gobo macros");
+        case ColourMacro:
+            return tr("Colour macros");
+        case Animation:
+            return tr("Animations");
         case Undefined:
         default:
             return tr("Unknown");
@@ -148,14 +154,29 @@ QStringList PaletteGenerator::getCapabilities(const Fixture *fixture)
                 QLCChannel::PrimaryColour col = channel->colour();
                 switch (col)
                 {
-                    case QLCChannel::Red: hasRed = true; break;
-                    case QLCChannel::Green: hasGreen = true; break;
-                    case QLCChannel::Blue: hasBlue = true; break;
-                    case QLCChannel::Cyan: hasCyan = true; break;
-                    case QLCChannel::Magenta: hasMagenta = true; break;
-                    case QLCChannel::Yellow: hasYellow = true; break;
-                    case QLCChannel::White: hasWhite = true; break;
-                    default: break;
+                    case QLCChannel::Red:
+                        hasRed = true;
+                    break;
+                    case QLCChannel::Green:
+                        hasGreen = true;
+                    break;
+                    case QLCChannel::Blue:
+                        hasBlue = true;
+                    break;
+                    case QLCChannel::Cyan:
+                        hasCyan = true;
+                    break;
+                    case QLCChannel::Magenta:
+                        hasMagenta = true;
+                    break;
+                    case QLCChannel::Yellow:
+                        hasYellow = true;
+                    break;
+                    case QLCChannel::White:
+                        hasWhite = true;
+                    break;
+                    default:
+                    break;
                 }
             }
             break;
@@ -506,24 +527,49 @@ void PaletteGenerator::createFunctions(PaletteGenerator::PaletteType type,
 
             switch (channel->group())
             {
-                case QLCChannel::Pan: m_panList[fxID] = ch; break;
-                case QLCChannel::Tilt: m_tiltList[fxID] = ch; break;
-                case QLCChannel::Gobo: m_goboList[fxID] = ch; break;
-                case QLCChannel::Shutter: m_shutterList[fxID] = ch; break;
-                case QLCChannel::Colour: m_colorMacroList[fxID] = ch; break;
+                case QLCChannel::Pan:
+                    m_panList[fxID] = ch;
+                break;
+                case QLCChannel::Tilt:
+                    m_tiltList[fxID] = ch;
+                break;
+                case QLCChannel::Gobo:
+                    m_goboList[fxID] = ch;
+                break;
+                case QLCChannel::Shutter:
+                    m_shutterList[fxID] = ch;
+                break;
+                case QLCChannel::Colour:
+                    m_colorMacroList[fxID] = ch;
+                break;
                 case QLCChannel::Intensity:
                 {
                     QLCChannel::PrimaryColour col = channel->colour();
                     switch (col)
                     {
-                        case QLCChannel::Red: m_redList.append(SceneValue(fxID, ch)); break;
-                        case QLCChannel::Green: m_greenList.append(SceneValue(fxID, ch)); break;
-                        case QLCChannel::Blue: m_blueList.append(SceneValue(fxID, ch)); break;
-                        case QLCChannel::Cyan: m_cyanList.append(SceneValue(fxID, ch)); break;
-                        case QLCChannel::Magenta: m_magentaList.append(SceneValue(fxID, ch)); break;
-                        case QLCChannel::Yellow: m_yellowList.append(SceneValue(fxID, ch)); break;
-                        case QLCChannel::White: m_whiteList.append(SceneValue(fxID, ch)); break;
-                        default: break;
+                        case QLCChannel::Red:
+                            m_redList.append(SceneValue(fxID, ch));
+                        break;
+                        case QLCChannel::Green:
+                            m_greenList.append(SceneValue(fxID, ch));
+                        break;
+                        case QLCChannel::Blue:
+                            m_blueList.append(SceneValue(fxID, ch));
+                        break;
+                        case QLCChannel::Cyan:
+                            m_cyanList.append(SceneValue(fxID, ch));
+                        break;
+                        case QLCChannel::Magenta:
+                            m_magentaList.append(SceneValue(fxID, ch));
+                        break;
+                        case QLCChannel::Yellow:
+                            m_yellowList.append(SceneValue(fxID, ch));
+                        break;
+                        case QLCChannel::White:
+                            m_whiteList.append(SceneValue(fxID, ch));
+                        break;
+                        default:
+                        break;
                     }
                 }
                 break;

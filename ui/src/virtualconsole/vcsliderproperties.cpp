@@ -233,7 +233,7 @@ void VCSliderProperties::slotModeLevelClicked()
     setSubmasterPageVisibility(false);
 
     int cngType = m_slider->clickAndGoType();
-    switch(cngType)
+    switch (cngType)
     {
         case ClickAndGoWidget::Red:
         case ClickAndGoWidget::Green:

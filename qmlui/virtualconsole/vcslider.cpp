@@ -218,11 +218,16 @@ QString VCSlider::sliderModeToString(SliderMode mode)
 {
     switch (mode)
     {
-        case Level: return QString("Level");
-        case Submaster: return QString("Submaster");
-        case GrandMaster: return QString("GrandMaster");
-        case Adjust: return QString("Adjust");
-        default: return QString("Unknown");
+        case Level:
+            return QString("Level");
+        case Submaster:
+            return QString("Submaster");
+        case GrandMaster:
+            return QString("GrandMaster");
+        case Adjust:
+            return QString("Adjust");
+        default:
+            return QString("Unknown");
     }
 }
 
@@ -330,9 +335,12 @@ QString VCSlider::valueDisplayStyleToString(VCSlider::ValueDisplayStyle style)
 {
     switch (style)
     {
-        case DMXValue: return KXMLQLCVCSliderValueDisplayStyleExact;
-        case PercentageValue: return KXMLQLCVCSliderValueDisplayStylePercentage;
-        default: return QString("Unknown");
+        case DMXValue:
+            return KXMLQLCVCSliderValueDisplayStyleExact;
+        case PercentageValue:
+            return KXMLQLCVCSliderValueDisplayStylePercentage;
+        default:
+            return QString("Unknown");
     };
 }
 
@@ -419,7 +427,7 @@ void VCSlider::setValue(int value, bool setDMX, bool updateFeedback)
 
     m_value = value;
 
-    switch(sliderMode())
+    switch (sliderMode())
     {
         case Level:
             if (m_monitorEnabled == true && m_isOverriding == false && setDMX)
@@ -1280,16 +1288,35 @@ void VCSlider::writeDMXLevel(MasterTimer* timer, QList<Universe *> universes)
                 {
                     switch (qlcch->colour())
                     {
-                        case QLCChannel::Red: modLevel = (uchar)r; break;
-                        case QLCChannel::Green: modLevel = (uchar)g; break;
-                        case QLCChannel::Blue: modLevel = (uchar)b; break;
-                        case QLCChannel::Cyan: modLevel = (uchar)c; break;
-                        case QLCChannel::Magenta: modLevel = (uchar)m; break;
-                        case QLCChannel::Yellow: modLevel = (uchar)y; break;
-                        case QLCChannel::White: modLevel = (uchar)w; break;
-                        case QLCChannel::Amber: modLevel = (uchar)a; break;
-                        case QLCChannel::UV: modLevel = (uchar)uv; break;
-                        default: break;
+                        case QLCChannel::Red:
+                            modLevel = (uchar)r;
+                        break;
+                        case QLCChannel::Green:
+                            modLevel = (uchar)g;
+                        break;
+                        case QLCChannel::Blue:
+                            modLevel = (uchar)b;
+                        break;
+                        case QLCChannel::Cyan:
+                            modLevel = (uchar)c;
+                        break;
+                        case QLCChannel::Magenta:
+                            modLevel = (uchar)m;
+                        break;
+                        case QLCChannel::Yellow:
+                            modLevel = (uchar)y;
+                        break;
+                        case QLCChannel::White:
+                            modLevel = (uchar)w;
+                        break;
+                        case QLCChannel::Amber:
+                            modLevel = (uchar)a;
+                        break;
+                        case QLCChannel::UV:
+                            modLevel = (uchar)uv;
+                        break;
+                        default:
+                        break;
                     }
                 }
             }

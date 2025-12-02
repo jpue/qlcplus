@@ -85,7 +85,7 @@ int AudioParameters::sampleSize() const
 
 int AudioParameters::sampleSize(AudioFormat format)
 {
-    switch(format)
+    switch (format)
     {
         case PCM_S8:
             return 1;

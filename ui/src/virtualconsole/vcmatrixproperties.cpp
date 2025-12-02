@@ -226,7 +226,7 @@ void VCMatrixProperties::updateTree()
         QTreeWidgetItem *item = new QTreeWidgetItem(m_controlsTree);
         item->setData(0, Qt::UserRole, control->m_id);
 
-        switch(control->m_type)
+        switch (control->m_type)
         {
             case VCMatrixControl::Color1:
                 item->setIcon(0, QIcon(":/color.png"));

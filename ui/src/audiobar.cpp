@@ -246,7 +246,7 @@ bool AudioBar::loadXML(QXmlStreamReader &root, Doc *doc)
         m_maxThreshold = attrs.value(KXMLQLCAudioBarMaxThreshold).toString().toInt();
         m_divisor = attrs.value(KXMLQLCAudioBarDivisor).toString().toInt();
 
-        switch(m_type)
+        switch (m_type)
         {
             case AudioBar::FunctionBar:
             {

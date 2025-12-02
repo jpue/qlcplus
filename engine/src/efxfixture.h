@@ -200,7 +200,7 @@ private:
     /** Write this EFXFixture's channel data to universe faders */
     void setPointPanTilt(QList<Universe *> universes, QSharedPointer<GenericFader> fader, float pan, float tilt);
     void setPointDimmer(QList<Universe *> universes, QSharedPointer<GenericFader> fader, float dimmer);
-    void setPointRGB (QList<Universe *> universes, QSharedPointer<GenericFader> fader, float x, float y);
+    void setPointRGB(QList<Universe *> universes, QSharedPointer<GenericFader> fader, float x, float y);
 
 private:
     quint32 m_firstMsbChannel;

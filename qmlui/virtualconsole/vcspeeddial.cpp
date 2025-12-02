@@ -490,9 +490,15 @@ void VCSpeedDial::setFunctionSpeed(quint32 fid, int speedType, SpeedMultiplier a
 
     switch (speedType)
     {
-        case Function::FadeIn: func.m_fadeInFactor = amount; break;
-        case Function::FadeOut: func.m_fadeOutFactor = amount; break;
-        case Function::Duration: func.m_durationFactor = amount; break;
+        case Function::FadeIn:
+            func.m_fadeInFactor = amount;
+        break;
+        case Function::FadeOut:
+            func.m_fadeOutFactor = amount;
+        break;
+        case Function::Duration:
+            func.m_durationFactor = amount;
+        break;
     }
 
     m_functions[fid] = func;
