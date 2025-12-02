@@ -654,7 +654,7 @@ void VirtualConsole::setWidgetsAlignment(VCWidget *refWidget, int alignment)
         VCWidget *widget = m_widgetsMap[it.key()];
         QRectF wGeom = widget->geometry();
 
-        switch(alignment)
+        switch (alignment)
         {
             case Qt::AlignTop:
                 widget->setGeometry(QRect(wGeom.x(), refGeom.y(), wGeom.width(), wGeom.height()));
@@ -807,17 +807,28 @@ QString VirtualConsole::widgetIcon(int type)
 {
     switch (type)
     {
-        case VCWidget::ButtonWidget: return "qrc:/button.svg";
-        case VCWidget::SliderWidget: return "qrc:/slider.svg";
-        case VCWidget::XYPadWidget: return "qrc:/xypad.svg";
-        case VCWidget::FrameWidget: return "qrc:/frame.svg";
-        case VCWidget::SoloFrameWidget: return "qrc:/soloframe.svg";
-        case VCWidget::SpeedWidget: return "qrc:/speed.svg";
-        case VCWidget::CueListWidget: return "qrc:/cuelist.svg";
-        case VCWidget::LabelWidget: return "qrc:/label.svg";
-        case VCWidget::AudioTriggersWidget: return "qrc:/audiotriggers.svg";
-        case VCWidget::AnimationWidget: return "qrc:/animation.svg";
-        case VCWidget::ClockWidget: return "qrc:/clock.svg";
+        case VCWidget::ButtonWidget:
+            return "qrc:/button.svg";
+        case VCWidget::SliderWidget:
+            return "qrc:/slider.svg";
+        case VCWidget::XYPadWidget:
+            return "qrc:/xypad.svg";
+        case VCWidget::FrameWidget:
+            return "qrc:/frame.svg";
+        case VCWidget::SoloFrameWidget:
+            return "qrc:/soloframe.svg";
+        case VCWidget::SpeedWidget:
+            return "qrc:/speed.svg";
+        case VCWidget::CueListWidget:
+            return "qrc:/cuelist.svg";
+        case VCWidget::LabelWidget:
+            return "qrc:/label.svg";
+        case VCWidget::AudioTriggersWidget:
+            return "qrc:/audiotriggers.svg";
+        case VCWidget::AnimationWidget:
+            return "qrc:/animation.svg";
+        case VCWidget::ClockWidget:
+            return "qrc:/clock.svg";
         default:
             qDebug() << "Unhandled widget type" << type << ". FIXME";
         break;

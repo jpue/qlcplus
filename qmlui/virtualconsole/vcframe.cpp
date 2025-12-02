@@ -981,7 +981,7 @@ void VCFrame::slotInputValueChanged(quint8 id, uchar value)
     if (value != UCHAR_MAX)
         return;
 
-    switch(id)
+    switch (id)
     {
         case INPUT_NEXT_PAGE_ID:
             gotoNextPage();

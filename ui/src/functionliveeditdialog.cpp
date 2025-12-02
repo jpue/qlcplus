@@ -60,7 +60,7 @@ FunctionLiveEditDialog::FunctionLiveEditDialog(Doc *doc, quint32 fid, QWidget *p
     m_scrollArea->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     layout()->addWidget(m_scrollArea);
 
-    switch(func->type())
+    switch (func->type())
     {
         case Function::SceneType:
         {

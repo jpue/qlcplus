@@ -44,7 +44,7 @@ bool QLCMIDIProtocol::midiToInput(uchar cmd, uchar data1, uchar data2,
     if (midiChannel <= 0xF && midi_ch != midiChannel)
         return false;
 
-    switch(MIDI_CMD(cmd))
+    switch (MIDI_CMD(cmd))
     {
         case MIDI_NOTE_OFF:
             *channel = CHANNEL_OFFSET_NOTE + quint32(data1);

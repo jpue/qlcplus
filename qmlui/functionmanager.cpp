@@ -248,7 +248,7 @@ quint32 FunctionManager::createFunction(int type, QVariantList fixturesList)
     Function* f = nullptr;
     QString name;
 
-    switch(type)
+    switch (type)
     {
         case Function::SceneType:
         {
@@ -378,7 +378,7 @@ quint32 FunctionManager::createAudioVideoFunction(int type, QStringList fileList
     Function* f = nullptr;
     QString name;
 
-    switch(type)
+    switch (type)
     {
         case Function::AudioType:
         {
@@ -457,19 +457,29 @@ QString FunctionManager::functionIcon(int type)
 {
     switch (type)
     {
-        case Function::SceneType: return "qrc:/scene.svg";
-        case Function::ChaserType: return "qrc:/chaser.svg";
-        case Function::SequenceType: return "qrc:/sequence.svg";
-        case Function::EFXType: return "qrc:/efx.svg";
-        case Function::CollectionType: return "qrc:/collection.svg";
-        case Function::ScriptType: return "qrc:/script.svg";
-        case Function::RGBMatrixType: return "qrc:/rgbmatrix.svg";
-        case Function::ShowType: return "qrc:/showmanager.svg";
-        case Function::AudioType: return "qrc:/audio.svg";
-        case Function::VideoType: return "qrc:/video.svg";
+        case Function::SceneType:
+            return "qrc:/scene.svg";
+        case Function::ChaserType:
+            return "qrc:/chaser.svg";
+        case Function::SequenceType:
+            return "qrc:/sequence.svg";
+        case Function::EFXType:
+            return "qrc:/efx.svg";
+        case Function::CollectionType:
+            return "qrc:/collection.svg";
+        case Function::ScriptType:
+            return "qrc:/script.svg";
+        case Function::RGBMatrixType:
+            return "qrc:/rgbmatrix.svg";
+        case Function::ShowType:
+            return "qrc:/showmanager.svg";
+        case Function::AudioType:
+            return "qrc:/audio.svg";
+        case Function::VideoType:
+            return "qrc:/video.svg";
+        default:
+            return "";
     }
-
-    return "";
 }
 
 QString FunctionManager::functionPath(quint32 id)
@@ -562,19 +572,30 @@ QString FunctionManager::getEditorResource(int funcID)
     if (f == nullptr)
         return "qrc:/FunctionManager.qml";
 
-    switch(f->type())
+    switch (f->type())
     {
-        case Function::SceneType: return "qrc:/SceneEditor.qml";
-        case Function::ChaserType: return "qrc:/ChaserEditor.qml";
-        case Function::SequenceType: return "qrc:/SequenceEditor.qml";
-        case Function::EFXType: return "qrc:/EFXEditor.qml";
-        case Function::CollectionType: return "qrc:/CollectionEditor.qml";
-        case Function::RGBMatrixType: return "qrc:/RGBMatrixEditor.qml";
-        case Function::ShowType: return "qrc:/ShowManager.qml";
-        case Function::ScriptType: return "qrc:/ScriptEditor.qml";
-        case Function::AudioType: return "qrc:/AudioEditor.qml";
-        case Function::VideoType: return "qrc:/VideoEditor.qml";
-        default: return ""; break;
+        case Function::SceneType:
+            return "qrc:/SceneEditor.qml";
+        case Function::ChaserType:
+            return "qrc:/ChaserEditor.qml";
+        case Function::SequenceType:
+            return "qrc:/SequenceEditor.qml";
+        case Function::EFXType:
+            return "qrc:/EFXEditor.qml";
+        case Function::CollectionType:
+            return "qrc:/CollectionEditor.qml";
+        case Function::RGBMatrixType:
+            return "qrc:/RGBMatrixEditor.qml";
+        case Function::ShowType:
+            return "qrc:/ShowManager.qml";
+        case Function::ScriptType:
+            return "qrc:/ScriptEditor.qml";
+        case Function::AudioType:
+            return "qrc:/AudioEditor.qml";
+        case Function::VideoType:
+            return "qrc:/VideoEditor.qml";
+        default:
+            return "";
     }
 }
 
@@ -620,7 +641,7 @@ void FunctionManager::setEditorFunction(quint32 fID, bool requestUI, bool back)
     if (f == nullptr)
         return;
 
-    switch(f->type())
+    switch (f->type())
     {
         case Function::SceneType:
         {
@@ -1417,16 +1438,36 @@ void FunctionManager::addFunctionTreeItem(Function *func)
 
     switch (func->type())
     {
-        case Function::SceneType: m_sceneCount++; break;
-        case Function::ChaserType: m_chaserCount++; break;
-        case Function::SequenceType: m_sequenceCount++; break;
-        case Function::EFXType: m_efxCount++; break;
-        case Function::CollectionType: m_collectionCount++; break;
-        case Function::RGBMatrixType: m_rgbMatrixCount++; break;
-        case Function::ScriptType: m_scriptCount++; break;
-        case Function::ShowType: m_showCount++; break;
-        case Function::AudioType: m_audioCount++; break;
-        case Function::VideoType: m_videoCount++; break;
+        case Function::SceneType:
+            m_sceneCount++;
+        break;
+        case Function::ChaserType:
+            m_chaserCount++;
+        break;
+        case Function::SequenceType:
+            m_sequenceCount++;
+        break;
+        case Function::EFXType:
+            m_efxCount++;
+        break;
+        case Function::CollectionType:
+            m_collectionCount++;
+        break;
+        case Function::RGBMatrixType:
+            m_rgbMatrixCount++;
+        break;
+        case Function::ScriptType:
+            m_scriptCount++;
+        break;
+        case Function::ShowType:
+            m_showCount++;
+        break;
+        case Function::AudioType:
+            m_audioCount++;
+        break;
+        case Function::VideoType:
+            m_videoCount++;
+        break;
         default:
         break;
     }

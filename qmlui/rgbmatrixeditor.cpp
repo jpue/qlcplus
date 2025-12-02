@@ -456,7 +456,7 @@ void RGBMatrixEditor::createScriptObjects(QQuickItem *parent)
                 Q_ARG(QVariant, prop.m_displayName));
         QString pValue = m_matrix->property(prop.m_name);
 
-        switch(prop.m_type)
+        switch (prop.m_type)
         {
             case RGBScriptProperty::List:
             {

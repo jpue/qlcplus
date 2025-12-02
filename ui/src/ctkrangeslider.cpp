@@ -811,41 +811,41 @@ void ctkRangeSlider::setHandleToolTip(const QString& _toolTip)
 bool ctkRangeSlider::event(QEvent* _event)
 {
     Q_D(ctkRangeSlider);
-    switch(_event->type())
+    switch (_event->type())
     {
-    case QEvent::ToolTip:
-    {
-        QHelpEvent* helpEvent = static_cast<QHelpEvent*>(_event);
-        QStyleOptionSlider opt;
-        // Test the MinimumHandle
-        opt.sliderPosition = d->m_MinimumPosition;
-        opt.sliderValue = d->m_MinimumValue;
-        this->initStyleOption(&opt);
-        QStyle::SubControl hoveredControl =
-            this->style()->hitTestComplexControl(
+        case QEvent::ToolTip:
+        {
+            QHelpEvent* helpEvent = static_cast<QHelpEvent*>(_event);
+            QStyleOptionSlider opt;
+            // Test the MinimumHandle
+            opt.sliderPosition = d->m_MinimumPosition;
+            opt.sliderValue = d->m_MinimumValue;
+            this->initStyleOption(&opt);
+            QStyle::SubControl hoveredControl =
+                this->style()->hitTestComplexControl(
+                    QStyle::CC_Slider, &opt, helpEvent->pos(), this);
+            if (!d->m_HandleToolTip.isEmpty() &&
+                hoveredControl == QStyle::SC_SliderHandle)
+            {
+                QToolTip::showText(helpEvent->globalPos(), d->m_HandleToolTip.arg(this->minimumValue()));
+                _event->accept();
+                return true;
+            }
+            // Test the MaximumHandle
+            opt.sliderPosition = d->m_MaximumPosition;
+            opt.sliderValue = d->m_MaximumValue;
+            this->initStyleOption(&opt);
+            hoveredControl = this->style()->hitTestComplexControl(
                 QStyle::CC_Slider, &opt, helpEvent->pos(), this);
-        if (!d->m_HandleToolTip.isEmpty() &&
-            hoveredControl == QStyle::SC_SliderHandle)
-        {
-            QToolTip::showText(helpEvent->globalPos(), d->m_HandleToolTip.arg(this->minimumValue()));
-            _event->accept();
-            return true;
+            if (!d->m_HandleToolTip.isEmpty() &&
+                hoveredControl == QStyle::SC_SliderHandle)
+            {
+                QToolTip::showText(helpEvent->globalPos(), d->m_HandleToolTip.arg(this->maximumValue()));
+                _event->accept();
+                return true;
+            }
         }
-        // Test the MaximumHandle
-        opt.sliderPosition = d->m_MaximumPosition;
-        opt.sliderValue = d->m_MaximumValue;
-        this->initStyleOption(&opt);
-        hoveredControl = this->style()->hitTestComplexControl(
-            QStyle::CC_Slider, &opt, helpEvent->pos(), this);
-        if (!d->m_HandleToolTip.isEmpty() &&
-            hoveredControl == QStyle::SC_SliderHandle)
-        {
-            QToolTip::showText(helpEvent->globalPos(), d->m_HandleToolTip.arg(this->maximumValue()));
-            _event->accept();
-            return true;
-        }
-    }
-    default:
+        default:
         break;
     }
     return this->Superclass::event(_event);

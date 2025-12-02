@@ -675,7 +675,7 @@ void VCCueList::updateFeedback()
 
 void VCCueList::slotInputValueChanged(quint8 id, uchar value)
 {
-    switch(id)
+    switch (id)
     {
         case INPUT_NEXT_STEP_ID:
         case INPUT_PREVIOUS_STEP_ID:
@@ -688,7 +688,7 @@ void VCCueList::slotInputValueChanged(quint8 id, uchar value)
         break;
     }
 
-    switch(id)
+    switch (id)
     {
         case INPUT_NEXT_STEP_ID:
             nextClicked();

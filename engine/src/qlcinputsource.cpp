@@ -136,10 +136,14 @@ uchar QLCInputSource::feedbackValue(QLCInputFeedback::FeedbackType type) const
 {
     switch (type)
     {
-        case QLCInputFeedback::LowerValue: return m_lower.value();
-        case QLCInputFeedback::UpperValue: return m_upper.value();
-        case QLCInputFeedback::MonitorValue: return m_monitor.value();
-        default: return 0;
+        case QLCInputFeedback::LowerValue:
+            return m_lower.value();
+        case QLCInputFeedback::UpperValue:
+            return m_upper.value();
+        case QLCInputFeedback::MonitorValue:
+            return m_monitor.value();
+        default:
+            return 0;
     }
 }
 
@@ -165,10 +169,14 @@ QVariant QLCInputSource::feedbackExtraParams(QLCInputFeedback::FeedbackType type
 {
     switch (type)
     {
-        case QLCInputFeedback::LowerValue: return m_lower.extraParams();
-        case QLCInputFeedback::UpperValue: return m_upper.extraParams();
-        case QLCInputFeedback::MonitorValue: return m_monitor.extraParams();
-        default: return 0;
+        case QLCInputFeedback::LowerValue:
+            return m_lower.extraParams();
+        case QLCInputFeedback::UpperValue:
+            return m_upper.extraParams();
+        case QLCInputFeedback::MonitorValue:
+            return m_monitor.extraParams();
+        default:
+            return 0;
     }
 }
 

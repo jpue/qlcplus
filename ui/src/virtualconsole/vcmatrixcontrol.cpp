@@ -94,7 +94,7 @@ QRgb VCMatrixControl::valueToRgb(quint8 value) const
 
 VCMatrixControl::WidgetType VCMatrixControl::widgetType() const
 {
-    switch(m_type)
+    switch (m_type)
     {
         case Color1:
         case Color2:
@@ -125,26 +125,44 @@ VCMatrixControl::WidgetType VCMatrixControl::widgetType() const
 
 QString VCMatrixControl::typeToString(VCMatrixControl::ControlType type)
 {
-    switch(type)
+    switch (type)
     {
-        case Color1: return "Color1"; break;
-        case Color2: return "Color2"; break;
-        case Color3: return "Color3"; break;
-        case Color4: return "Color4"; break;
-        case Color5: return "Color5"; break;
-        case Color1Reset: return "ResetColor1"; break;
-        case Color2Reset: return "ResetColor2"; break;
-        case Color3Reset: return "ResetColor3"; break;
-        case Color4Reset: return "ResetColor4"; break;
-        case Color5Reset: return "ResetColor5"; break;
-        case Animation: return "Animation"; break;
-        case Image: return "Image"; break;
-        case Text: return "Text"; break;
-        case Color1Knob: return "Color1Knob"; break;
-        case Color2Knob: return "Color2Knob"; break;
-        case Color3Knob: return "Color3Knob"; break;
-        case Color4Knob: return "Color4Knob"; break;
-        case Color5Knob: return "Color5Knob"; break;
+        case Color1:
+            return "Color1";
+        case Color2:
+            return "Color2";
+        case Color3:
+            return "Color3";
+        case Color4:
+            return "Color4";
+        case Color5:
+            return "Color5";
+        case Color1Reset:
+            return "ResetColor1";
+        case Color2Reset:
+            return "ResetColor2";
+        case Color3Reset:
+            return "ResetColor3";
+        case Color4Reset:
+            return "ResetColor4";
+        case Color5Reset:
+            return "ResetColor5";
+        case Animation:
+            return "Animation";
+        case Image:
+            return "Image";
+        case Text:
+            return "Text";
+        case Color1Knob:
+            return "Color1Knob";
+        case Color2Knob:
+            return "Color2Knob";
+        case Color3Knob:
+            return "Color3Knob";
+        case Color4Knob:
+            return "Color4Knob";
+        case Color5Knob:
+            return "Color5Knob";
     }
     return QString();
 }

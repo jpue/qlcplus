@@ -588,7 +588,7 @@ void RGBMatrixEditor::displayProperties(RGBScript *script)
 
     foreach (RGBScriptProperty prop, properties)
     {
-        switch(prop.m_type)
+        switch (prop.m_type)
         {
             case RGBScriptProperty::List:
             {

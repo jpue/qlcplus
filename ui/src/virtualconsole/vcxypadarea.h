@@ -172,7 +172,7 @@ protected:
     void keyPressEvent(QKeyEvent *e);
 
     /** @reimp */
-    void keyReleaseEvent (QKeyEvent * e);
+    void keyReleaseEvent(QKeyEvent * e);
 };
 
 /** @} */

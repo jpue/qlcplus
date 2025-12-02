@@ -302,7 +302,7 @@ void SceneEditor::addComponent(int type, quint32 id)
     if (m_scene == nullptr)
         return;
 
-    switch(type)
+    switch (type)
     {
         case App::UniverseDragItem:
         break;
@@ -366,7 +366,7 @@ void SceneEditor::deleteItems(QVariantList list)
         QVariantMap dataMap = m_componentList->itemAt(index).toMap();
         int type = dataMap["type"].toInt();
 
-        switch(type)
+        switch (type)
         {
             case App::FixtureDragItem:
             {

@@ -58,7 +58,7 @@ AudioRendererAlsa::~AudioRendererAlsa()
 {
     qDebug() << Q_FUNC_INFO;
     uninitialize();
-    free (pcm_name);
+    free(pcm_name);
 }
 
 bool AudioRendererAlsa::initialize(quint32 freq, int chan, AudioFormat format)
@@ -70,12 +70,12 @@ bool AudioRendererAlsa::initialize(quint32 freq, int chan, AudioFormat format)
 
     if (snd_pcm_open(&pcm_handle, pcm_name, SND_PCM_STREAM_PLAYBACK, SND_PCM_NONBLOCK) < 0)
     {
-        qWarning ("OutputALSA: Error opening PCM device %s", pcm_name);
+        qWarning("OutputALSA: Error opening PCM device %s", pcm_name);
         // if it fails, fallback to the default device
         pcm_name = strdup("default");
         if (snd_pcm_open(&pcm_handle, pcm_name, SND_PCM_STREAM_PLAYBACK, SND_PCM_NONBLOCK) < 0)
         {
-            qWarning ("OutputALSA: Error opening default PCM device. Giving up.");
+            qWarning("OutputALSA: Error opening default PCM device. Giving up.");
             return false;
         }
     }
@@ -117,21 +117,21 @@ bool AudioRendererAlsa::initialize(quint32 freq, int chan, AudioFormat format)
     snd_pcm_format_t alsa_format = SND_PCM_FORMAT_UNKNOWN;
     switch (format)
     {
-    case PCM_S8:
-        alsa_format = SND_PCM_FORMAT_S8;
+        case PCM_S8:
+            alsa_format = SND_PCM_FORMAT_S8;
         break;
-    case PCM_S16LE:
-        alsa_format = SND_PCM_FORMAT_S16_LE;
+        case PCM_S16LE:
+            alsa_format = SND_PCM_FORMAT_S16_LE;
         break;
-    case PCM_S24LE:
-        alsa_format = SND_PCM_FORMAT_S24_LE;
+        case PCM_S24LE:
+            alsa_format = SND_PCM_FORMAT_S24_LE;
         break;
-    case PCM_S32LE:
-        alsa_format = SND_PCM_FORMAT_S32_LE;
+        case PCM_S32LE:
+            alsa_format = SND_PCM_FORMAT_S32_LE;
         break;
-    default:
-        qWarning("OutputALSA: unsupported format detected");
-        return false;
+        default:
+            qWarning("OutputALSA: unsupported format detected");
+            return false;
     }
     if ((err = snd_pcm_hw_params_set_format(pcm_handle, hwparams, alsa_format)) < 0)
     {
@@ -256,7 +256,7 @@ QList<AudioDeviceInfo> AudioRendererAlsa::getDevicesInfo()
 
             snd_pcm_info_alloca(&pcmInfo);
 
-            snprintf(str, sizeof (str), "plughw:%d,%d", cardIdx, devIdx);
+            snprintf(str, sizeof(str), "plughw:%d,%d", cardIdx, devIdx);
 
             /* Obtain info about this particular device */
             snd_pcm_info_set_device(pcmInfo, devIdx);
@@ -332,9 +332,9 @@ long AudioRendererAlsa::alsa_write(unsigned char *data, long size)
     }
 
     if (m_use_mmap)
-        m = snd_pcm_mmap_writei (pcm_handle, data, size);
+        m = snd_pcm_mmap_writei(pcm_handle, data, size);
     else
-        m = snd_pcm_writei (pcm_handle, data, size);
+        m = snd_pcm_writei(pcm_handle, data, size);
 
     if (m == -EAGAIN)
     {
@@ -351,10 +351,10 @@ long AudioRendererAlsa::alsa_write(unsigned char *data, long size)
     }
     else if (m == -EPIPE)
     {
-        qDebug ("OutputALSA: buffer underrun!");
+        qDebug("OutputALSA: buffer underrun!");
         if ((m = snd_pcm_prepare(pcm_handle)) < 0)
         {
-            qDebug ("OutputALSA: Can't recover after underrun: %s",
+            qDebug("OutputALSA: Can't recover after underrun: %s",
                     snd_strerror(m));
             /* TODO: reopen the device */
             return -1;
@@ -364,16 +364,16 @@ long AudioRendererAlsa::alsa_write(unsigned char *data, long size)
 #ifdef ESTRPIPE
     else if (m == -ESTRPIPE)
     {
-        qDebug ("OutputALSA: Suspend, trying to resume");
-        while ((m = snd_pcm_resume(pcm_handle))
+        qDebug("OutputALSA: Suspend, trying to resume");
+        while((m = snd_pcm_resume(pcm_handle))
                 == -EAGAIN)
-            sleep (1);
+            sleep(1);
         if (m < 0)
         {
-            qDebug ("OutputALSA: Failed, restarting");
+            qDebug("OutputALSA: Failed, restarting");
             if ((m = snd_pcm_prepare(pcm_handle)) < 0)
             {
-                qDebug ("OutputALSA: Failed to restart device: %s.",
+                qDebug("OutputALSA: Failed to restart device: %s.",
                         snd_strerror(m));
                 return -1;
             }
@@ -381,8 +381,8 @@ long AudioRendererAlsa::alsa_write(unsigned char *data, long size)
         return 0;
     }
 #endif
-    qDebug ("OutputALSA: error: %s", snd_strerror(m));
-    return snd_pcm_prepare (pcm_handle);
+    qDebug("OutputALSA: error: %s", snd_strerror(m));
+    return snd_pcm_prepare(pcm_handle);
 }
 
 void AudioRendererAlsa::drain()

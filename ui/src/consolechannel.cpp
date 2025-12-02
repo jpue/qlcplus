@@ -372,21 +372,21 @@ void ConsoleChannel::initMenu()
         setIntensityButton(ch);
     }
 
-    switch(ch->group())
+    switch (ch->group())
     {
-    case QLCChannel::Colour:
-        m_cngWidget = new ClickAndGoWidget();
-        m_cngWidget->setType(ClickAndGoWidget::Preset, ch);
+        case QLCChannel::Colour:
+            m_cngWidget = new ClickAndGoWidget();
+            m_cngWidget->setType(ClickAndGoWidget::Preset, ch);
         break;
-    case QLCChannel::Effect:
-        m_cngWidget = new ClickAndGoWidget();
-        m_cngWidget->setType(ClickAndGoWidget::Preset, ch);
+        case QLCChannel::Effect:
+            m_cngWidget = new ClickAndGoWidget();
+            m_cngWidget->setType(ClickAndGoWidget::Preset, ch);
         break;
-    case QLCChannel::Gobo:
-        m_cngWidget = new ClickAndGoWidget();
-        m_cngWidget->setType(ClickAndGoWidget::Preset, ch);
+        case QLCChannel::Gobo:
+            m_cngWidget = new ClickAndGoWidget();
+            m_cngWidget->setType(ClickAndGoWidget::Preset, ch);
         break;
-    default:
+        default:
         break;
     }
 

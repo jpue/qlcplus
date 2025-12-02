@@ -323,7 +323,7 @@ QByteArray Tardis::actionToByteArray(int code, quint32 objID, QVariant data)
     buffer.open(QIODevice::WriteOnly | QIODevice::Text);
     QXmlStreamWriter xmlWriter(&buffer);
 
-    switch(code)
+    switch (code)
     {
         case IOAddUniverse:
         case IORemoveUniverse:
@@ -429,7 +429,7 @@ bool Tardis::processBufferedAction(int action, quint32 objID, QVariant &value)
 
     qDebug() << "Data to process:" << value.toString();
 
-    switch(action)
+    switch (action)
     {
         case IOAddUniverse:
         {
@@ -603,7 +603,7 @@ int Tardis::processAction(TardisAction &action, bool undo)
 {
     QVariant *value = undo ? &action.m_oldValue : &action.m_newValue;
 
-    switch(action.m_action)
+    switch (action.m_action)
     {
         /* *********************** Preview settings actions ************************ */
         case EnvironmentSetSize:

@@ -62,7 +62,7 @@ EFXFixture::EFXFixture(const EFX* parent)
     Q_ASSERT(parent != NULL);
 
     if (m_rgbGradient.isNull ())
-        m_rgbGradient = Gradient::getRGBGradient (256, 256);
+        m_rgbGradient = Gradient::getRGBGradient(256, 256);
 }
 
 void EFXFixture::copyFrom(const EFXFixture* ef)
@@ -285,7 +285,7 @@ bool EFXFixture::loadXML(QXmlStreamReader &root)
         else if (root.name() == KXMLQLCEFXFixtureMode)
         {
             /* Fixture Mode */
-            setMode ((Mode) root.readElementText().toInt());
+            setMode((Mode) root.readElementText().toInt());
         }
         else if (root.name() == KXMLQLCEFXFixtureDirection)
         {
