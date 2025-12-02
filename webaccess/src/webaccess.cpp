@@ -186,8 +186,8 @@ void WebAccess::slotHandleWebSocketRequest(QHttpConnection *conn, QString data)
             else
                 wsAPIMessage.append(Function::typeToString(Function::Undefined));
         }
-        else if (apiCmd == "setFunctionStatus") 
-	{
+        else if (apiCmd == "setFunctionStatus")
+        {
             if (cmdList.count() < 4)
                 return;
 
@@ -1970,9 +1970,9 @@ QString WebAccess::getVCHTML()
     QSize mfSize = mainFrame->size();
     QString widgetsHTML =
             "<form action=\"/loadProject\" method=\"POST\" enctype=\"multipart/form-data\">\n"
-				"<input id=\"loadTrigger\" type=\"file\" "
-				"onchange=\"document.getElementById('submitTrigger').click();\" name=\"qlcprj\" />\n"
-				"<input id=\"submitTrigger\" type=\"submit\"/>\n"
+                "<input id=\"loadTrigger\" type=\"file\" "
+                "onchange=\"document.getElementById('submitTrigger').click();\" name=\"qlcprj\" />\n"
+                "<input id=\"submitTrigger\" type=\"submit\"/>\n"
             "</form>\n"
 
             "<div class=\"controlBar\">\n"
