@@ -245,10 +245,10 @@ APIバージョン２の文法では<b>プロパティー</b>の概念が追加�
  <td>QLC +がプロパティ値を書き込むために呼び出すスクリプト関数の名前を定義します。<br>この機能では、スクリプトの作者は、プロパティの変更を適用するために必要なすべてのアクションを実装する必要があります。<br>上記の例のwriteメソッドは次のとおりです。<br>
  <pre>
     algo.setOrientation = <b>function</b>(_orientation) {
-	if (_orientation == "Vertical")
-	  algo.orientation = 1;
-	else
-	  algo.orientation = 0;
+    if (_orientation == "Vertical")
+      algo.orientation = 1;
+    else
+      algo.orientation = 0;
     }
  </pre>
  </td>
@@ -259,9 +259,9 @@ APIバージョン２の文法では<b>プロパティー</b>の概念が追加�
  <pre>
     algo.getOrientation = <b>function</b>() {
         if (algo.orientation == 1)
-	  return "Vertical";
-	else
-	  return "Horizontal";
+      return "Vertical";
+    else
+      return "Horizontal";
     }
  </pre>
  </td>

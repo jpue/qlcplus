@@ -66,7 +66,7 @@ void GPIOPlugin::init()
                 if (m_chipName.empty())
                     m_chipName = it.name();
                 else
-                	qWarning() << "Multiple GPIO chips found, skipping chip: " << QString::fromStdString(it.name());
+                    qWarning() << "Multiple GPIO chips found, skipping chip: " << QString::fromStdString(it.name());
             }
         } catch (const std::system_error& e) {
             qWarning() << "Error while scanning GPIO chips: " << e.what() << " - GPIO plugin not initialized.";
