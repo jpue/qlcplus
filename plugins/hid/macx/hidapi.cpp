@@ -176,7 +176,7 @@ static void free_hid_device(hid_device *dev)
     free(dev);
 }
 
-static	IOHIDManagerRef hid_mgr = 0x0;
+static  IOHIDManagerRef hid_mgr = 0x0;
 
 
 #if 0

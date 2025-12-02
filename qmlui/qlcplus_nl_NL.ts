@@ -4580,7 +4580,7 @@ Please provide a different name.</source>
         <source>Are you sure you want to remove the following items?
 (Note that the original functions will not be deleted)</source>
         <translation>Weet je zeker dat je volgende items wilt verwijderen?
-		(Originele functies zullen niet worden verwijderd)</translation>
+(Originele functies zullen niet worden verwijderd)</translation>
     </message>
     <message>
         <location filename="qml/showmanager/ShowManager.qml" line="214"/>
