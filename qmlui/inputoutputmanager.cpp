@@ -842,11 +842,17 @@ void InputOutputManager::setBeatType(QString beatType)
 
 void InputOutputManager::slotBeatTypeChanged()
 {
-    switch(m_ioMap->beatGeneratorType())
+    switch (m_ioMap->beatGeneratorType())
     {
-        case InputOutputMap::Internal: m_beatType = "INTERNAL"; break;
-        case InputOutputMap::Plugin: m_beatType = "PLUGIN"; break;
-        case InputOutputMap::Audio: m_beatType = "AUDIO"; break;
+        case InputOutputMap::Internal:
+            m_beatType = "INTERNAL";
+        break;
+        case InputOutputMap::Plugin:
+            m_beatType = "PLUGIN";
+        break;
+        case InputOutputMap::Audio:
+            m_beatType = "AUDIO";
+        break;
         case InputOutputMap::Disabled:
         default:
             m_beatType = "OFF";

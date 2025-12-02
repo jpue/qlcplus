@@ -279,7 +279,7 @@ int NetworkPacketizer::decodePacket(QByteArray &packet, int &opCode, QVariantLis
 
         qDebug() << "Section" << i << "type" << sType;
 
-        switch(sType)
+        switch (sType)
         {
             case BoolType:
             {

@@ -799,7 +799,7 @@ QString QLCChannel::getIconNameFromGroup(QLCChannel::Group grp, bool svg) const
     QString prefix = svg ? "qrc" : "";
     QString ext = svg ? "svg" : "png";
 
-    switch(grp)
+    switch (grp)
     {
         case Pan: return QString("%1:/pan.%2").arg(prefix).arg(ext); break;
         case Tilt: return QString("%1:/tilt.%2").arg(prefix).arg(ext); break;

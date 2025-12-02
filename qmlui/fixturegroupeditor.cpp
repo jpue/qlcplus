@@ -422,7 +422,7 @@ void FixtureGroupEditor::transformSelection(int transformation)
     QTransform transform;
     QImage trImage;
 
-    switch(TransformType(transformation))
+    switch (TransformType(transformation))
     {
         case Rotate90:
             transform = transform.rotate(90);
