@@ -523,7 +523,8 @@
     </message>
     <message>
         <location filename="addresstool.ui" line="117"/>
-        <source>Reverse Horizontally</source>
+        <source>Reverse horizontally</source>
+        <oldsource>Reverse Horizontally</oldsource>
         <translation>Miroir horizontal</translation>
     </message>
 </context>

@@ -523,8 +523,9 @@
     </message>
     <message>
         <location filename="addresstool.ui" line="117"/>
-        <source>Reverse Horizontally</source>
-        <translation>Převrátit vodorovně</translation>
+        <source>Reverse horizontally</source>
+        <oldsource>Reverse Horizontally</oldsource>
+        <translation type="unfinished">Převrátit vodorovně</translation>
     </message>
 </context>
 <context>
