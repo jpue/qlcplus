@@ -520,8 +520,9 @@
     </message>
     <message>
         <location filename="addresstool.ui" line="117"/>
-        <source>Reverse Horizontally</source>
-        <translation>Invertir Horizontalment</translation>
+        <source>Reverse horizontally</source>
+        <oldsource>Reverse Horizontally</oldsource>
+        <translation>Invertir horizontalment</translation>
     </message>
 </context>
 <context>
