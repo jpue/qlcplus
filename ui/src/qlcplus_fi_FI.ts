@@ -4385,6 +4385,11 @@ Huomaa, että velho ei osaa erottaa pyöritettävää nuppia ja liukua toisistaa
         <source>Page: %1</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="virtualconsole/vcspeeddialfunction.cpp" line="99"/>
+        <source>(Not Sent)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDMManager</name>
