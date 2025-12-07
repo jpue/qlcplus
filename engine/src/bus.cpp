@@ -48,8 +48,9 @@ class BusEntry final
 {
 public:
     BusEntry()
+        : name(QString())
+        , value(0)
     {
-        value = 0;
     }
 
     ~BusEntry()
@@ -57,9 +58,9 @@ public:
     }
 
     BusEntry(const BusEntry& entry)
+        : name(entry.name)
+        , value(entry.value)
     {
-        name = entry.name;
-        value = entry.value;
     }
 
     QString name;
@@ -86,7 +87,9 @@ Bus* Bus::instance()
     return s_instance;
 }
 
-Bus::Bus(QObject* parent) : QObject(parent)
+Bus::Bus(QObject* parent)
+    : QObject(parent)
+    , m_buses(QList())
 {
     for (quint32 i = 0; i < Bus::count(); i++)
         m_buses.append(new BusEntry);
