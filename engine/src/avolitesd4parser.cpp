@@ -110,6 +110,8 @@
 AvolitesD4Parser::StringToEnumMap AvolitesD4Parser::s_attributesMap;
 
 AvolitesD4Parser::AvolitesD4Parser()
+    : m_lastError(QString())
+    , m_channels(QMap())
 {
     if (s_attributesMap.isEmpty() == true)
     {
