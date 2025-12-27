@@ -66,7 +66,7 @@ function composeCommand(cmd)
   }
   else
   {
-    alert("You must connect to QLC+ WebSocket first!");
+    alert(noWebsocketConnection);
   }
 }
 
@@ -87,7 +87,7 @@ function reqChannelsRange(univ, chan, range)
   }
   else
   {
-    alert("You must connect to QLC+ WebSocket first!");
+    alert(noWebsocketConnection);
   }
 }
 
@@ -101,7 +101,7 @@ function resetUniverse(universeNum)
   }
   else
   {
-    alert("You must connect to QLC+ WebSocket first!");
+    alert(noWebsocketConnection);
   }
 }
 
@@ -114,7 +114,7 @@ function resetCh(chNum)
   }
   else
   {
-    alert("You must connect to QLC+ WebSocket first!");
+    alert(noWebsocketConnection);
   }
 }
 // Modified set Channel Function
@@ -127,7 +127,7 @@ function setChannel(c, v)
   }
   else
   {
-    alert("You must connect to QLC+ WebSocket first!");
+    alert(noWebsocketConnection);
   }
 }
 
