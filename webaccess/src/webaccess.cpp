@@ -236,6 +236,15 @@ void WebAccess::slotHandleHTTPRequest(QHttpRequest *req, QHttpResponse *resp)
         }
         content = WebAccessSimpleDesk::getHTML(m_doc, m_sd);
     }
+    else if (reqUrl == "/keypad")
+    {
+        if (m_auth && user.level < SIMPLE_DESK_AND_VC_LEVEL)
+        {
+            m_auth->sendUnauthorizedResponse(resp);
+            return;
+        }
+        content = WebAccessSimpleDesk::getKeypadHTML(m_doc, m_sd);
+    }
 #if defined(Q_WS_X11) || defined(Q_OS_LINUX)
     else if (reqUrl == "/system")
     {
