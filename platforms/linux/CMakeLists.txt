@@ -133,7 +133,7 @@ if(appimage)
             ${QT_LIBS_PATH}/libQt6FFmpegStub-va.so.2)
 
     endif()
-    
+
     set(_resolved_qtlibs_FILES "")
     foreach (_file ${qtlibs_FILES})
         file(GLOB _files "${_file}*")
@@ -150,7 +150,7 @@ if(appimage)
     endif()
 
     install(
-        FILES 
+        FILES
             ${QT_PLUGINS_PATH}/platforms/libqlinuxfb.so
             ${QT_PLUGINS_PATH}/platforms/libqxcb.so
             ${QT_PLUGINS_PATH}/platforms/libqminimal.so
