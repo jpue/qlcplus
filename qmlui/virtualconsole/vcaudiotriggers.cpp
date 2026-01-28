@@ -335,7 +335,7 @@ void VCAudioTriggers::setBarType(BarType type)
     bar.m_function = nullptr;
     bar.m_widgetId = VCWidget::invalidId();
     bar.m_widget = nullptr;
-    
+
     // set the type
     bar.m_type = type;
 
@@ -458,7 +458,7 @@ void VCAudioTriggers::slotSpectrumDataChanged(double *spectrumBands,
         const int v255 = int(v * 255.0 + 0.5);
 
         // Store in bars (for DMX) and in UI list (index aligned: +1 for volume)
-        m_spectrumBars[i + 1].m_value = uchar(v255);        
+        m_spectrumBars[i + 1].m_value = uchar(v255);
         m_audioLevels.append(v255);
     }
 
