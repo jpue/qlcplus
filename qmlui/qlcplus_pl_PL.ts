@@ -4937,7 +4937,7 @@ drag a function on the timeline</source>
         <location filename="qml/fixturesfunctions/UniverseGridView.qml" line="48"/>
         <source>Unable to perform the operation.
 There is either not enough space or the target universe is invalid</source>
-        <translation>Nie można wykonać operacji. 
+        <translation>Nie można wykonać operacji.
 Jest za mało miejsca lub docelowe uniwersum jest niepoprawne.</translation>
     </message>
     <message>
