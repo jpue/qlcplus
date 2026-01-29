@@ -325,7 +325,7 @@ QString WebAccessConfiguration::getHTML(Doc *doc, WebAccessAuth *auth)
     }
 
     QString bodyHTML = "<form action=\"/loadFixture\" method=\"POST\" enctype=\"multipart/form-data\">\n"
-                       "<input id=\"loadTrigger\" type=\"file\" "
+                       "<input id=\"loadTrigger\" type=\"file\" accept=\".qxf,.d4\" "
                        "onchange=\"document.getElementById('submitTrigger').click();\" name=\"qlcfxi\">\n"
                        "<input id=\"submitTrigger\" type=\"submit\"></form>"
 
