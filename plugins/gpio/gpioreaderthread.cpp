@@ -74,6 +74,7 @@ void ReadThread::run()
 
         QMutexLocker locker(&m_mutex);
 
+#ifndef GPIOPLUGIN_LIBGPIOD_API_V2
         foreach (GPIOLineInfo *gpio, m_plugin->gpioList())
         {
             if (gpio->m_direction != GPIOPlugin::InputDirection)
@@ -100,6 +101,53 @@ void ReadThread::run()
                 gpio->m_count = 0;
             }
         }
+#else
+        ::gpiod::line::offsets offsets;
+        QList<GPIOLineInfo*> gpioPins;
+        foreach (GPIOLineInfo *gpio, m_plugin->gpioList())
+        {
+            if (gpio->m_direction != GPIOPlugin::InputDirection)
+                continue;
+
+            offsets.push_back(gpio->m_line);
+            gpioPins.push_back(gpio);
+        }
+
+        ::gpiod::line_request request = gChip.prepare_request()
+                                            .add_line_settings(offsets, ::gpiod::line_settings().set_direction(::gpiod::line::direction::INPUT))
+                                            .do_request();
+        request.release();
+
+        const ::gpiod::line::values values = request.get_values();
+        int index = 0;
+        for (const ::gpiod::line::value& it : values)
+        {
+            const int newVal = (it == ::gpiod::line::value::ACTIVE);
+
+            GPIOLineInfo *gpio = gpioPins.at(index);
+            if (gpio == NULL)
+                continue;
+
+            if (newVal != gpio->m_value)
+            {
+                gpio->m_count++;
+                if (gpio->m_count > HYSTERESIS_THRESHOLD)
+                {
+                    qDebug() << "Value read: GPIO:" << gpio->m_line << "val:" <<  newVal;
+                    gpio->m_value = newVal ? UCHAR_MAX : 0;
+                    gpio->m_count = 0;
+                    emit valueChanged(gpio->m_line, gpio->m_value);
+                }
+            }
+            else
+            {
+                gpio->m_count = 0;
+            }
+
+            index++;
+        }
+#endif
+
         locker.unlock();
 
         usleep(50000);

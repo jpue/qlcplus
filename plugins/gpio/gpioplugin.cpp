@@ -60,14 +60,30 @@ void GPIOPlugin::init()
         // autodetect chips and use first
         try
         {
+        #ifndef GPIOPLUGIN_LIBGPIOD_API_V2
             for (auto& it: ::gpiod::make_chip_iter())
             {
                 qDebug() << "GPIO chip found: " << QString::fromStdString(it.name());
                 if (m_chipName.empty())
                     m_chipName = it.name();
                 else
-                	qWarning() << "Multiple GPIO chips found, skipping chip: " << QString::fromStdString(it.name());
+                    qWarning() << "Multiple GPIO chips found, skipping chip: " << QString::fromStdString(it.name());
             }
+        #else
+            for (const std::filesystem::directory_entry& it : ::std::filesystem::directory_iterator("/dev/"))
+            {
+                if (::gpiod::is_gpiochip_device(it.path())) {
+                    ::gpiod::chip_info info = ::gpiod::chip(it.path()).get_info();
+
+                    qDebug() << "GPIO chip found: " << QString::fromStdString(info.name()) << "[" << info.label() << "] (" << info.num_lines() << "lines)";
+
+                    if (m_chipName.empty())
+                        m_chipName = info.name();
+                    else
+                        qWarning() << "Multiple GPIO chips found, skipping chip: " << QString::fromStdString(info.name());
+                }
+            }
+        #endif
         } catch (const std::system_error& e) {
             qWarning() << "Error while scanning GPIO chips: " << e.what() << " - GPIO plugin not initialized.";
         }
@@ -128,20 +144,30 @@ void GPIOPlugin::setChipName(QString name)
 
 void GPIOPlugin::updateLinesList()
 {
-    ::gpiod::chip gChip(m_chipName);
+    const ::gpiod::chip gChip(m_chipName);
+#ifndef GPIOPLUGIN_LIBGPIOD_API_V2
     if (!gChip)
         return;
+#else
+    const ::gpiod::chip_info gChipInfo = gChip.get_info();
+#endif
 
-    int linesNum = m_gpioList.count();
+    const int linesNum = m_gpioList.count();
     for (int i = 0; i < linesNum; i++)
     {
         GPIOLineInfo *gpio = m_gpioList.takeLast();
         delete gpio;
     }
 
+#ifndef GPIOPLUGIN_LIBGPIOD_API_V2
     for (unsigned int i = 0; i < gChip.num_lines(); i++)
     {
         auto line = gChip.get_line(i);
+#else
+    for (unsigned int i = 0; i < gChipInfo.num_lines(); i++)
+    {
+        const ::gpiod::line_info line = gChip.get_line_info(i);
+#endif
 
         GPIOLineInfo *gpio = new GPIOLineInfo;
         gpio->m_line = i;
@@ -240,7 +266,7 @@ QList<GPIOLineInfo *> GPIOPlugin::gpioList() const
     return m_gpioList;
 }
 
-QString GPIOPlugin::lineDirectionToString(GPIOPlugin::LineDirection usage) const
+QString GPIOPlugin::lineDirectionToString(GPIOPlugin::LineDirection usage)
 {
     switch(usage)
     {
@@ -251,7 +277,7 @@ QString GPIOPlugin::lineDirectionToString(GPIOPlugin::LineDirection usage) const
     return QString("NotUsed");
 }
 
-GPIOPlugin::LineDirection GPIOPlugin::stringToLineDirection(QString usage) const
+GPIOPlugin::LineDirection GPIOPlugin::stringToLineDirection(const QString& usage)
 {
     if (usage == "Output") return OutputDirection;
     else if (usage == "Input") return InputDirection;
@@ -325,10 +351,24 @@ void GPIOPlugin::setLineValue(int lineNumber, uchar value)
 
     qDebug() << "[GPIO] writing line" << lineNumber << "with value" << value;
 
+#ifndef GPIOPLUGIN_LIBGPIOD_API_V2
     ::gpiod::chip gChip(chipName());
     ::gpiod::line gLine = gChip.get_line(lineNumber);
     gLine.request({"set_value", gpiod::line_request::DIRECTION_OUTPUT, 0}, value);
     gLine.release();
+#else
+    ::gpiod::line::offsets offsets;
+    offsets.push_back(lineNumber);
+
+    ::gpiod::line::values values;
+    values.push_back(value ? ::gpiod::line::value::ACTIVE : ::gpiod::line::value::INACTIVE);
+
+    const ::gpiod::line_request request = ::gpiod::chip(chipName())
+                                              .prepare_request()
+                                              .add_line_settings(offsets, ::gpiod::line_settings().set_direction(::gpiod::line::direction::OUTPUT))
+                                              .set_output_values(values)
+                                              .do_request();
+#endif
 
     m_gpioList[lineNumber]->m_value = value;
 }

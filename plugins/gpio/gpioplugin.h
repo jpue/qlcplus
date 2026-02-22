@@ -87,8 +87,8 @@ public:
         InputDirection  = 1 << 2
     };
 
-    QString lineDirectionToString(LineDirection usage) const;
-    LineDirection stringToLineDirection(QString usage) const;
+    static QString lineDirectionToString(LineDirection usage);
+    static LineDirection stringToLineDirection(const QString& usage);
 
 private:
     void setLineStatus(int lineNumber, bool enable);

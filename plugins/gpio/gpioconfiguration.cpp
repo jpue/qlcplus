@@ -49,8 +49,22 @@ GPIOConfiguration::GPIOConfiguration(GPIOPlugin* plugin, QWidget* parent)
     if (geometrySettings.isValid() == true)
         restoreGeometry(geometrySettings.toByteArray());
 
+#ifndef GPIOPLUGIN_LIBGPIOD_API_V2
     for (auto& it: ::gpiod::make_chip_iter())
         m_chipCombo->addItem(QString::fromStdString(it.name()));
+#else
+    for (const std::filesystem::directory_entry& it : ::std::filesystem::directory_iterator("/dev/"))
+    {
+        if (::gpiod::is_gpiochip_device(it.path()))
+        {
+            ::gpiod::chip_info info = ::gpiod::chip(it.path()).get_info();
+
+            qDebug() << info.name() << "[" << info.label() << "] (" << info.num_lines() << "lines)";
+            m_chipCombo->addItem(QString::fromStdString(info.name()));
+        }
+    }
+#endif
+
     m_chipCombo->setCurrentText(QString::fromStdString(m_plugin->chipName()));
 
     connect(m_chipCombo, SIGNAL(currentIndexChanged(int)),
@@ -113,22 +127,18 @@ void GPIOConfiguration::accept()
             QString parName = QString("%1-%2").arg(GPIO_PARAM_USAGE).arg(i);
 
             if (usage == GPIOPlugin::InputDirection)
-                m_plugin->setParameter(0, 0, QLCIOPlugin::Input, parName,
-                                       m_plugin->lineDirectionToString(usage));
+                m_plugin->setParameter(0, 0, QLCIOPlugin::Input, parName, GPIOPlugin::lineDirectionToString(usage));
             else if (usage == GPIOPlugin::OutputDirection)
-                m_plugin->setParameter(0, 0, QLCIOPlugin::Output, parName,
-                                       m_plugin->lineDirectionToString(usage));
+                m_plugin->setParameter(0, 0, QLCIOPlugin::Output, parName, GPIOPlugin::lineDirectionToString(usage));
             else // GPIOPlugin::NoUsage
             {
                 // we use the setParameter method here cause we need to perform
                 // actual operations on the GPIO files
                 // then setParameter will call unSetParameter
                 if (gpioList.at(i)->m_direction == GPIOPlugin::InputDirection)
-                    m_plugin->setParameter(0, 0, QLCIOPlugin::Input, parName,
-                                           m_plugin->lineDirectionToString(usage));
+                    m_plugin->setParameter(0, 0, QLCIOPlugin::Input, parName, GPIOPlugin::lineDirectionToString(usage));
                 else
-                    m_plugin->setParameter(0, 0, QLCIOPlugin::Output, parName,
-                                           m_plugin->lineDirectionToString(usage));
+                    m_plugin->setParameter(0, 0, QLCIOPlugin::Output, parName, GPIOPlugin::lineDirectionToString(usage));
             }
         }
     }
