@@ -22,6 +22,7 @@ var slidersContainer;
 var pageDisplay;
 var universeSelect;
 var fadersSelect;
+var wsStatus;
 var pollTimer = null;
 var lastStartChannel = null;
 var lastChannelCount = null;
@@ -43,6 +44,15 @@ var GROUP_ICONS = {
 function sendMessage(msg) {
   if (!websocket || websocket.readyState !== 1) return;
   websocket.send(msg);
+}
+
+function setStatus(connected) {
+  if (!wsStatus) return;
+  wsStatus.textContent = "";
+  wsStatus.classList.toggle("connected", connected);
+  wsStatus.classList.toggle("disconnected", !connected);
+  wsStatus.setAttribute("aria-label", connected ? "Connected" : "Disconnected");
+  wsStatus.title = connected ? "Connected" : "Disconnected";
 }
 
 function updateWebPixelDensity() {
@@ -158,12 +168,15 @@ function applyChannelType(chNum, type) {
 function connect() {
   var url = "ws://" + window.location.host + "/qlcplusWS";
   websocket = new WebSocket(url);
+  setStatus(false);
 
   websocket.onopen = function() {
+    setStatus(true);
     requestPage();
   };
 
   websocket.onclose = function() {
+    setStatus(false);
     console.log("QLC+ connection is closed. Reconnect will be attempted in 1 second.");
     setTimeout(function () {
       connect();
@@ -173,6 +186,7 @@ function connect() {
   websocket.onerror = function(ev) {
     console.error("QLC+ connection encountered error. Closing socket");
     console.error("Error: " + ev.data);
+    setStatus(false);
     websocket.close();
   };
 
@@ -310,6 +324,8 @@ window.addEventListener("load", function() {
   pageDisplay = document.getElementById("pageDisplay");
   universeSelect = document.getElementById("universeSelect");
   fadersSelect = document.getElementById("fadersSelect");
+  wsStatus = document.getElementById("wsStatus");
+  setStatus(false);
 
   normalizedUniverse();
   updatePageDisplay();

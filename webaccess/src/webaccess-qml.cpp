@@ -402,6 +402,7 @@ static QString getSimpleDeskQmlHtml(const Doc *doc, const SimpleDesk *sd)
                 "<a class=\"nav-btn\" href=\"/\">" + QObject::tr("Back") + "</a>\n"
                 "<a class=\"nav-btn\" href=\"/keypad.html\">DMX Keypad</a>\n"
                 "</div>\n"
+                "<div class=\"status disconnected\" id=\"wsStatus\" aria-label=\"Disconnected\" title=\"Disconnected\"></div>\n"
                 "</div>\n"
                 "</header>\n"
                 "<main class=\"sd-stage\">\n"
