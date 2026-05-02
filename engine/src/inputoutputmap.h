@@ -27,7 +27,7 @@
 
 #include "qlcinputprofile.h"
 #include "grandmaster.h"
-#include "../../plugins/interfaces/qlcioplugin.h"
+#include "qlcioplugin.h"
 
 class QXmlStreamReader;
 class QXmlStreamWriter;
