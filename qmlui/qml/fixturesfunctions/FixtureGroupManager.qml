@@ -218,6 +218,7 @@ Rectangle
                     tooltip: qsTr("Add a new fixture group")
                     onClicked: contextManager.createFixtureGroup()
                 }
+
                 IconButton
                 {
                     id: delItemButton
@@ -231,7 +232,7 @@ Rectangle
                     onClicked:
                     {
                         if (gfhcDragItem.itemsList.length === 0)
-                            return;
+                            return
 
                         var fxDeleteList = []
                         var fxGroupDeleteList = []
@@ -269,7 +270,7 @@ Rectangle
 
                 IconButton
                 {
-                    visible: !allowEditing
+                    visible: !allowEditing || fixtureManager.propertyEditEnabled
                     z: 2
                     width: height
                     height: topBar.height - 2
@@ -278,7 +279,8 @@ Rectangle
                     tooltip: qsTr("Apply changes to fixtures of the same type")
                     checkable: true
 
-                    onToggled: modelProvider.applyToSameType(checked)
+                    onToggled: modelProvider ? modelProvider.applyToSameType(checked) :
+                                               fixtureManager.applyToSameType(checked)
                 }
 
                 // Spacer

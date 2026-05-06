@@ -186,6 +186,9 @@ public:
     bool propertyEditEnabled();
     void setPropertyEditEnabled(bool enable);
 
+    /** Enable/Disable applying edits to fixtures of the same type and mode */
+    Q_INVOKABLE void applyToSameType(bool enable);
+
     Q_INVOKABLE void setItemRoleData(int itemID, int index, QString role, QVariant value);
 
     void setItemRoleData(int itemID, QVariant value, int role);
@@ -268,6 +271,10 @@ private:
     TreeModel *m_fixtureTree;
     /** Current flags being used for filling the tree data */
     int m_treeShowFlags;
+    /** Flag to apply property edits to fixtures of the same type and mode */
+    bool m_applyToSameType;
+    /** Guard flag to avoid recursive propagation while batch-applying edits */
+    bool m_isUpdating;
 
     /*********************************************************************
      * Fixture groups

@@ -205,8 +205,8 @@ Column
 
                         if (fixtureManager.setFixtureModeIndex(itemID, index) === false)
                         {
-                            // show error popup on failure
-                            fmGenericPopup.message = qsTr("Mode <" + currentText + "> overlaps with another fixture!")
+                            // show error popup on overlapping
+                            fmGenericPopup.message = textLabel + " <" + currentText + "> " + qsTr("mode overlaps with another fixture!")
                             fmGenericPopup.open()
                             currentIndex = fixtureManager.fixtureModeIndex(itemID)
                         }
