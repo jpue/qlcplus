@@ -150,7 +150,7 @@ public:
      * @param newChannel reference to the replacement channel
      * @return true if currChannel was found and replaced. Otherwise false.
      */
-    bool replaceChannel(QLCChannel *currChannel, QLCChannel *newChannel);
+    bool replaceChannel(const QLCChannel *currChannel, QLCChannel *newChannel);
 
     /**
      * Remove all channels from this mode. The channels are only removed from

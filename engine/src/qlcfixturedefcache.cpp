@@ -152,7 +152,7 @@ bool QLCFixtureDefCache::storeFixtureDef(const QString& filename, const QString&
     return true;
 }
 
-bool QLCFixtureDefCache::reloadFixtureDef(QLCFixtureDef *fixtureDef)
+bool QLCFixtureDefCache::reloadFixtureDef(const QLCFixtureDef *fixtureDef)
 {
     int idx = m_defs.indexOf(fixtureDef);
     if (idx == -1)
