@@ -116,7 +116,7 @@ public:
      * @param fixtureDef The fixture definition to remove
      * @return true, if $fixtureDef was found and removed, otherwise false
      */
-    bool reloadFixtureDef(QLCFixtureDef *fixtureDef);
+    bool reloadFixtureDef(const QLCFixtureDef *fixtureDef);
 
     /**
      * Reload or add a definition from the provided reference.

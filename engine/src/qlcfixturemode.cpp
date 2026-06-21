@@ -177,7 +177,7 @@ bool QLCFixtureMode::removeChannel(const QLCChannel* channel)
     return false;
 }
 
-bool QLCFixtureMode::replaceChannel(QLCChannel *currChannel, QLCChannel *newChannel)
+bool QLCFixtureMode::replaceChannel(const QLCChannel *currChannel, QLCChannel *newChannel)
 {
     if (currChannel == NULL || newChannel == NULL)
         return false;

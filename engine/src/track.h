@@ -140,7 +140,7 @@ public:
     ShowFunction *createShowFunction(quint32 functionID);
 
     /** remove a function ID association from this track */
-    bool removeShowFunction(ShowFunction *function, bool performDelete = true);
+    bool removeShowFunction(const ShowFunction *function, bool performDelete = true);
 
     /** add a ShowFunction element to this track */
     bool addShowFunction(ShowFunction *func);

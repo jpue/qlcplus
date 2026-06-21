@@ -678,7 +678,7 @@ bool EFX::addFixture(quint32 fxi, int head)
     return addFixture(ef);
 }
 
-bool EFX::removeFixture(EFXFixture* ef)
+bool EFX::removeFixture(const EFXFixture* ef)
 {
     Q_ASSERT(ef != NULL);
 
@@ -714,7 +714,7 @@ void EFX::removeAllFixtures()
     emit changed(this->id());
 }
 
-bool EFX::raiseFixture(EFXFixture* ef)
+bool EFX::raiseFixture(const EFXFixture* ef)
 {
     Q_ASSERT(ef != NULL);
 
@@ -731,7 +731,7 @@ bool EFX::raiseFixture(EFXFixture* ef)
     }
 }
 
-bool EFX::lowerFixture(EFXFixture* ef)
+bool EFX::lowerFixture(const EFXFixture* ef)
 {
     int index = m_fixtures.indexOf(ef);
     if (index < (m_fixtures.count() - 1))

@@ -157,7 +157,7 @@ ShowFunction *Track::showFunction(quint32 id) const
     return NULL;
 }
 
-bool Track::removeShowFunction(ShowFunction *function, bool performDelete)
+bool Track::removeShowFunction(const ShowFunction *function, bool performDelete)
 {
     if (m_functions.contains(function) == false)
         return false;
