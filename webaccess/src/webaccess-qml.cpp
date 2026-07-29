@@ -336,21 +336,21 @@ static void logWidgetTree(VCWidget *widget, int depth)
         logWidgetTree(child, depth + 1);
 }
 */
-static QString getSimpleDeskQmlHtml(const Doc *doc, const SimpleDesk *sd)
+QString WebAccessQml::getSimpleDeskQmlHtml() const
 {
-    if (doc == nullptr || sd == nullptr)
+    if (m_doc == nullptr || m_sd == nullptr)
         return QString();
 
-    int uni = sd->getCurrentUniverseIndex() + 1;
+    int uni = m_sd->getCurrentUniverseIndex() + 1;
     if (uni < 1)
         uni = 1;
-    int page = sd->getCurrentPage();
+    const int page = m_sd->getCurrentPage();
 
     QString JScode = "<script src=\"simpledesk-v5.js\"></script>\n";
     JScode += "<script>\n";
     JScode += "var currentUniverse = " + QString::number(uni) + ";\n";
     JScode += "var currentPage = " + QString::number(page) + ";\n";
-    JScode += "var channelsPerPage = " + QString::number(sd->getSlidersNumber()) + ";\n";
+    JScode += "var channelsPerPage = " + QString::number(m_sd->getSlidersNumber()) + ";\n";
     JScode += "</script>\n";
 
     QString CSScode = "<link rel=\"stylesheet\" type=\"text/css\" media=\"screen\" href=\"webaccess-v5.css\">\n";
@@ -367,10 +367,10 @@ static QString getSimpleDeskQmlHtml(const Doc *doc, const SimpleDesk *sd)
                        "<div class=\"sd-label\">" + QObject::tr("Universe") + "</div>\n"
                        "<select class=\"sd-select\" id=\"universeSelect\">\n";
 
-    QStringList uniList = doc->inputOutputMap()->universeNames();
+    const QStringList uniList = m_doc->inputOutputMap()->universeNames();
     for (int i = 0; i < uniList.count(); i++)
     {
-        QString selected = (i + 1 == uni) ? " selected" : "";
+        const QString selected = (i + 1 == uni) ? " selected" : "";
         bodyHTML += "<option value=\"" + QString::number(i) + "\"" + selected + ">"
                 + uniList.at(i) + "</option>\n";
     }
@@ -477,7 +477,7 @@ void WebAccessQml::slotHandleHTTPRequest(QHttpRequest *req, QHttpResponse *resp)
     {
         if (!requireAuthLevel(resp, user, SIMPLE_DESK_AND_VC_LEVEL))
             return;
-        content = getSimpleDeskQmlHtml(m_doc, m_sd);
+        content = getSimpleDeskQmlHtml();
         sendHtmlResponse(resp, content);
         return;
     }

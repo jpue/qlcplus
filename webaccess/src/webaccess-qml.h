@@ -98,6 +98,8 @@ protected slots:
     void slotGrandMasterValueChanged(uchar value);
 
 protected:
+    QString getSimpleDeskQmlHtml() const;
+
     QString webFilePath(const QString &relativePath) const override;
     void sendMatrixState(const VCAnimation *animation) const;
     void handleAutostartProject(const QString &path) override;
