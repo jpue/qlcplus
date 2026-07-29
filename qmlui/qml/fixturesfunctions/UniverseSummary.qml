@@ -149,7 +149,7 @@ Rectangle
                 faSource: FontAwesome.fa_print
                 faColor: UISettings.fgMain
                 tooltip: qsTr("Print the universe summary")
-                onClicked: qlcplus.printItem(flickView.contentItem)
+                onClicked: fixtureManager.printSummary()
             }
         }
     }

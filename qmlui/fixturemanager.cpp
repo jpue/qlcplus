@@ -24,6 +24,9 @@
 #include <QDebug>
 #include <QtMath>
 #include <QDir>
+#include <QTextDocument>
+#include <QPrinter>
+#include <QPrintDialog>
 
 #include "monitorproperties.h"
 #include "channelmodifier.h"
@@ -265,6 +268,64 @@ void FixtureManager::slotDocLoaded()
     setSearchFilter("");
     updateGroupsTree(m_doc, m_fixtureTree, m_searchFilter);
     emit groupsTreeModelChanged();
+}
+
+void FixtureManager::printSummary()
+{
+    QPrinter printer;
+    QPrintDialog *dlg = new QPrintDialog(&printer);
+    if (dlg->exec() == QDialog::Accepted)
+    {
+        QString tableText("ID  NAME        UNIV:DMX  CH\n"
+                          "--------------------------------\n");
+
+        int fixture_count = 0;
+        for (const Fixture* const fixture : m_fixtureList)
+        {
+            if (fixture == nullptr)
+                continue;
+
+            tableText += QString::number(fixture->id()).rightJustified(2, ' ') + "  ";
+
+            {
+                QString name = fixture->name();
+                if (name.length() > 11)
+                    name = name.left(10) + ".";
+                tableText += name.leftJustified(11, ' ') + " ";
+            }
+
+            tableText += QString("U%1:%2").arg(fixture->universe() + 1).arg(fixture->address() + 1).rightJustified(8, ' ') + " ";
+            tableText += QString::number(fixture->channels()).rightJustified(3, ' ') + "\n";
+            fixture_count++;
+        }
+
+        tableText += "--------------------------------\n";
+        tableText += tr("Total : ") + QString::number(fixture_count) + ((fixture_count == 1) ? tr(" fixture") : tr(" fixtures"));
+
+        QTextDocument doc;
+        doc.setHtml("<!DOCTYPE html>\n"
+                    "<html lang=\"en\">\n"
+                    "  <head></head>\n"
+                    "  <body>\n"
+                    "    <div style=\"font-family: monospace; text-align: left;\">\n"
+                    "      <div style=\"text-align: center;\">\n"
+                    "        <strong>" + tr("DMX Patch Sheet") + "</strong>\n<br>\n"
+                    "        --------------------------------\n<br>\n"
+                    "      </div>\n"
+                    + tableText.replace("\n", "\n<br>\n").replace(" ", "&nbsp;") + "\n" +
+                    "    </div>\n"
+                    "  </body>\n"
+                    "</html>");
+
+        qDebug() << doc.toHtml();
+
+        printer.setCreator(QString(APPNAME) + " " + QString(APPVERSION));
+
+        QRectF pageRect = printer.pageRect(QPrinter::Point);
+        doc.setPageSize(QSizeF(pageRect.width(), pageRect.height()));  // hide the page number
+
+        doc.print(&printer);
+    }
 }
 
 /*********************************************************************

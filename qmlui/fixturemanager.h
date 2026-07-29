@@ -87,6 +87,8 @@ public:
      *  a Fixture with the specified $id */
     Q_INVOKABLE QVariant fixtureInfo(quint32 itemID);
 
+    Q_INVOKABLE void printSummary();
+
 signals:
     /** Notify the listeners that the universe filter has changed */
     void universeFilterChanged(quint32 universeFilter);
