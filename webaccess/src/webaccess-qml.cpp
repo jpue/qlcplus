@@ -456,6 +456,17 @@ void WebAccessQml::slotHandleHTTPRequest(QHttpRequest *req, QHttpResponse *resp)
         resp->end(json);
         return;
     }
+    else if (reqUrl == "/fixtures.json")
+    {
+        if (!requireAuthLevel(resp, user, VC_ONLY_LEVEL))
+            return;
+        QByteArray json = getFixturesJson();
+        resp->setHeader("Content-Type", "application/json");
+        resp->setHeader("Content-Length", QString::number(json.size()));
+        resp->writeHead(200);
+        resp->end(json);
+        return;
+    }
     else if (reqUrl.startsWith("/qrc/"))
     {
         QString qrcPath = ":/" + reqUrl.mid(5);
@@ -1376,6 +1387,49 @@ QByteArray WebAccessQml::getVCJson()
         pages.append(pageObj);
     }
     root["pages"] = pages;
+
+    return QJsonDocument(root).toJson(QJsonDocument::Compact);
+}
+
+QByteArray WebAccessQml::getFixturesJson() const
+{
+    QJsonObject root;
+    root["version"] = 1;
+
+    QJsonObject appObj;
+    appObj["name"] = QString(APPNAME);
+    appObj["version"] = QString(APPVERSION);
+    root["app"] = appObj;
+
+    QJsonArray fixtures;
+    if (m_doc != nullptr)
+    {
+        for (const Fixture* const fixture : m_doc->fixtures())
+        {
+            if (fixture == nullptr)
+                continue;
+
+            QJsonObject fixtureObj;
+            fixtureObj["id"] = static_cast<qint64>(fixture->id());
+            fixtureObj["name"] = fixture->name();
+            fixtureObj["type"] = fixture->typeString();
+            fixtureObj["icon"] = fixture->iconResource(true);
+            fixtureObj["heads"] = fixture->heads();
+            fixtureObj["universe"] = static_cast<qint64>(fixture->universe());
+            fixtureObj["address"] = static_cast<qint64>(fixture->address());
+            fixtureObj["channels"] = static_cast<qint64>(fixture->channels());
+
+            const QLCFixtureDef* const fixtureDefinition = fixture->fixtureDef();
+            if (fixtureDefinition != nullptr)
+            {
+                fixtureObj["manufacturer"] = fixtureDefinition->manufacturer();
+                fixtureObj["model"] = fixtureDefinition->model();
+            }
+
+            fixtures.append(fixtureObj);
+        }
+        root["fixtures"] = fixtures;
+    }
 
     return QJsonDocument(root).toJson(QJsonDocument::Compact);
 }

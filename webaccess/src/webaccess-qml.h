@@ -104,6 +104,7 @@ protected:
     void handleProjectLoad(const QByteArray &projectXml) override;
 
     QByteArray getVCJson();
+    QByteArray getFixturesJson() const;
     QJsonObject baseWidgetToJson(const VCWidget *widget);
     QJsonObject widgetToJson(const VCWidget *widget);
     QJsonObject frameToJson(const VCFrame *frame);
