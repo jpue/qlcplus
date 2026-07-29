@@ -415,6 +415,59 @@ QString WebAccessQml::getSimpleDeskQmlHtml() const
     return QString(HTML_HEADER) + JScode + CSScode + "</head>\n<body>\n" + bodyHTML + "</body>\n</html>";
 }
 
+QString WebAccessQml::getUniverseSummaryPrintHtml() const
+{
+    if (m_doc == nullptr)
+        return QString();
+
+    const QString JScode = "<script src=\"print-v5.js\" defer></script>\n"
+                           "<script>\n"
+                           "</script>\n";
+
+    const QString CSScode = "<link rel=\"stylesheet\" type=\"text/css\" media=\"screen\" href=\"webaccess-v5.css\">\n"
+                            "<style>\n"
+                            ".preview {\n"
+                            "font-family: monospace;\n"
+                            "background: #ffffff;\n"
+                            "color: #000000;\n"
+                            "padding: 16px;\n"
+                            "white-space: pre;\n"
+                            "}\n"
+                            "</style>\n";
+
+    const QString bodyHTML = "<div id=\"app\">\n"
+                             "<header class=\"topbar\">\n"
+                             "<div class=\"brand\">\n"
+                             "<div class=\"brand-title\">" + QObject::tr("Universe Summary") + "</div>\n"
+                             "<div class=\"brand-sub\">" + QString(APPNAME) + " " + QString(APPVERSION) + "</div>\n"
+                             "</div>\n"
+                             "<div class=\"topbar-right\">\n"
+                             "<div class=\"actions\">\n"
+                             "<a class=\"nav-btn\" href=\"/config\">" + QObject::tr("Back") + "</a>\n"
+                             "</div>\n"
+                             "</div>\n"
+                             "</header>\n"
+                             "<main>\n"
+                             "<h2>" + QObject::tr("QLC+ DMX Patch Printer") + "</h2>\n"
+                             "<div>\n"
+                             "<button id=\"btnConnectBT\">Bluetooth</button>\n"
+                             "<button id=\"btnConnectUSB\">USB</button>\n"
+                             "</div>\n"
+                             "<div>\n"
+                             "<span>" + QObject::tr("Status") + ":</span>\n"
+                             "<span id=\"status\">" + QObject::tr("Disconnected") + "</span>\n"
+                             "</div>\n"
+                             "<hr>\n"
+                             "<h3>" + QObject::tr("Patch Table Preview") + "</h3>\n"
+                             "<div id=\"preview\" class=\"preview\"></div>\n"
+                             "<button id=\"btnPrint\" disabled>" + QObject::tr("Print") + "</button>\n"
+                             "<div id=\"printStatus\"></div>\n"
+                             "</main>\n"
+                             "</div>\n";
+
+    return QString(HTML_HEADER) + JScode + CSScode + "</head>\n<body>\n" + bodyHTML + "</body>\n</html>";
+}
+
 WebAccessQml::WebAccessQml(Doc *doc, VirtualConsole *vcInstance, SimpleDesk *sdInstance,
                            int portNumber, bool enableAuth, QString passwdFile, QObject *parent)
     : WebAccessBase(doc, vcInstance, sdInstance, portNumber, enableAuth, passwdFile, parent)
@@ -478,6 +531,14 @@ void WebAccessQml::slotHandleHTTPRequest(QHttpRequest *req, QHttpResponse *resp)
         if (!requireAuthLevel(resp, user, SIMPLE_DESK_AND_VC_LEVEL))
             return;
         content = getSimpleDeskQmlHtml();
+        sendHtmlResponse(resp, content);
+        return;
+    }
+    else if (reqUrl == "/print")
+    {
+        if (!requireAuthLevel(resp, user, SIMPLE_DESK_AND_VC_LEVEL))
+            return;
+        content = getUniverseSummaryPrintHtml();
         sendHtmlResponse(resp, content);
         return;
     }

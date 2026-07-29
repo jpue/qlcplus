@@ -99,6 +99,7 @@ protected slots:
 
 protected:
     QString getSimpleDeskQmlHtml() const;
+    QString getUniverseSummaryPrintHtml() const;
 
     QString webFilePath(const QString &relativePath) const override;
     void sendMatrixState(const VCAnimation *animation) const;

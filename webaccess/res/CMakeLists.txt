@@ -12,6 +12,7 @@ set(WEBFILES_COMMON
 )
 
 set(WEBFILES_QML
+    print-v5.js
     simpledesk-v5.css
     simpledesk-v5.js
     webaccess-v5.css
