@@ -421,6 +421,8 @@ QString WebAccessQml::getUniverseSummaryPrintHtml() const
         return QString();
 
     const QString JScode = "<script src=\"print-v5.js\" defer></script>\n"
+                           "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js\"></script>\n"
+                           "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js\"></script>\n"
                            "<script>\n"
                            "</script>\n";
 
@@ -457,10 +459,15 @@ QString WebAccessQml::getUniverseSummaryPrintHtml() const
                              "<span>" + QObject::tr("Status") + ":</span>\n"
                              "<span id=\"status\">" + QObject::tr("Disconnected") + "</span>\n"
                              "</div>\n"
+                             "<div>\n"
+                             "<label for=\"logoInput\">Custom PDF Logo (Optional)</label>\n"
+                             "<input type=\"file\" id=\"logoInput\" accept=\"image/*\">\n"
+                             "</div>\n"
                              "<hr>\n"
                              "<h3>" + QObject::tr("Patch Table Preview") + "</h3>\n"
                              "<div id=\"preview\" class=\"preview\"></div>\n"
                              "<button id=\"btnPrint\" disabled>" + QObject::tr("Print") + "</button>\n"
+                             "<button id=\"btnGeneratePDF\">" + QObject::tr("Generate PDF") + "</button>\n"
                              "<div id=\"printStatus\"></div>\n"
                              "</main>\n"
                              "</div>\n";

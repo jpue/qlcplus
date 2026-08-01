@@ -160,6 +160,141 @@ document.getElementById('btnPrint').addEventListener('click', async () => {
     }
 });
 
+
+function loadLogo() {
+    const file = document.getElementById('logoInput')?.files[0];
+
+    if (!file) return null;
+
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            resolve(event.target.result);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+}
+
+document.getElementById('logoInput').addEventListener('change', async (event) => await loadLogo());
+
+function drawDipSwitchGraphic(doc, x, y, dmxAddr) {
+    const dipStates = [];
+    for (let i = 0; i < 9; i++) {
+        dipStates.push((dmxAddr & (1 << i)) !== 0);
+    }
+    dipStates.push(false);
+
+    const blockW = 48;
+    const blockH = 14;
+
+    doc.setFillColor(0, 82, 204);
+    doc.rect(x, y, blockW, blockH, 'F');
+
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(5);
+    doc.setFont("helvetica", "bold");
+    doc.text("ON", x + 1.2, y + 3.0);
+    doc.text("DIP", x + blockW - 4.2, y + 3.0);
+
+    const startX = x + 1.8;
+    const switchY = y + 3.8;
+    const switchW = 3.8;
+    const switchH = 6.4;
+    const gap = 0.8;
+
+    for (let i = 0; i < 10; i++) {
+        const swX = startX + i * (switchW + gap);
+
+        doc.setFillColor(45, 45, 45);
+        doc.rect(swX, switchY, switchW, switchH, 'F');
+
+        doc.setFillColor(255, 255, 255);
+        if (dipStates[i]) {
+            doc.rect(swX + 0.4, switchY + 0.4, switchW - 0.8, (switchH - 0.8) / 2, 'F');
+        } else {
+            doc.rect(swX + 0.4, switchY + (switchH - 0.8) / 2 + 0.4, switchW - 0.8, (switchH - 0.8) / 2 - 0.4, 'F');
+        }
+
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(4);
+        doc.setFont("helvetica", "normal");
+        const numText = (i + 1).toString();
+        const textOffset = (i === 9) ? 0.8 : 1.3;
+        doc.text(numText, swX + textOffset, y + 13.0);
+    }
+}
+
+document.getElementById('btnGeneratePDF').addEventListener('click', async (event) => {
+    event.preventDefault();
+    if (validFixtures.length === 0) return;
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    doc.setDocumentProperties({'creator': document.getElementsByClassName('brand-sub')?.item(0)?.innerText.trim() ?? 'Q Light Controller Plus'});
+
+    let titleX = 14;
+
+    try {
+        const customLogoDataUrl = await loadLogo();
+        if (customLogoDataUrl) {
+            doc.addImage(customLogoDataUrl, 'JPEG', 14, 10, 12, 12);
+            titleX = 30;
+        }
+    } catch (error) {
+        console.error(error);
+    }
+
+    doc.setFontSize(14);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(17, 24, 39);
+    doc.text('DMX Addressing Plan', titleX, 18);
+
+    const tableRows = validFixtures.map(fix => [
+        fix.id,
+        fix.name,
+        `Universe ${fix.universe + 1} : ${fix.address + 1}`,
+        fix.channels,
+        ''
+    ]);
+
+    doc.autoTable({
+        startY: 25,
+        head: [['ID', 'Fixture Name', 'DMX Address', 'Channels', 'DIP Switch (1-10)']],
+        body: tableRows,
+        theme: 'striped',
+        headStyles: { fillColor: [15, 23, 42], textColor: [255, 255, 255], fontStyle: 'bold', fontSize: 9 },
+        bodyStyles: { fontSize: 8.5, textColor: [30, 41, 59], cellPadding: 4 },
+        columnStyles: {
+            0: { cellWidth: 15, halign: 'center' },
+            1: { cellWidth: 55 },
+            2: { cellWidth: 38, fontStyle: 'bold' },
+            3: { cellWidth: 20, halign: 'center' },
+            4: { cellWidth: 52, halign: 'center' }
+        },
+        didDrawCell: (data) => {
+            if (data.section === 'body' && data.column.index === 4) {
+                const fixIndex = data.row.index;
+                const fixture = validFixtures[fixIndex];
+                if (fixture) {
+                    const dim = data.cell;
+                    const x = dim.x + (dim.width - 48) / 2;
+                    const y = dim.y + (dim.height - 14) / 2;
+                    drawDipSwitchGraphic(doc, x, y, fixture.address + 1);
+                }
+            }
+        },
+        didDrawPage: (data) => {
+            const pageCount = doc.internal.getNumberOfPages();
+            doc.setFontSize(8);
+            doc.setTextColor(170, 170, 170);
+            doc.text(`Page ${data.pageNumber} / ${pageCount}`, doc.internal.pageSize.width - 25, doc.internal.pageSize.height - 10);
+        }
+    });
+
+    doc.save('DMX_Patch.pdf');
+});
+
 window.addEventListener('load', async (e) => {
     await fetch(`/fixtures.json`)
               .then((fixtures) => fixtures.json())
