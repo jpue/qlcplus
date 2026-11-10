@@ -77,7 +77,7 @@ public:
     QLCFixtureDef();
 
     /** Copy constructor */
-    QLCFixtureDef(const QLCFixtureDef* fixtureDef);
+    explicit QLCFixtureDef(const QLCFixtureDef* fixtureDef);
 
     /** Destructor */
     ~QLCFixtureDef();
