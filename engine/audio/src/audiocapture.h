@@ -75,7 +75,7 @@ public:
      * Object constructor.
      * @param parent Parent object.
      */
-    AudioCapture(QObject* parent = 0);
+    explicit AudioCapture(QObject* parent = 0);
 
     ~AudioCapture();
 
