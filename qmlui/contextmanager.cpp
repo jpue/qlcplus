@@ -297,7 +297,7 @@ void ContextManager::setEnvironmentSize(QVector3D environmentSize)
     {
         for (const Fixture *fixture : m_doc->fixtures()) // C++11
         {
-            for (quint32 &subID : m_monProps->fixtureIDList(fixture->id()))
+            for (const quint32 &subID : m_monProps->fixtureIDList(fixture->id()))
             {
                 quint16 headIndex = m_monProps->fixtureHeadIndex(subID);
                 quint16 linkedIndex = m_monProps->fixtureLinkedIndex(subID);
@@ -357,7 +357,7 @@ void ContextManager::setPositionPickPoint(QVector3D point)
     m_lastPickedPoint = point;
     emit lastPickedPointChanged();
 
-    for (quint32 &itemID : m_selectedFixtures)
+    for (const quint32 &itemID : m_selectedFixtures)
     {
         quint32 fxID = FixtureUtils::itemFixtureID(itemID);
 
@@ -428,7 +428,7 @@ void ContextManager::setPositionPickPoint(QVector3D point)
             qDebug() << "Fixture" << fxID << "pan degrees:" << panDeg;
 
             QList<SceneValue> svList = fixture->positionToValues(QLCChannel::Pan, panDeg);
-            for (SceneValue &posSv : svList)
+            for (const SceneValue &posSv : svList)
             {
                 if (m_editingEnabled == false || m_functionManager->acceptsSceneValues() == false)
                     setDumpValue(posSv.fxi, posSv.channel, posSv.value);
@@ -462,7 +462,7 @@ void ContextManager::setPositionPickPoint(QVector3D point)
             qDebug() << "Fixture" << fxID << "tilt degrees:" << tiltDeg;
 
             QList<SceneValue> svList = fixture->positionToValues(QLCChannel::Tilt, tiltDeg);
-            for (SceneValue &posSv : svList)
+            for (const SceneValue &posSv : svList)
             {
                 if (m_editingEnabled == false || m_functionManager->acceptsSceneValues() == false)
                     setDumpValue(posSv.fxi, posSv.channel, posSv.value);
@@ -505,7 +505,7 @@ void ContextManager::resetContexts()
     m_channelsMap.clear();
     resetDumpValues();
 
-    for (quint32 &itemID : m_selectedFixtures)
+    for (const quint32 &itemID : m_selectedFixtures)
         setFixtureSelection(itemID, -1, false);
     m_selectedFixtures.clear();
 
@@ -836,7 +836,7 @@ void ContextManager::setFixtureIDSelection(quint32 fixtureID, bool enable)
     if (fixtureID == Fixture::invalidId())
         return;
 
-    for (quint32 &subID : m_monProps->fixtureIDList(fixtureID))
+    for (const quint32 &subID : m_monProps->fixtureIDList(fixtureID))
     {
         quint16 headIndex = m_monProps->fixtureHeadIndex(subID);
         quint16 linkedIndex = m_monProps->fixtureLinkedIndex(subID);
@@ -853,7 +853,7 @@ void ContextManager::resetFixtureSelection()
 {
     QList<quint32> tmpList = m_selectedFixtures;
 
-    for (quint32 &itemID : tmpList)
+    for (const quint32 &itemID : tmpList)
         setFixtureSelection(itemID, -1, false);
 
     m_selectedFixtures.clear();
@@ -865,9 +865,9 @@ void ContextManager::toggleFixturesSelection()
     bool selectAll = true;
     int visibleCount = 0;
 
-    for (quint32 &fixtureID : m_monProps->fixtureItemsID())
+    for (const quint32 &fixtureID : m_monProps->fixtureItemsID())
     {
-        for (quint32 &subID : m_monProps->fixtureIDList(fixtureID))
+        for (const quint32 &subID : m_monProps->fixtureIDList(fixtureID))
         {
             quint16 headIndex = m_monProps->fixtureHeadIndex(subID);
             quint16 linkedIndex = m_monProps->fixtureLinkedIndex(subID);
@@ -885,7 +885,7 @@ void ContextManager::toggleFixturesSelection()
         if (fixture == nullptr)
             continue;
 
-        for (quint32 &subID : m_monProps->fixtureIDList(fixture->id()))
+        for (const quint32 &subID : m_monProps->fixtureIDList(fixture->id()))
         {
             quint16 headIndex = m_monProps->fixtureHeadIndex(subID);
             quint16 linkedIndex = m_monProps->fixtureLinkedIndex(subID);
@@ -914,7 +914,7 @@ void ContextManager::setRectangleSelection(qreal x, qreal y, qreal width, qreal 
 QVariantList ContextManager::selectedFixtureAddress()
 {
     QVariantList addresses;
-    for (quint32 &itemID : m_selectedFixtures)
+    for (const quint32 &itemID : m_selectedFixtures)
     {
         quint32 fxID = FixtureUtils::itemFixtureID(itemID);
         const Fixture *fixture = m_doc->fixture(fxID);
@@ -937,7 +937,7 @@ QVariantList ContextManager::selectedFixtureAddress()
 QVariantList ContextManager::selectedFixtureIDVariantList()
 {
     QVariantList list;
-    for (quint32 &itemID : m_selectedFixtures)
+    for (const quint32 &itemID : m_selectedFixtures)
     {
         quint32 fxID = FixtureUtils::itemFixtureID(itemID);
         list.append(fxID);
@@ -994,7 +994,7 @@ void ContextManager::setFixturePosition(quint32 itemID, qreal x, qreal y, qreal 
 
 void ContextManager::setFixturesOffset(qreal x, qreal y)
 {
-    for (quint32 &itemID : m_selectedFixtures)
+    for (const quint32 &itemID : m_selectedFixtures)
     {
         quint32 fxID = FixtureUtils::itemFixtureID(itemID);
         quint16 headIndex = FixtureUtils::itemHeadIndex(itemID);
@@ -1051,7 +1051,7 @@ void ContextManager::setFixturesPosition(QVector3D position)
         return;
 
     // relative position change
-    for (quint32 &itemID : m_selectedFixtures)
+    for (const quint32 &itemID : m_selectedFixtures)
     {
         quint32 fxID = FixtureUtils::itemFixtureID(itemID);
         quint16 headIndex = FixtureUtils::itemHeadIndex(itemID);
@@ -1076,7 +1076,7 @@ void ContextManager::setFixturesPosition(QVector3D position)
 void ContextManager::setFixturesGelColor(QColor color)
 {
     QByteArray ba;
-    for (quint32 &itemID : m_selectedFixtures)
+    for (const quint32 &itemID : m_selectedFixtures)
     {
         quint32 fxID = FixtureUtils::itemFixtureID(itemID);
         quint16 headIndex = FixtureUtils::itemHeadIndex(itemID);
@@ -1095,7 +1095,7 @@ void ContextManager::setFixturesGelColor(QColor color)
 void ContextManager::setFixedZoom(int degrees)
 {
     QByteArray ba;
-    for (quint32 &itemID : m_selectedFixtures)
+    for (const quint32 &itemID : m_selectedFixtures)
     {
         quint32 fxID = FixtureUtils::itemFixtureID(itemID);
         quint16 headIndex = FixtureUtils::itemHeadIndex(itemID);
@@ -1121,7 +1121,7 @@ void ContextManager::setFixturesAlignment(int alignment)
     quint16 firstLinkedIndex = FixtureUtils::itemLinkedIndex(m_selectedFixtures.first());
     QVector3D firstPos = m_monProps->fixturePosition(firstFxID, firstHeadIndex, firstLinkedIndex);
 
-    for (quint32 &itemID : m_selectedFixtures)
+    for (const quint32 &itemID : m_selectedFixtures)
     {
         quint32 fxID = FixtureUtils::itemFixtureID(itemID);
         quint16 headIndex = FixtureUtils::itemHeadIndex(itemID);
@@ -1291,7 +1291,7 @@ void ContextManager::setLinkedFixture(quint32 itemID)
             return;
 
         // 1- iterate through Fixture subitems to find a new linked index
-        for (quint32 &subID : m_monProps->fixtureIDList(fixtureID))
+        for (const quint32 &subID : m_monProps->fixtureIDList(fixtureID))
         {
             quint16 hIdx = m_monProps->fixtureHeadIndex(subID);
             quint16 lIdx = m_monProps->fixtureLinkedIndex(subID);
@@ -1328,7 +1328,7 @@ void ContextManager::setLinkedFixture(quint32 itemID)
 
 void ContextManager::updateFixturesCapabilities()
 {
-    for (quint32 &itemID : m_selectedFixtures)
+    for (const quint32 &itemID : m_selectedFixtures)
         m_fixtureManager->getFixtureCapabilities(itemID, -1, true);
 }
 
@@ -1339,7 +1339,7 @@ qreal ContextManager::getCurrentValue(int type, bool degrees)
     qreal currValue = -1;
 
     QList<SceneValue> svList = m_channelsMap.values(type);
-    for (SceneValue &sv : svList)
+    for (const SceneValue &sv : svList)
     {
         Fixture *fixture = m_doc->fixture(sv.fxi);
         if (fixture == nullptr)
@@ -1505,7 +1505,7 @@ QVector3D ContextManager::fixturesRotation() const
 void ContextManager::setFixturesRotation(QVector3D degrees)
 {
     // relative rotation change
-    for (quint32 &itemID : m_selectedFixtures)
+    for (const quint32 &itemID : m_selectedFixtures)
     {
         quint32 fxID = FixtureUtils::itemFixtureID(itemID);
         quint16 headIndex = FixtureUtils::itemHeadIndex(itemID);
@@ -1560,7 +1560,7 @@ void ContextManager::setFixtureGroupSelection(quint32 id, bool enable, bool isUn
         {
             if (fixture->universe() == id)
             {
-                for (quint32 &subID : m_monProps->fixtureIDList(fixture->id()))
+                for (const quint32 &subID : m_monProps->fixtureIDList(fixture->id()))
                 {
                     quint16 headIndex = m_monProps->fixtureHeadIndex(subID);
                     quint16 linkedIndex = m_monProps->fixtureLinkedIndex(subID);
@@ -1576,13 +1576,13 @@ void ContextManager::setFixtureGroupSelection(quint32 id, bool enable, bool isUn
         if (group == nullptr)
             return;
 
-        for (quint32 &fxID : group->fixtureList())
+        for (const quint32 &fxID : group->fixtureList())
         {
             const Fixture *fixture = m_doc->fixture(fxID);
             if (fixture == nullptr)
                 continue;
 
-            for (quint32 &subID : m_monProps->fixtureIDList(fxID))
+            for (const quint32 &subID : m_monProps->fixtureIDList(fxID))
             {
                 quint16 headIndex = m_monProps->fixtureHeadIndex(subID);
                 quint16 linkedIndex = m_monProps->fixtureLinkedIndex(subID);
@@ -1723,7 +1723,7 @@ void ContextManager::setChannelValueByType(int type, int value, bool isRelative,
 {
     //qDebug() << "[setChannelValueByType] type:" << type << "value:" << value << "relative:" << isRelative << "channel:" << channel;
     QList<SceneValue> svList = m_channelsMap.values(type);
-    for (SceneValue &sv : svList)
+    for (const SceneValue &sv : svList)
     {
         if (channel == UINT_MAX || channel == sv.channel)
         {
@@ -1756,7 +1756,7 @@ void ContextManager::setPositionValue(int type, float degrees, bool isRelative)
     QList<quint32>fxIDs;
     QList<SceneValue> typeList = m_channelsMap.values(type);
 
-    for (SceneValue &sv : typeList)
+    for (const SceneValue &sv : typeList)
     {
         if (fxIDs.contains(sv.fxi) == true)
             continue;
@@ -1768,7 +1768,7 @@ void ContextManager::setPositionValue(int type, float degrees, bool isRelative)
             continue;
 
         QList<SceneValue> svList = fixture->positionToValues(type, degrees, isRelative);
-        for (SceneValue &posSv : svList)
+        for (const SceneValue &posSv : svList)
         {
             if (m_editingEnabled == false || m_functionManager->acceptsSceneValues() == false)
                 setDumpValue(posSv.fxi, posSv.channel, posSv.value);
@@ -1790,7 +1790,7 @@ void ContextManager::setBeamDegrees(float degrees, bool isRelative)
     QList<quint32>fxIDs;
     QList<SceneValue> typeList = m_channelsMap.values(QLCChannel::Beam);
 
-    for (SceneValue &sv : typeList)
+    for (const SceneValue &sv : typeList)
     {
         if (fxIDs.contains(sv.fxi) == true)
             continue;
@@ -1802,7 +1802,7 @@ void ContextManager::setBeamDegrees(float degrees, bool isRelative)
             continue;
 
         QList<SceneValue> svList = fixture->zoomToValues(degrees, isRelative);
-        for (SceneValue &zSv : svList)
+        for (const SceneValue &zSv : svList)
         {
             if (m_editingEnabled == false || m_functionManager->acceptsSceneValues() == false)
                 setDumpValue(zSv.fxi, zSv.channel, zSv.value);
@@ -1822,7 +1822,7 @@ void ContextManager::highlightFixtureSelection()
     setChannelValueByType((int)QLCChannel::Intensity, UCHAR_MAX);
 
     // search for shutter open and lamp on
-    for (quint32 &itemID : m_selectedFixtures)
+    for (const quint32 &itemID : m_selectedFixtures)
     {
         quint32 fxID = FixtureUtils::itemFixtureID(itemID);
         const Fixture *fixture = m_doc->fixture(fxID);
@@ -1850,7 +1850,7 @@ void ContextManager::highlightFixtureSelection()
 
 void ContextManager::setChannelValues(QList<SceneValue> values)
 {
-    for (SceneValue &sv : values)
+    for (const SceneValue &sv : values)
     {
         if (m_editingEnabled == false || m_functionManager->acceptsSceneValues() == false)
             setDumpValue(sv.fxi, sv.channel, sv.value);
@@ -1861,7 +1861,7 @@ void ContextManager::setChannelValues(QList<SceneValue> values)
 
 void ContextManager::slotPresetChanged(const QLCChannel *channel, quint8 value)
 {
-    for (quint32 &itemID : m_selectedFixtures)
+    for (const quint32 &itemID : m_selectedFixtures)
     {
         quint32 fixtureID = FixtureUtils::itemFixtureID(itemID);
         const Fixture *fixture = m_doc->fixture(fixtureID);
@@ -2034,7 +2034,7 @@ void ContextManager::resetDumpValues()
                               oldValues, QVariantList());
     }
 
-    for (SceneValue &sv : m_dumpValues)
+    for (const SceneValue &sv : m_dumpValues)
         m_source->unset(sv.fxi, sv.channel);
 
     m_source->unsetAll();

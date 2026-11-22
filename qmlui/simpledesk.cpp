@@ -529,7 +529,7 @@ void SimpleDesk::dumpDmxChannels(QString name, quint32 mask, int sceneID, bool n
 {
     QList<quint32> fixtureList;
 
-    for (SceneValue &scv : m_dumpValues)
+    for (const SceneValue &scv : m_dumpValues)
         if (!fixtureList.contains(scv.fxi))
             fixtureList.append(scv.fxi);
 

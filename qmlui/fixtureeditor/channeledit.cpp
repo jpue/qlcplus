@@ -367,7 +367,7 @@ QVariantList ChannelEdit::channelTypeList() const
 {
     QVariantList list;
 
-    for (QString &grp : QLCChannel::groupList())
+    for (const QString &grp : QLCChannel::groupList())
     {
         QLCChannel ch;
         ch.setGroup(QLCChannel::stringToGroup(grp));
@@ -380,7 +380,7 @@ QVariantList ChannelEdit::channelTypeList() const
 
         if (ch.group() == QLCChannel::Intensity)
         {
-            for (QString &color : QLCChannel::colourList())
+            for (const QString &color : QLCChannel::colourList())
             {
                 QLCChannel cc;
                 cc.setGroup(QLCChannel::Intensity);

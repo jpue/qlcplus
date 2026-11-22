@@ -374,7 +374,7 @@ void ChaserEditor::setPlaybackIndex(int playbackIndex)
                 }
             }
 
-            for (SceneValue &scv : m_chaser->stepAt(playbackIndex)->values)
+            for (const SceneValue &scv : m_chaser->stepAt(playbackIndex)->values)
                 currScene->setValue(scv);
 
             if (sceneWasRunning)

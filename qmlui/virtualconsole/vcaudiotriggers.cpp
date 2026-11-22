@@ -208,7 +208,7 @@ void VCAudioTriggers::setCaptureEnabled(bool enable)
         // Invalid ID: Stop every other widget
         emit functionStarting(this, Function::invalidId());
 
-        for (AudioBar &bar : m_spectrumBars)
+        for (const AudioBar &bar : m_spectrumBars)
         {
             if (bar.m_type == VCAudioTriggers::BarType::DMXBar)
             {
@@ -896,7 +896,7 @@ void VCAudioTriggers::writeDMX(MasterTimer *timer, QList<Universe *> universes)
     quint32 lastUniverse = Universe::invalid();
     QSharedPointer<GenericFader> fader;
 
-    for (AudioBar &bar : m_spectrumBars)
+    for (const AudioBar &bar : m_spectrumBars)
     {
         if (bar.m_type == VCAudioTriggers::BarType::DMXBar)
         {

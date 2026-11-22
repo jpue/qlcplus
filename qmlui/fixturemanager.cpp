@@ -1343,7 +1343,7 @@ void FixtureManager::addItemsToNewGroup(QList<quint32> itemIds)
             bins.push_back({x, w});
             return 0;
         }
-        Col &last = bins.back();
+        const Col &last = bins.back();
         if (qAbs(x - last.refX) > 0.5 * qMin(last.refW, w))
         {
             bins.push_back({x, w});
@@ -1480,7 +1480,7 @@ bool FixtureManager::renameFixtureGroup(quint32 groupID, QString newName)
             return false;
 
     // check also among universe names since they are represented as groups
-    for (QString &uniName : m_doc->inputOutputMap()->universeNames())
+    for (const QString &uniName : m_doc->inputOutputMap()->universeNames())
         if (uniName == newName)
             return false;
 
@@ -2201,7 +2201,7 @@ QMultiHash<int, SceneValue> FixtureManager::getFixtureCapabilities(quint32 itemI
     if (fixture->fixtureMode() != nullptr)
         phy = fixture->fixtureMode()->physical();
 
-    for (quint32 &ch : channelIndices)
+    for (const quint32 &ch : channelIndices)
     {
         const QLCChannel *channel(fixture->channel(ch));
         if (channel == nullptr)

@@ -187,7 +187,7 @@ void MainView3D::slotRefreshView()
     {
         if (m_monProps->containsFixture(fixture->id()))
         {
-            for (quint32 &subID : m_monProps->fixtureIDList(fixture->id()))
+            for (const quint32 &subID : m_monProps->fixtureIDList(fixture->id()))
             {
                 quint16 headIndex = m_monProps->fixtureHeadIndex(subID);
                 quint16 linkedIndex = m_monProps->fixtureLinkedIndex(subID);
@@ -201,7 +201,7 @@ void MainView3D::slotRefreshView()
         }
     }
 
-    for (quint32 &itemID : m_monProps->genericItemsID())
+    for (const quint32 &itemID : m_monProps->genericItemsID())
     {
         QString path = m_monProps->itemResource(itemID);
         createGenericItem(path, itemID);
@@ -1440,7 +1440,7 @@ void MainView3D::updateFixture(Fixture *fixture, QByteArray &previous)
     if (m_enabled == false || fixture == nullptr)
         return;
 
-    for (quint32 &subID : m_monProps->fixtureIDList(fixture->id()))
+    for (const quint32 &subID : m_monProps->fixtureIDList(fixture->id()))
     {
         quint16 headIndex = m_monProps->fixtureHeadIndex(subID);
         quint16 linkedIndex = m_monProps->fixtureLinkedIndex(subID);
@@ -2278,7 +2278,7 @@ void MainView3D::setItemSelection(int itemID, bool enable, int keyModifiers)
 
     if (enable && keyModifiers == 0)
     {
-        for (int &id : m_genericSelectedItems)
+        for (const int &id : m_genericSelectedItems)
         {
             SceneItem *meshRef = m_genericMap.value(id, nullptr);
             if (meshRef)
@@ -2380,7 +2380,7 @@ void MainView3D::toggleGenericItemsLock()
 
 void MainView3D::removeSelectedGenericItems()
 {
-    for (int &id : m_genericSelectedItems)
+    for (const int &id : m_genericSelectedItems)
     {
         SceneItem *meshRef = m_genericMap.take(id);
         if (meshRef)
@@ -2407,7 +2407,7 @@ void MainView3D::removeSelectedGenericItems()
 
 void MainView3D::normalizeSelectedGenericItems()
 {
-    for (int &id : m_genericSelectedItems)
+    for (const int &id : m_genericSelectedItems)
     {
         SceneItem *meshRef = m_genericMap.value(id, nullptr);
         if (meshRef)
@@ -2495,7 +2495,7 @@ void MainView3D::setGenericItemsPosition(QVector3D pos)
         return;
 
     // relative position change
-    for (int &itemID : m_genericSelectedItems)
+    for (const int &itemID : m_genericSelectedItems)
     {
         // do not move locked items
         if (m_monProps->itemFlags(itemID) & MonitorProperties::LockedFlag)
@@ -2542,7 +2542,7 @@ void MainView3D::setGenericItemsRotation(QVector3D rot)
         return;
 
     // relative rotation change
-    for (int &itemID : m_genericSelectedItems)
+    for (const int &itemID : m_genericSelectedItems)
     {
         QVector3D newRot = m_monProps->itemRotation(itemID) + rot;
 
@@ -2602,7 +2602,7 @@ void MainView3D::setGenericItemsScale(QVector3D scale)
     }
     else
     {
-        for (int &itemID : m_genericSelectedItems)
+        for (const int &itemID : m_genericSelectedItems)
         {
             QVector3D newScale = m_monProps->itemScale(itemID) + normScale;
             updateGenericItemScale(itemID, newScale);
@@ -2724,7 +2724,7 @@ void MainView3D::setGenericItemsColor(QColor color)
 {
     // copy the list, as Tardis may trigger selection changes
     QList<int> selection = m_genericSelectedItems;
-    for (int &itemID : selection)
+    for (const int &itemID : selection)
         updateGenericItemColor(itemID, color);
 }
 

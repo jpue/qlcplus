@@ -909,7 +909,7 @@ void VCSlider::updateClickAndGoResource()
 {
     /* Find the first valid channel and retrieve the capability
      * resource from the current slider value */
-    for (SceneValue &scv : m_levelChannels)
+    for (const SceneValue &scv : m_levelChannels)
     {
         const Fixture *fixture = m_doc->fixture(scv.fxi);
         if (fixture == nullptr)
@@ -1221,7 +1221,7 @@ QStringList VCSlider::availableAttributes() const
     if (function == nullptr)
         return list;
 
-    for (Attribute &attr : function->attributes())
+    for (const Attribute &attr : function->attributes())
         list << attr.m_name;
 
     return list;
@@ -1322,7 +1322,7 @@ void VCSlider::writeDMXLevel(MasterTimer* timer, QList<Universe *> universes)
         bool mixedDMXlevels = false;
         int monitorSliderValue = -1;
 
-        for (SceneValue &scv : m_levelChannels)
+        for (const SceneValue &scv : m_levelChannels)
         {
             const Fixture* fxi = m_doc->fixture(scv.fxi);
             if (fxi != nullptr)
@@ -1379,7 +1379,7 @@ void VCSlider::writeDMXLevel(MasterTimer* timer, QList<Universe *> universes)
 
     if (m_levelValueChanged)
     {
-        for (SceneValue &scv : m_levelChannels)
+        for (const SceneValue &scv : m_levelChannels)
         {
             const Fixture* fxi = m_doc->fixture(scv.fxi);
             if (fxi == nullptr)

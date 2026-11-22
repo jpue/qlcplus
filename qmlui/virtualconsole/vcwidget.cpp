@@ -687,7 +687,7 @@ QVariant VCWidget::externalControlsList() const
 
 QSharedPointer<QLCInputSource> VCWidget::inputSource(quint32 universe, quint32 channel)
 {
-    for (QSharedPointer<QLCInputSource> &source : m_inputSources)
+    for (const QSharedPointer<QLCInputSource> &source : m_inputSources)
         if (source->universe() == universe && source->channel() == channel)
             return source;
 

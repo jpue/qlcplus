@@ -1168,7 +1168,7 @@ void VCFrame::updateFeedback()
             child->updateFeedback();
     }
 
-    for (int &pIdx : m_pageLabels.keys())
+    for (const int &pIdx : m_pageLabels.keys())
     {
         if (pIdx == m_currentPage)
             sendFeedback(UCHAR_MAX, INPUT_SHORTCUT_BASE_ID + pIdx, VCWidget::UpperValue);

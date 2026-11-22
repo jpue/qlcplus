@@ -76,7 +76,7 @@ void ModelSelector::selectItem(int index, ListModel *model, int keyModifiers)
 
 void ModelSelector::resetSelection(ListModel *model)
 {
-    for (quint32 &sidx : m_selectedIndices)
+    for (const quint32 &sidx : m_selectedIndices)
     {
         QModelIndex idx = model->index(int(sidx), 0, QModelIndex());
         model->setDataWithRole(idx, "isSelected", false);

@@ -431,7 +431,7 @@ bool ArtNetController::handleArtNetPoll(QByteArray const& datagram, QHostAddress
     for (QMap<quint32, UniverseInfo>::iterator it = m_universeMap.begin(); it != m_universeMap.end(); ++it)
     {
         quint32 universe = it.key();
-        UniverseInfo &info = it.value();
+        const UniverseInfo &info = it.value();
         bool isInput = (info.type & Input) ? true : false;
 
         m_packetizer->setupArtNetPollReply(pollReplyPacket, m_ipAddr, m_MACAddress, universe, isInput);

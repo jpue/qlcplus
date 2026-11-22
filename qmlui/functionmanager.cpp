@@ -166,7 +166,7 @@ QStringList FunctionManager::selectedItemNames()
             continue;
         names.append(f->name());
     }
-    for (QString &path : m_selectedFolderList)
+    for (const QString &path : m_selectedFolderList)
     {
         QStringList tokens = path.split(TreeModel::separator());
         names.append(tokens.last());
@@ -1087,7 +1087,7 @@ bool FunctionManager::renameSelectedItems(QString newName, bool numbering, int s
     int currNumber = startNumber;
 
     // rename folders first
-    for (QString &path : m_selectedFolderList)
+    for (const QString &path : m_selectedFolderList)
         setFolderPath(path, newName, true);
 
     for (QVariant &id : m_selectedIDList) // C++11
@@ -1639,7 +1639,7 @@ void FunctionManager::dumpOnNewScene(QList<SceneValue> dumpValues, QList<quint32
 
     Scene *newScene = new Scene(m_doc);
 
-    for (SceneValue &sv : dumpValues)
+    for (const SceneValue &sv : dumpValues)
     {
         if (selectedFixtures.count() && selectedFixtures.contains(sv.fxi) == false)
             continue;
@@ -1858,7 +1858,7 @@ void FunctionManager::updateFunctionsTree()
         m_functionTree->setPathData(treePath, folderParams);
     }
 
-    for (QString &folderPath : sortedEmptyFolders)
+    for (const QString &folderPath : sortedEmptyFolders)
     {
         QStringList tokens = folderPath.split(TreeModel::separator());
         if (tokens.isEmpty())

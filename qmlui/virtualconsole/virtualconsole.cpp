@@ -1268,10 +1268,10 @@ void VirtualConsole::updatePageInputs()
     {
         VCPage *page = m_pages.at(i);
 
-        for (quint32 &inputSourceKey : page->pageInputSources())
+        for (const quint32 &inputSourceKey : page->pageInputSources())
             m_pagesInputSourcesMap[i] = inputSourceKey;
 
-        for (QKeySequence &seq : page->pageKeySequences())
+        for (const QKeySequence &seq : page->pageKeySequences())
             m_pagesKeySequencesMap[i] = seq;
     }
 }

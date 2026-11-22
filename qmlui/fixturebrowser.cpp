@@ -372,7 +372,7 @@ void FixtureBrowser::updateSearchTree()
     mfList.sort();
     QString searchFilter = m_searchFilter.toLower();
 
-    for (QString &manufacturer : mfList) // C++11
+    for (const QString &manufacturer : mfList) // C++11
     {
         QStringList modelsList = m_doc->fixtureDefCache()->models(manufacturer);
         if (manufacturer == "Generic")
@@ -382,7 +382,7 @@ void FixtureBrowser::updateSearchTree()
         }
         modelsList.sort();
 
-        for (QString &model : modelsList)
+        for (const QString &model : modelsList)
         {
             if (manufacturer.toLower().contains(searchFilter) ||
                 model.toLower().contains(searchFilter))

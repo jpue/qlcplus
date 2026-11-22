@@ -157,7 +157,7 @@ void Sequence::slotFixtureRemoved(quint32 fxID)
         QMutableListIterator<SceneValue> it(step.values);
         while (it.hasNext())
         {
-            SceneValue& value(it.next());
+            const SceneValue& value(it.next());
             if (value.fxi == fxID)
                 it.remove();
         }

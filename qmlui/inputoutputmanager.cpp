@@ -661,7 +661,7 @@ bool InputOutputManager::setFeedbackPatch(int universe, bool enable)
         int i = 0;
         bool found = false;
 
-        for (QString &pLine : m_ioMap->pluginOutputs(patch->pluginName()))
+        for (const QString &pLine : m_ioMap->pluginOutputs(patch->pluginName()))
         {
             if (pLine == inputName)
             {

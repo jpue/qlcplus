@@ -685,7 +685,7 @@ void VCXYPad::removeHeads(QVariantList heads)
                  << "group" << groupID;
 
         int fIdx = 0;
-        for (XYPadFixture &fixture : m_fixtures)
+        for (const XYPadFixture &fixture : m_fixtures)
         {
             if (groupID != FixtureGroup::invalidId())
             {
@@ -1878,7 +1878,7 @@ void VCXYPad::writeDMX(MasterTimer *timer, QList<Universe *> universes)
         y = 1.0 - y;
 
     // Write DMX values
-    for (XYPadFixture &fixture : m_fixtures)
+    for (const XYPadFixture &fixture : m_fixtures)
     {
         if (fixture.m_enabled == false)
             continue;
