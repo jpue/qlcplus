@@ -45,7 +45,7 @@ QList<SceneValue> KeyPadParser::parseCommand(Doc *doc, QString command,
     float toValue = 0;
     int thruCount = 0;
 
-    foreach (QString token, tokens)
+    foreach (const QString& token, tokens)
     {
         if (token.isEmpty())
             continue;

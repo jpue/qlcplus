@@ -221,7 +221,7 @@ QImage ClickAndGoWidget::getImageFromValue(uchar value) const
      *  the pre-loaded resource */
     if (m_type == Preset)
     {
-        foreach (PresetResource res, m_resources)
+        foreach (const PresetResource& res, m_resources)
         {
             if (value >= res.m_resLowLimit && value <= res.m_resHighLimit)
                 return res.m_thumbnail;

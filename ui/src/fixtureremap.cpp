@@ -775,7 +775,7 @@ void FixtureRemap::accept()
             {
                 VCXYPad *xypad = qobject_cast<VCXYPad*>(widget);
                 QList<VCXYPadFixture> copyFixtures;
-                foreach (VCXYPadFixture fix, xypad->fixtures())
+                foreach (const VCXYPadFixture& fix, xypad->fixtures())
                 {
                     quint32 srcFxID = fix.head().fxi;
                     for (int i = 0; i < sourceList.count(); i++)
@@ -799,7 +799,7 @@ void FixtureRemap::accept()
                     }
                 }
                 xypad->clearFixtures();
-                foreach (VCXYPadFixture fix, copyFixtures)
+                foreach (const VCXYPadFixture& fix, copyFixtures)
                     xypad->appendFixture(fix);
             }
             break;

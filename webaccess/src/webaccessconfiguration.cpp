@@ -40,14 +40,14 @@ QString WebAccessConfiguration::getIOConfigHTML(const Doc *doc)
     const InputOutputMap *ioMap = doc->inputOutputMap();
 
     QStringList IOplugins = ioMap->inputPluginNames();
-    foreach (QString out, ioMap->outputPluginNames())
+    foreach (const QString& out, ioMap->outputPluginNames())
         if (!IOplugins.contains(out))
             IOplugins.append(out);
 
     QStringList inputLines, outputLines, feedbackLines;
     QStringList profiles = ioMap->profileNames();
 
-    foreach (QString pluginName, IOplugins)
+    foreach (const QString& pluginName, IOplugins)
     {
         QStringList inputs = ioMap->pluginInputs(pluginName);
         QStringList outputs = ioMap->pluginOutputs(pluginName);
@@ -174,7 +174,7 @@ QString WebAccessConfiguration::getAudioConfigHTML(const Doc *doc)
     if (var.isValid())
         outputName = var.toString();
 
-    foreach (AudioDeviceInfo info, devList)
+    foreach (const AudioDeviceInfo& info, devList)
     {
         if (info.capabilities & AUDIO_CAP_INPUT)
             audioInSelect += "<option value=\"" + info.privateName.toHtmlEscaped() + "\" " +
@@ -231,7 +231,7 @@ QString WebAccessConfiguration::getPasswordsConfigHTML(const WebAccessAuth *auth
             "<th>" + tr("Action") + "</th>"
         "</tr>";
 
-    foreach (WebAccessUser user, auth->getUsers())
+    foreach (const WebAccessUser& user, auth->getUsers())
     {
         QString username = user.username;
         QString usernameAttr = username.toHtmlEscaped();

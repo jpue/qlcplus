@@ -1106,7 +1106,7 @@ bool VCCueList::loadXML(QXmlStreamReader &root)
         {
             QVariantList widths;
             QStringList wList = root.readElementText().split(",");
-            for (QString wStr : wList)
+            for (const QString& wStr : wList)
                 widths.append(wStr.toDouble());
 
             setColumnsWidths(widths);

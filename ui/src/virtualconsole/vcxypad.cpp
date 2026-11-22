@@ -336,7 +336,7 @@ QRectF VCXYPad::computeCommonDegreesRange() const
 {
     QRectF commonRange;
 
-    foreach (VCXYPadFixture fixture, m_fixtures)
+    foreach (const VCXYPadFixture& fixture, m_fixtures)
     {
         QRectF range = fixture.degreesRange();
         if (!range.isValid())
@@ -436,7 +436,7 @@ void VCXYPad::writeScenePositions(MasterTimer *timer, QList<Universe *> universe
     uchar tiltCoarse = uchar(qFloor(pt.y()));
     uchar tiltFine = uchar((pt.y() - qFloor(pt.y())) * 256);
 
-    foreach (SceneChannel sc, m_sceneChannels)
+    foreach (const SceneChannel& sc, m_sceneChannels)
     {
         if (sc.m_universe >= (quint32)universes.count())
             continue;
@@ -570,7 +570,7 @@ void VCXYPad::slotUniverseWritten(quint32 idx, const QByteArray &universeData)
     {
         QMap <quint32, QPointF> fxMap;
 
-        foreach (SceneChannel sc, m_sceneChannels)
+        foreach (const SceneChannel& sc, m_sceneChannels)
         {
             if (sc.m_universe != idx)
                 continue;
@@ -1258,7 +1258,7 @@ bool VCXYPad::saveXML(QXmlStreamWriter *doc)
     saveXMLAppearance(doc);
 
     /* Fixtures */
-    foreach (VCXYPadFixture fixture, m_fixtures)
+    foreach (const VCXYPadFixture& fixture, m_fixtures)
         fixture.saveXML(doc);
 
     /* Current XY position */

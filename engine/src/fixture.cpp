@@ -725,7 +725,7 @@ void Fixture::checkAlias(int chIndex, uchar value)
         return;
 
     // first, revert any channel replaced to the original channel set
-    foreach (AliasInfo alias, m_aliasInfo[chIndex].m_currCap->aliasList())
+    foreach (const AliasInfo& alias, m_aliasInfo[chIndex].m_currCap->aliasList())
     {
         QLCFixtureMode *mode = m_fixtureDef->mode(alias.targetMode);
         if (mode != m_fixtureMode)
@@ -738,7 +738,7 @@ void Fixture::checkAlias(int chIndex, uchar value)
     }
 
     // now, apply the current alias changes
-    foreach (AliasInfo alias, cap->aliasList())
+    foreach (const AliasInfo& alias, cap->aliasList())
     {
         QLCFixtureMode *mode = m_fixtureDef->mode(alias.targetMode);
         if (mode != m_fixtureMode)

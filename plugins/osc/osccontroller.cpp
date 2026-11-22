@@ -200,7 +200,7 @@ UniverseInfo* OSCController::getUniverseInfo(quint32 universe)
 OSCController::Type OSCController::type() const
 {
     int type = Unknown;
-    foreach (UniverseInfo info, m_universeMap)
+    foreach (const UniverseInfo& info, m_universeMap)
     {
         type |= info.type;
     }

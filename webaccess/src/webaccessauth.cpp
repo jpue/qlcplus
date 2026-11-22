@@ -102,7 +102,7 @@ bool WebAccessAuth::savePasswordsFile() const
 
     QTextStream stream(&file);
 
-    foreach (QString username, m_passwords.keys())
+    foreach (const QString& username, m_passwords.keys())
     {
         WebAccessUser user = m_passwords.value(username);
         stream
@@ -266,7 +266,7 @@ bool WebAccessAuth::verifyPassword(const QString& password, const WebAccessUser&
 
 bool WebAccessAuth::hasAtLeastOneAdmin() const
 {
-    foreach (WebAccessUser user, m_passwords.values())
+    foreach (const WebAccessUser& user, m_passwords.values())
     {
         if (user.level >= SUPER_ADMIN_LEVEL)
             return true;

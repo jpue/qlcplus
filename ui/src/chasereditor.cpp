@@ -739,7 +739,7 @@ void ChaserEditor::slotPasteClicked()
         const Sequence *sequence = qobject_cast<Sequence*>(m_chaser);
         quint32 sceneID = sequence->boundSceneID();
         const Scene *scene = qobject_cast<Scene*>(m_doc->function(sceneID));
-        foreach (ChaserStep step, pasteList)
+        foreach (const ChaserStep& step, pasteList)
         {
             if (step.fid != sceneID) // if IDs are the same then it's a valid step
             {

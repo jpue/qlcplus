@@ -154,7 +154,7 @@ bool Script::setData(const QString& str)
 #else
         QStringList lines = m_data.split(QRegExp("(\r\n|\n\r|\r|\n)"));
 #endif
-        foreach (QString line, lines)
+        foreach (const QString& line, lines)
         {
             bool ok = false;
             if (line.isEmpty() == false)

@@ -81,7 +81,7 @@ void ConfigureOSC::fillMappingTree()
     QTreeWidgetItem* outputItem = NULL;
 
     QList<OSCIO> IOmap = m_plugin->getIOMapping();
-    foreach (OSCIO io, IOmap)
+    foreach (const OSCIO& io, IOmap)
     {
         if (io.controller == NULL)
             continue;

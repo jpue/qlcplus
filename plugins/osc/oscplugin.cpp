@@ -127,7 +127,7 @@ QStringList OSCPlugin::outputs()
 
     init();
 
-    foreach (OSCIO line, m_IOmapping)
+    foreach (const OSCIO& line, m_IOmapping)
         list << line.IPAddress;
 
     return list;
@@ -219,7 +219,7 @@ QStringList OSCPlugin::inputs()
 
     init();
 
-    foreach (OSCIO line, m_IOmapping)
+    foreach (const OSCIO& line, m_IOmapping)
         list << line.IPAddress;
 
     return list;

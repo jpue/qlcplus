@@ -69,7 +69,7 @@ RGBScript::RGBScript(const RGBScript& s)
     , m_apiVersion(0)
 {
     evaluate();
-    foreach (RGBScriptProperty cap, s.m_properties)
+    foreach (const RGBScriptProperty& cap, s.m_properties)
     {
         setProperty(cap.m_name, s.property(cap.m_name));
     }
@@ -87,7 +87,7 @@ RGBScript &RGBScript::operator=(const RGBScript &s)
         m_contents = s.m_contents;
         m_apiVersion = s.m_apiVersion;
         evaluate();
-        foreach (RGBScriptProperty cap, s.m_properties)
+        foreach (const RGBScriptProperty& cap, s.m_properties)
         {
             setProperty(cap.m_name, s.property(cap.m_name));
         }
@@ -583,12 +583,12 @@ bool RGBScript::loadProperties()
     m_properties.clear();
 
     QStringList slCaps = varCaps.toStringList();
-    foreach (QString cap, slCaps)
+    foreach (const QString& cap, slCaps)
     {
         RGBScriptProperty newCap;
 
         QStringList propsList = cap.split('|');
-        foreach (QString prop, propsList)
+        foreach (const QString& prop, propsList)
         {
             QStringList keyValue = prop.split(':');
             if (keyValue.length() < 2)

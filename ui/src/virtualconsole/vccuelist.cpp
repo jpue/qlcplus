@@ -597,7 +597,7 @@ void VCCueList::slotFunctionNameChanged(quint32 fid)
         const Chaser *ch = chaser();
         if (ch == NULL)
             return;
-        foreach (ChaserStep step, ch->steps())
+        foreach (const ChaserStep& step, ch->steps())
         {
             if (step.fid == fid)
             {

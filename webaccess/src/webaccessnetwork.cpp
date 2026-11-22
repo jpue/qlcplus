@@ -200,7 +200,7 @@ void WebAccessNetwork::refreshConnectionsList()
     // execute "nmcli -t device status" to list all available devices
     QStringList devStatusOutput = getNmcliOutput(QStringList() << "-t" << "device" << "status");
 
-    foreach (QString dLine, devStatusOutput)
+    foreach (const QString& dLine, devStatusOutput)
     {
         QStringList devTokens = dLine.split(':');
         qDebug() << "output " << devTokens.at(0) << devTokens.at(3);
@@ -228,7 +228,7 @@ void WebAccessNetwork::refreshConnectionsList()
 
         // run "nmcli -t con show CONN_NAME" to retrieve everything about a connection
         QStringList conShowOuput = getNmcliOutput(QStringList() << "-t" << "con" << "show" << currInterface.connName);
-        foreach (QString cLine, conShowOuput)
+        foreach (const QString& cLine, conShowOuput)
         {
             QStringList params = cLine.split(':');
             if (params.at(0) == "connection.uuid")
@@ -278,7 +278,7 @@ QString WebAccessNetwork::getNetworkHTML()
 
     refreshConnectionsList();
 
-    foreach (InterfaceInfo info, m_interfaces)
+    foreach (const InterfaceInfo& info, m_interfaces)
     {
         if (info.enabled)
             html += getInterfaceHTML(&info);

@@ -1113,7 +1113,7 @@ QList<RGBScriptProperty> RGBMatrix::scriptPropertyAttributes() const
 
     RGBScript *script = static_cast<RGBScript*> (m_algorithm);
 
-    foreach (RGBScriptProperty prop, script->properties())
+    foreach (const RGBScriptProperty& prop, script->properties())
     {
         /** Only the properties that a slider can drive are exposed:
          *  a list needs at least two values to pick from, a range needs
@@ -1144,7 +1144,7 @@ QString RGBMatrix::scriptPropertyAttributeName(const RGBScriptProperty &prop)
 
 void RGBMatrix::unregisterScriptPropertyAttributes()
 {
-    foreach (RGBScriptProperty prop, scriptPropertyAttributes())
+    foreach (const RGBScriptProperty& prop, scriptPropertyAttributes())
         unregisterAttribute(scriptPropertyAttributeName(prop));
 }
 
@@ -1152,7 +1152,7 @@ void RGBMatrix::registerScriptPropertyAttributes()
 {
     QMutexLocker algorithmLocker(&m_algorithmMutex);
 
-    foreach (RGBScriptProperty prop, scriptPropertyAttributes())
+    foreach (const RGBScriptProperty& prop, scriptPropertyAttributes())
     {
         qreal min = 0.0;
         qreal max = 1.0;

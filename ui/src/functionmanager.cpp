@@ -448,7 +448,7 @@ void FunctionManager::slotAddAudio()
     if (dialog.exec() != QDialog::Accepted)
         return;
 
-    foreach (QString fn, dialog.selectedFiles())
+    foreach (const QString& fn, dialog.selectedFiles())
     {
         Function* f = new Audio(m_doc);
         Audio *audio = qobject_cast<Audio*> (f);
@@ -501,7 +501,7 @@ void FunctionManager::slotAddVideo()
     if (dialog.exec() != QDialog::Accepted)
         return;
 
-    foreach (QString fn, dialog.selectedFiles())
+    foreach (const QString& fn, dialog.selectedFiles())
     {
         Function* f = new Video(m_doc);
         Video *video = qobject_cast<Video*> (f);

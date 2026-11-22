@@ -392,7 +392,7 @@ void ScriptEditor::slotAddSystemCommand()
 
     QStringList argsList = args.split(" ");
     QString formattedArgs;
-    foreach (QString arg, argsList)
+    foreach (const QString& arg, argsList)
     {
         formattedArgs.append(QString("arg:%1 ").arg(arg));
     }

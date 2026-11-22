@@ -1153,7 +1153,7 @@ void QLCFixtureEditor::refreshAliasTree()
             if (cap->preset() != QLCCapability::Alias)
                 continue;
 
-            foreach (AliasInfo alias, cap->aliasList())
+            foreach (const AliasInfo& alias, cap->aliasList())
             {
                 QStringList columns;
                 QString capStr = QString("%1 - %2 [%3-%4]").arg(channel->name()).arg(cap->name()).arg(cap->min()).arg(cap->max());

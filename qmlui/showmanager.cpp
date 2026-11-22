@@ -1803,7 +1803,7 @@ QVariantList ShowManager::previewData(Function *f) const
             const Chaser *chaser = qobject_cast<Chaser *>(f);
             quint32 stepsTimeCounter = 0;
 
-            foreach (ChaserStep step, chaser->steps())
+            foreach (const ChaserStep& step, chaser->steps())
             {
                 uint stepFadeIn = step.fadeIn;
                 uint stepFadeOut = step.fadeOut;

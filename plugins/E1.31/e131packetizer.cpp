@@ -74,7 +74,7 @@ E131Packetizer::E131Packetizer(QString MACaddr)
     QStringList MAC = MACaddr.split(":");
     if (MAC.length() == 6)
     {
-        foreach (QString couple, MAC)
+        foreach (const QString& couple, MAC)
         {
             bool ok;
             m_commonHeader.append((char)couple.toInt(&ok, 16));

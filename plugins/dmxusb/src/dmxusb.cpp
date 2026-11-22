@@ -138,7 +138,7 @@ QStringList DMXUSB::outputs()
     for (int w = 0; w < m_outputs.count();)
     {
         DMXUSBWidget* widget = m_outputs.at(w);
-        foreach (QString name, widget->outputNames())
+        foreach (const QString& name, widget->outputNames())
             list << name;
         w += widget->outputsNumber();
     }
@@ -256,7 +256,7 @@ QStringList DMXUSB::inputs()
     for (int w = 0; w < m_inputs.count();)
     {
         DMXUSBWidget* widget = m_inputs.at(w);
-        foreach (QString name, widget->inputNames())
+        foreach (const QString& name, widget->inputNames())
             list << name;
         w += widget->inputsNumber();
     }

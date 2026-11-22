@@ -368,7 +368,7 @@ bool CueStack::saveXML(QXmlStreamWriter *doc, uint id) const
     doc->writeAttribute(KXMLQLCCueStackSpeedDuration, QString::number(duration()));
     doc->writeEndElement();
 
-    foreach (Cue cue, cues())
+    foreach (const Cue& cue, cues())
         cue.saveXML(doc);
 
     /* End the <CueStack> tag */

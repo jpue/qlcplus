@@ -252,7 +252,7 @@ quint32 Chaser::totalDuration()
         totalDuration = duration() * m_steps.count();
     else
     {
-        foreach (ChaserStep step, m_steps)
+        foreach (const ChaserStep& step, m_steps)
             totalDuration += step.duration;
     }
 
@@ -585,7 +585,7 @@ bool Chaser::contains(quint32 functionId) const
     const Doc *doc = this->doc();
     Q_ASSERT(doc != NULL);
 
-    foreach (ChaserStep step, m_steps)
+    foreach (const ChaserStep& step, m_steps)
     {
         const Function *function = doc->function(step.fid);
         // contains() can be called during init, function may be NULL
@@ -605,7 +605,7 @@ QList<quint32> Chaser::components() const
 {
     QList<quint32> ids;
 
-    foreach (ChaserStep step, m_steps)
+    foreach (const ChaserStep& step, m_steps)
         ids.append(step.fid);
 
     return ids;

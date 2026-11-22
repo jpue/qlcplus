@@ -51,7 +51,7 @@ QLCCapability *QLCCapability::createCopy()
     copy->setPreset(preset());
     for (int i = 0; i < m_resources.count(); i++)
         copy->setResource(i, m_resources.at(i));
-    foreach (AliasInfo alias, m_aliases)
+    foreach (const AliasInfo& alias, m_aliases)
         copy->addAlias(alias);
 
     return copy;
@@ -288,7 +288,7 @@ void QLCCapability::removeAlias(const AliasInfo& alias)
 void QLCCapability::replaceAliases(QList<AliasInfo> list)
 {
     m_aliases.clear();
-    foreach (AliasInfo info, list)
+    foreach (const AliasInfo& info, list)
         m_aliases.append(info);
 }
 
@@ -368,7 +368,7 @@ bool QLCCapability::saveXML(QXmlStreamWriter *doc) const
         doc->writeCharacters(QString("%1\n   ").arg(m_name)); // to preserve indentation
 
     /* Aliases */
-    foreach (AliasInfo info, m_aliases)
+    foreach (const AliasInfo& info, m_aliases)
     {
         doc->writeStartElement(KXMLQLCCapabilityAlias);
         doc->writeAttribute(KXMLQLCCapabilityAliasMode, info.targetMode);

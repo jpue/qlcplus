@@ -1064,7 +1064,7 @@ void ShowManager::slotPaste()
             else
             {
                 // Verify the Chaser copy steps against the current Scene
-                foreach (ChaserStep cs, sequence->steps())
+                foreach (const ChaserStep& cs, sequence->steps())
                 {
                     foreach (SceneValue scv, cs.values)
                     {

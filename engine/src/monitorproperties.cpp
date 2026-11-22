@@ -994,7 +994,7 @@ bool MonitorProperties::saveXML(QXmlStreamWriter *doc, const Doc *mainDocument) 
         }
     }
 
-    foreach (QString resource, lightResources())
+    foreach (const QString& resource, lightResources())
     {
         foreach (quint32 headIndex, lightHeadList(resource))
         {

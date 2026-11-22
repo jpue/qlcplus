@@ -178,7 +178,7 @@ QList<quint32> Script::functionList() const
     QList<quint32> list;
     int count = 0;
 
-    foreach (QString line, dataLines())
+    foreach (const QString& line, dataLines())
     {
         count ++;
         if (line.startsWith(startFunctionCmd + "(") ||
@@ -212,7 +212,7 @@ QList<quint32> Script::fixtureList() const
 {
     QList<quint32> list;
 
-    foreach (QString line, dataLines())
+    foreach (const QString& line, dataLines())
     {
         if (line.contains("setFixture"))
         {

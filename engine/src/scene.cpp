@@ -553,7 +553,7 @@ bool Scene::loadXML(QXmlStreamReader &root)
             if (chGrpIDs.isEmpty() == false)
             {
                 QStringList grpArray = chGrpIDs.split(",");
-                foreach (QString grp, grpArray)
+                foreach (const QString& grp, grpArray)
                 {
                     m_channelGroups.append(grp.toUInt());
                     m_channelGroupsLevels.append(0);

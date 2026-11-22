@@ -262,7 +262,7 @@ void RGBScript_Test::runScripts()
 
     // Iterate the list of scripts
     QStringList names = m_doc->rgbScriptsCache()->names();
-    foreach (QString name, names)
+    foreach (const QString& name, names)
     {
         qDebug() << "Evaluating script" << name;
         QScopedPointer<RGBScript> s(m_doc->rgbScriptsCache()->script(name));
@@ -398,7 +398,7 @@ void RGBScript_Test::runScripts()
                     QVERIFY(property.m_listValues.removeDuplicates() == 0);
                     // Verify the default value is valid
                     QVERIFY(property.m_listValues.contains(s->property(property.m_name)));
-                    foreach (QString value, property.m_listValues)
+                    foreach (const QString& value, property.m_listValues)
                     {
                         // Test with all values from the list
                         qDebug() << property.m_name << value;

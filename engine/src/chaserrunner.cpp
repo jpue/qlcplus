@@ -63,7 +63,7 @@ ChaserRunner::ChaserRunner(const Doc *doc, const Chaser *chaser, quint32 startTi
         qDebug() << "[ChaserRunner] startTime:" << startTime;
         int idx = 0;
         quint32 stepsTime = 0;
-        foreach (ChaserStep step, chaser->steps())
+        foreach (const ChaserStep& step, chaser->steps())
         {
             uint duration = m_chaser->durationMode() == Chaser::Common ? m_chaser->duration() : step.duration;
 

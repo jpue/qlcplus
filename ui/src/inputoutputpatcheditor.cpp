@@ -206,7 +206,7 @@ void InputOutputPatchEditor::fillMappingTree()
 
     // Build a complete list of Input/Output plugins
     QStringList IOplugins = m_ioMap->inputPluginNames();
-    foreach (QString out, m_ioMap->outputPluginNames())
+    foreach (const QString& out, m_ioMap->outputPluginNames())
         if (IOplugins.contains(out) == false)
             IOplugins.append(out);
 

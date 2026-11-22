@@ -75,7 +75,7 @@ QStringList QLCFixtureDefCache::manufacturers() const
 
     // Bounce the QSet into a QStringList
     QStringList list;
-    foreach (QString manuf, makers)
+    foreach (const QString& manuf, makers)
         list << manuf;
 
     return list;
@@ -94,7 +94,7 @@ QStringList QLCFixtureDefCache::models(const QString& manufacturer) const
 
     // Bounce the QSet into a QStringList
     QStringList list;
-    foreach (QString model, models)
+    foreach (const QString& model, models)
         list << model;
 
     return list;

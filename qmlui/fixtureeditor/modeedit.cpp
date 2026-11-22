@@ -180,7 +180,7 @@ void ModeEdit::updateHeadsList()
 {
     m_headList->clear();
 
-    for (QLCFixtureHead head : m_mode->heads())
+    for (const QLCFixtureHead& head : m_mode->heads())
     {
         QVariantMap headMap;
         headMap.insert("channelList", QVariant::fromValue(head.channels()));

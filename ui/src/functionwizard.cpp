@@ -330,7 +330,7 @@ void FunctionWizard::updateAvailableFunctionsTree()
 
         QStringList caps = PaletteGenerator::getCapabilities(fxi);
 
-        foreach (QString cap, caps)
+        foreach (const QString& cap, caps)
         {
             if (cap == KQLCChannelRGB || cap == KQLCChannelCMY)
             {

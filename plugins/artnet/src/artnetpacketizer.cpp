@@ -72,7 +72,7 @@ void ArtNetPacketizer::setupArtNetPollReply(QByteArray &data, QHostAddress ipAdd
     data[9] = opCodeMSB;
     QString ipStr = ipAddr.toString();
     QStringList ipAddrList = ipStr.split(".");
-    foreach (QString val, ipAddrList)
+    foreach (const QString& val, ipAddrList)
         data.append((char)val.toInt()); // IP address[4]
     data.append((char)0x36);     // Port LSB
     data.append((char)0x19);     // Port MSB
@@ -125,7 +125,7 @@ void ArtNetPacketizer::setupArtNetPollReply(QByteArray &data, QHostAddress ipAdd
     for (i = 0; i < 7; i++)
         data.append((char)0x00);  // SwVideo, SwMacro, SwRemote and 4 spare bytes
     QStringList MAC = MACaddr.split(":");
-    foreach (QString couple, MAC)
+    foreach (const QString& couple, MAC)
     {
         bool ok;
         data.append((char)couple.toInt(&ok, 16));
