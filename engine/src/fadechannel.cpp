@@ -154,7 +154,7 @@ void FadeChannel::autoDetect(const Doc *doc)
     }
     else
     {
-        QLCFixtureMode *mode = fixture->fixtureMode();
+        const QLCFixtureMode *mode = fixture->fixtureMode();
         m_universe = fixture->universe();
         m_address = fixture->address();
 

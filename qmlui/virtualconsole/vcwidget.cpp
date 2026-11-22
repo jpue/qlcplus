@@ -555,7 +555,7 @@ int VCWidget::page() const
 
 bool VCWidget::hasSoloParent() const
 {
-    VCWidget *wParent = qobject_cast<VCWidget*>(parent());
+    const VCWidget *wParent = qobject_cast<VCWidget*>(parent());
 
     if (wParent == nullptr || wParent == this)
         return false;
@@ -817,16 +817,16 @@ void VCWidget::applyInputProfileSettings(QSharedPointer<QLCInputSource> const& s
 
     // now check if the source is defined in the associated universe
     // profile and if it has specific settings
-    InputPatch *ip = m_doc->inputOutputMap()->inputPatch(source->universe());
+    const InputPatch *ip = m_doc->inputOutputMap()->inputPatch(source->universe());
     if (ip == nullptr || ip->profile() == nullptr)
         return;
 
     // Do not care about the page since input profiles don't do either
-    QLCInputChannel *ich = ip->profile()->channel(source->channel() & 0x0000FFFF);
+    const QLCInputChannel *ich = ip->profile()->channel(source->channel() & 0x0000FFFF);
     if (ich == nullptr)
         return;
 
-    QLCInputProfile *profile = ip->profile();
+    const QLCInputProfile *profile = ip->profile();
 
     // retrieve plugin specific params for feedback
     if (source->feedbackExtraParams(QLCInputFeedback::LowerValue).toInt() == -1)
@@ -1000,10 +1000,10 @@ QVariantList VCWidget::inputSourcesList()
             chName = tr("None");
         }
 
-        InputPatch *ip = m_doc->inputOutputMap()->inputPatch(source->universe());
+        const InputPatch *ip = m_doc->inputOutputMap()->inputPatch(source->universe());
         if (ip != nullptr && ip->profile() != nullptr)
         {
-            QLCInputChannel *ich = ip->profile()->channel(source->channel() & 0xFFFF);
+            const QLCInputChannel *ich = ip->profile()->channel(source->channel() & 0xFFFF);
             if (ich != nullptr && ich->type() == QLCInputChannel::Button)
                 supportCustomFeedback = true;
         }
@@ -1059,7 +1059,7 @@ void VCWidget::slotInputSourceValueChanged(quint32 universe, quint32 channel, uc
     Q_UNUSED(universe)
     Q_UNUSED(channel)
 
-    QLCInputSource *source = qobject_cast<QLCInputSource*>(sender());
+    const QLCInputSource *source = qobject_cast<QLCInputSource*>(sender());
     slotInputValueChanged(source->id(), value);
 }
 

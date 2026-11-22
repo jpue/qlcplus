@@ -62,7 +62,7 @@ Chaser *VCCueList_Test::createChaser(QString name, int steps)
 
 static int stepsCount(const VCCueList &cueList)
 {
-    ListModel *model = qvariant_cast<ListModel *>(cueList.stepsList());
+    const ListModel *model = qvariant_cast<ListModel *>(cueList.stepsList());
     return model == nullptr ? -1 : model->rowCount();
 }
 
@@ -152,8 +152,8 @@ void VCCueList_Test::properties()
 
 void VCCueList_Test::chaserAttachment()
 {
-    Chaser *chaser = createChaser("MyChaser", 3);
-    Chaser *chaser2 = createChaser("Other", 2);
+    const Chaser *chaser = createChaser("MyChaser", 3);
+    const Chaser *chaser2 = createChaser("Other", 2);
 
     VCCueList cueList(m_env->doc());
     cueList.setID(0);
@@ -183,7 +183,7 @@ void VCCueList_Test::chaserAttachment()
 
 void VCCueList_Test::chaserRemoved()
 {
-    Chaser *chaser = createChaser("C", 2);
+    const Chaser *chaser = createChaser("C", 2);
     quint32 chaserID = chaser->id();
 
     VCCueList cueList(m_env->doc());
@@ -199,7 +199,7 @@ void VCCueList_Test::chaserRemoved()
 
 void VCCueList_Test::copy()
 {
-    Chaser *chaser = createChaser("C", 2);
+    const Chaser *chaser = createChaser("C", 2);
 
     VCWidget parent(m_env->doc());
 
@@ -211,7 +211,7 @@ void VCCueList_Test::copy()
     cueList.setColumnsWidths(QVariantList() << 1.0 << 2.0);
     cueList.setSideFaderMode(VCCueList::Crossfade);
 
-    VCCueList *copy = qobject_cast<VCCueList *>(cueList.createCopy(&parent));
+    const VCCueList *copy = qobject_cast<VCCueList *>(cueList.createCopy(&parent));
     QVERIFY(copy != nullptr);
     QCOMPARE(copy->caption(), QString("Copied"));
     QCOMPARE(copy->chaserID(), chaser->id());
@@ -226,7 +226,7 @@ void VCCueList_Test::copy()
 
 void VCCueList_Test::saveLoad()
 {
-    Chaser *chaser = createChaser("C", 3);
+    const Chaser *chaser = createChaser("C", 3);
 
     VCCueList cueList(m_env->doc());
     cueList.setID(11);

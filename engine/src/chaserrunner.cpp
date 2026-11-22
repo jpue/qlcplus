@@ -268,7 +268,7 @@ void ChaserRunner::setAction(const ChaserAction &action)
 
             if (stopped && m_runnerSteps.size() == 1)
             {
-                ChaserRunnerStep *lastStep = m_runnerSteps.at(0);
+                const ChaserRunnerStep *lastStep = m_runnerSteps.at(0);
                 m_lastRunStepIdx = lastStep->m_index;
                 emit currentStepChanged(m_lastRunStepIdx);
             }
@@ -813,7 +813,7 @@ void ChaserRunner::setPause(bool enable, QList<Universe *> universes)
 
     // there might be a Scene fading out, so request pause
     // to faders bound to the Scene ID running on universes
-    Function *f = m_doc->function(m_lastFunctionID);
+    const Function *f = m_doc->function(m_lastFunctionID);
     if (f != NULL && f->type() == Function::SceneType)
     {
         foreach (Universe *universe, universes)
@@ -843,7 +843,7 @@ bool ChaserRunner::write(MasterTimer *timer, QList<Universe *> universes)
     // a step started by a pending action, before the running steps are
     // advanced below. It must not be advanced in the same write, as a step
     // started after them isn't, or it would run a tick ahead
-    ChaserRunnerStep *startedStep = NULL;
+    const ChaserRunnerStep *startedStep = NULL;
 
     switch (m_pendingAction.m_action)
     {

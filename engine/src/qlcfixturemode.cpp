@@ -81,7 +81,7 @@ QLCFixtureMode& QLCFixtureMode::operator=(const QLCFixtureMode& mode)
                not from mode.m_fixtureDef. If the channel in the
                other mode is deleted, the one in this copied mode
                will be invalid and we end up in a crash. */
-            QLCChannel* ch = it.next();
+            const QLCChannel* ch = it.next();
             QLCChannel* actual = m_fixtureDef->channel(ch->name());
             if (actual != NULL)
                 insertChannel(actual, i++);
@@ -306,7 +306,7 @@ int QLCFixtureMode::headForChannel(quint32 chnum) const
 
 void QLCFixtureMode::cacheHeads()
 {
-    QLCChannel *lastChannel = NULL;
+    const QLCChannel *lastChannel = NULL;
 
     for (int i = 0; i < m_heads.size(); i++)
     {
@@ -316,7 +316,7 @@ void QLCFixtureMode::cacheHeads()
 
     for (quint32 i = 0; i < quint32(m_channels.size()); i++)
     {
-        QLCChannel *channel = m_channels.at(i);
+        const QLCChannel *channel = m_channels.at(i);
 
         /** Auto-detect master intensity channel */
         if (m_masterIntensityChannel == QLCChannel::invalid() &&
@@ -459,7 +459,7 @@ bool QLCFixtureMode::saveXML(QXmlStreamWriter *doc) const
     QVectorIterator <QLCChannel*> it(m_channels);
     while (it.hasNext() == true)
     {
-        QLCChannel *channel = it.next();
+        const QLCChannel *channel = it.next();
         quint32 actsOnIndex = m_actsOnMap.value(i, QLCChannel::invalid());
 
         doc->writeStartElement(KXMLQLCFixtureModeChannel);

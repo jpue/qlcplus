@@ -201,7 +201,7 @@ void StageWizard::loadExistingGroups()
     m_groups.clear();
     m_groupCounter = 0;
 
-    for (FixtureGroup *grp : m_doc->fixtureGroups())
+    for (const FixtureGroup *grp : m_doc->fixtureGroups())
     {
         if (grp == nullptr)
             continue;
@@ -347,7 +347,7 @@ QVariant StageWizard::groupFixtures(int groupIndex) const
 
     for (quint32 fxID : m_groups.at(groupIndex).fixtureIDs)
     {
-        Fixture *fx = m_doc->fixture(fxID);
+        const Fixture *fx = m_doc->fixture(fxID);
         if (fx == nullptr)
             continue;
 
@@ -383,7 +383,7 @@ void StageWizard::detectGroupCapabilities(FixtureGroupEntry &e) const
 
     for (quint32 fxID : e.fixtureIDs)
     {
-        Fixture *fx = m_doc->fixture(fxID);
+        const Fixture *fx = m_doc->fixture(fxID);
         if (fx == nullptr)
             continue;
 
@@ -1016,7 +1016,7 @@ void StageWizard::layoutGroupSpatially(FixtureGroup *group,
     if (group == nullptr || fixtureIDs.isEmpty())
         return;
 
-    MonitorProperties *props = m_doc->monitorProperties();
+    const MonitorProperties *props = m_doc->monitorProperties();
 
     // Position of each fixture in the monitor frame (mm): x is left..right,
     // z is rear..front. Height is deliberately ignored — a matrix grid is a
@@ -1341,33 +1341,33 @@ void StageWizard::generateGroupFunctions(const FixtureGroupEntry &grp)
             case EffectColorRainbow:
                 if (grp.hasRGB || grp.hasCMY)
                 {
-                    Chaser *ch = generateColorRainbow(grp, prefix);
+                    const Chaser *ch = generateColorRainbow(grp, prefix);
                     if (ch) m_generatedFunctionIDs.append(ch->id());
                 }
                 break;
             case EffectSplitColor:
                 if (grp.hasRGB || grp.hasCMY)
                 {
-                    Chaser *ch = generateSplitColor(grp, prefix);
+                    const Chaser *ch = generateSplitColor(grp, prefix);
                     if (ch) m_generatedFunctionIDs.append(ch->id());
                 }
                 break;
             case EffectBlinderHit:
             {
-                Scene *s = generateBlinderHit(grp, prefix);
+                const Scene *s = generateBlinderHit(grp, prefix);
                 if (s) m_generatedFunctionIDs.append(s->id());
                 break;
             }
             case EffectStrobeChase:
                 if (grp.hasShutter)
                 {
-                    Chaser *ch = generateStrobeChase(grp, prefix);
+                    const Chaser *ch = generateStrobeChase(grp, prefix);
                     if (ch) m_generatedFunctionIDs.append(ch->id());
                 }
                 break;
             case EffectHeartbeat:
             {
-                Chaser *ch = generateHeartbeat(grp, prefix);
+                const Chaser *ch = generateHeartbeat(grp, prefix);
                 if (ch) m_generatedFunctionIDs.append(ch->id());
                 break;
             }

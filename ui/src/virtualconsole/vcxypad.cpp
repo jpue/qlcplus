@@ -235,7 +235,7 @@ VCWidget* VCXYPad::createCopy(VCWidget* parent) const
     for (QHash<QWidget*, VCXYPadPreset*>::const_iterator it = m_presets.begin();
             it != m_presets.end(); ++it)
     {
-        VCXYPadPreset *preset = it.value();
+        const VCXYPadPreset *preset = it.value();
         xypad->addPreset(*preset);
     }
 
@@ -698,7 +698,7 @@ QMap<quint32,QString> VCXYPad::presetsMap() const
 {
     QMap<quint32,QString> map;
 
-    foreach (VCXYPadPreset *control, m_presets)
+    foreach (const VCXYPadPreset *control, m_presets)
         map.insert(control->m_id, VCXYPadPreset::typeToString(control->m_type));
 
     return map;
@@ -838,7 +838,7 @@ void VCXYPad::slotPresetClicked(bool checked)
 
         foreach (SceneValue scv, m_scene->values())
         {
-            Fixture *fixture = m_doc->fixture(scv.fxi);
+            const Fixture *fixture = m_doc->fixture(scv.fxi);
             if (fixture == NULL)
                 continue;
             const QLCChannel *ch = fixture->channel(scv.channel);
@@ -1089,7 +1089,7 @@ void VCXYPad::slotKeyPressed(const QKeySequence &keySequence)
     for (QHash<QWidget*, VCXYPadPreset*>::iterator it = m_presets.begin();
             it != m_presets.end(); ++it)
     {
-        VCXYPadPreset *preset = it.value();
+        const VCXYPadPreset *preset = it.value();
         if (preset->m_keySequence == keySequence)
         {
             QPushButton *button = reinterpret_cast<QPushButton*>(it.key());

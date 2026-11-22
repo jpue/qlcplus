@@ -557,7 +557,7 @@ void Scene_Test::createCopy()
     QVERIFY(f != s1);
     QVERIFY(f->id() != s1->id());
 
-    Scene* copy = qobject_cast<Scene*> (f);
+    const Scene* copy = qobject_cast<Scene*> (f);
     QVERIFY(copy != NULL);
     QVERIFY(copy->fadeInSpeed() == 200);
     QVERIFY(copy->fadeOutSpeed() == 2000);

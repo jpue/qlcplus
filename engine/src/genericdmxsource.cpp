@@ -114,7 +114,7 @@ void GenericDMXSource::writeDMX(MasterTimer* timer, QList<Universe *> ua)
         while (it.hasNext())
         {
             it.next();
-            Fixture *fixture = m_doc->fixture(it.key().first);
+            const Fixture *fixture = m_doc->fixture(it.key().first);
             if (fixture == NULL)
                 continue;
 

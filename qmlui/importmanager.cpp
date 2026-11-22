@@ -133,7 +133,7 @@ bool ImportManager::loadWorkspace(const QString &fileName)
     // if not present, set initial monitor properties
     MonitorProperties *monProps = m_importDoc->monitorProperties();
 
-    for (Fixture *fixture : m_importDoc->fixtures())
+    for (const Fixture *fixture : m_importDoc->fixtures())
     {
         if (monProps->containsFixture(fixture->id()) == false)
             monProps->setFixtureFlags(fixture->id(), 0, 0, 0);
@@ -217,20 +217,20 @@ void ImportManager::getAvailableFixtureAddress(int channels, int &universe, int 
 
 void ImportManager::importFixtures()
 {
-    MonitorProperties *importMonProps = m_importDoc->monitorProperties();
+    const MonitorProperties *importMonProps = m_importDoc->monitorProperties();
     MonitorProperties *monProps = m_doc->monitorProperties();
 
     /* ************************ Import fixtures ************************ */
     for (quint32 importID : m_fixtureIDList)
     {
         bool matchFound = false;
-        Fixture *importFixture = m_importDoc->fixture(importID);
+        const Fixture *importFixture = m_importDoc->fixture(importID);
 
         qDebug() << "Import fixture" << importFixture->name();
 
         /* Check if a Fixture with the same name already exists in m_doc.
          * If it does, check also if the ID needs to be remapped */
-        for (Fixture *docFixture : m_doc->fixtures())
+        for (const Fixture *docFixture : m_doc->fixtures())
         {
             if (docFixture->name() == importFixture->name())
             {
@@ -257,7 +257,7 @@ void ImportManager::importFixtures()
             int address = importFixture->address();
 
             QLCFixtureDef *importDef = importFixture->fixtureDef();
-            QLCFixtureMode *importMode = importFixture->fixtureMode();
+            const QLCFixtureMode *importMode = importFixture->fixtureMode();
             QLCFixtureDef *fxiDef = m_doc->fixtureDefCache()->fixtureDef(importDef->manufacturer(), importDef->model());
             QLCFixtureMode *fxiMode = nullptr;
 
@@ -321,11 +321,11 @@ void ImportManager::importFixtures()
     for (quint32 groupID : m_fixtureGroupIDList)
     {
         bool matchFound = false;
-        FixtureGroup *importGroup = m_importDoc->fixtureGroup(groupID);
+        const FixtureGroup *importGroup = m_importDoc->fixtureGroup(groupID);
 
         qDebug() << "Import fixture group" << importGroup->name();
 
-        for (FixtureGroup *docGroup : m_doc->fixtureGroups())
+        for (const FixtureGroup *docGroup : m_doc->fixtureGroups())
         {
             if (docGroup->name() == importGroup->name())
             {
@@ -376,14 +376,14 @@ void ImportManager::importPalettes()
 {
     for (quint32 paletteID : m_paletteIDList)
     {
-        QLCPalette *importPalette = m_importDoc->palette(paletteID);
+        const QLCPalette *importPalette = m_importDoc->palette(paletteID);
         bool matchFound = false;
 
         qDebug() << "Import palette" << importPalette->name();
 
         /* Check if a Palette with the same name already exists in m_doc.
          * If it does, check also if the ID needs to be remapped */
-        for (QLCPalette *docPalette : m_doc->palettes())
+        for (const QLCPalette *docPalette : m_doc->palettes())
         {
             if (docPalette->name() == importPalette->name())
             {
@@ -441,7 +441,7 @@ void ImportManager::importFunctionID(quint32 funcID)
         // Scripts are a mix: they can control Fixtures AND Functions
         case Function::ScriptType:
         {
-            Script *script = qobject_cast<Script *>(importFunction);
+            const Script *script = qobject_cast<Script *>(importFunction);
             funcList = script->functionList();
         }
         break;
@@ -566,7 +566,7 @@ void ImportManager::importFunctionID(quint32 funcID)
         break;
         case Function::EFXType:
         {
-            EFX *efx = qobject_cast<EFX *>(docFunction);
+            const EFX *efx = qobject_cast<EFX *>(docFunction);
             for (EFXFixture *efxFixture : efx->fixtures())
             {
                 GroupHead head(efxFixture->head());
@@ -659,7 +659,7 @@ void ImportManager::updateChildrenFixtureIDs(TreeModel *tree, bool checked)
     if (tree == nullptr)
         return;
 
-    for (TreeModelItem *item : tree->items())
+    for (const TreeModelItem *item : tree->items())
     {
         updateFixtureItemID(item->data(), checked);
 
@@ -845,7 +845,7 @@ void ImportManager::checkFunctionTree(TreeModel *tree) const
         QVariant cRef = item->data().first();
         if (cRef.canConvert<Function *>())
         {
-            Function *func = cRef.value<Function *>();
+            const Function *func = cRef.value<Function *>();
             if (func != nullptr)
             {
                 if (m_functionIDList.contains(func->id()))
@@ -881,7 +881,7 @@ void ImportManager::slotFunctionTreeDataChanged(TreeModelItem *item, int role, c
     QVariant cRef = item->data().first();
     if (cRef.canConvert<Function *>())
     {
-        Function *func = cRef.value<Function *>();
+        const Function *func = cRef.value<Function *>();
         if (checked)
         {
             if (m_functionIDList.contains(func->id()) == false)
@@ -944,7 +944,7 @@ void ImportManager::checkFunctionDependency(quint32 fid)
         // a Scene can reference fixtures, fixture groups and palettes
         case Function::SceneType:
         {
-            Scene *scene = qobject_cast<Scene *>(func);
+            const Scene *scene = qobject_cast<Scene *>(func);
             fxList = scene->components();
             fxGroupList = scene->fixtureGroups();
             paletteList = scene->palettes();
@@ -959,7 +959,7 @@ void ImportManager::checkFunctionDependency(quint32 fid)
         // RGB Matrix requires a fixture group
         case Function::RGBMatrixType:
         {
-            RGBMatrix *rgbm = qobject_cast<RGBMatrix *>(func);
+            const RGBMatrix *rgbm = qobject_cast<RGBMatrix *>(func);
             fxList = rgbm->components();
             quint32 groupID = rgbm->fixtureGroup();
             fxGroupList.append(groupID);
@@ -976,7 +976,7 @@ void ImportManager::checkFunctionDependency(quint32 fid)
         // Script are a mix: they can control Fixtures AND Functions
         case Function::ScriptType:
         {
-            Script *script = qobject_cast<Script *>(func);
+            const Script *script = qobject_cast<Script *>(func);
             funcList = script->functionList();
             fxList = script->fixtureList();
         }
@@ -992,7 +992,7 @@ void ImportManager::checkFunctionDependency(quint32 fid)
         if (groupID != FixtureGroup::invalidId() &&
             m_fixtureGroupIDList.contains(groupID) == false)
         {
-            FixtureGroup *group = m_importDoc->fixtureGroup(groupID);
+            const FixtureGroup *group = m_importDoc->fixtureGroup(groupID);
             m_fixtureGroupIDList.append(groupID);
 
             for (quint32 id : group->fixtureList())

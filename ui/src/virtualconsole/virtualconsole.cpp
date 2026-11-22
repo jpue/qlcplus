@@ -605,7 +605,7 @@ void VirtualConsole::updateCustomMenu()
     if (m_selectedWidgets.size() > 0)
     {
         /* Change the custom menu to the last selected widget's menu */
-        VCWidget* latestWidget = m_selectedWidgets.last();
+        const VCWidget* latestWidget = m_selectedWidgets.last();
         m_customMenu = latestWidget->customMenu(m_editMenu);
         if (m_customMenu != NULL)
             m_editMenu->addMenu(m_customMenu);
@@ -745,7 +745,7 @@ void VirtualConsole::disconnectWidgetFromParent(VCWidget *widget, VCWidget *pare
 
     if (widget->type() == VCWidget::SliderWidget)
     {
-        VCSlider *slider = qobject_cast<VCSlider *>(widget);
+        const VCSlider *slider = qobject_cast<VCSlider *>(widget);
         if (slider != NULL)
         {
             disconnect(slider, SIGNAL(submasterValueChanged(qreal)),
@@ -809,7 +809,7 @@ void VirtualConsole::slotAddButtonMatrix()
             if (index < abm.functions().size())
             {
                 quint32 fid = abm.functions().at(index);
-                Function* function = m_doc->function(fid);
+                const Function* function = m_doc->function(fid);
                 if (function != NULL)
                 {
                     button->setFunction(fid);
@@ -1186,7 +1186,7 @@ void VirtualConsole::slotEditDelete()
                delete each widget. */
             VCWidget* widget = m_selectedWidgets.takeFirst();
             m_widgetsMap.remove(widget->id());
-            foreach (VCWidget* child, getChildren(widget))
+            foreach (const VCWidget* child, getChildren(widget))
                 m_widgetsMap.remove(child->id());
             VCWidget* parent = qobject_cast<VCWidget*> (widget->parentWidget());
             widget->deleteLater();

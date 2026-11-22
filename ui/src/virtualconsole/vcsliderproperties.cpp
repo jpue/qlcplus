@@ -357,7 +357,7 @@ void VCSliderProperties::setSubmasterPageVisibility(bool visible)
 
 void VCSliderProperties::levelUpdateFixtures()
 {
-    foreach (Fixture* fixture, m_doc->fixtures())
+    foreach (const Fixture* fixture, m_doc->fixtures())
     {
         Q_ASSERT(fixture != NULL);
         levelUpdateFixtureNode(fixture->id());
@@ -639,7 +639,7 @@ void VCSliderProperties::slotLevelByGroupClicked()
     QString group;
     QStringList groups;
 
-    foreach (Fixture* fixture, m_doc->fixtures())
+    foreach (const Fixture* fixture, m_doc->fixtures())
     {
         Q_ASSERT(fixture != NULL);
 
@@ -719,7 +719,7 @@ void VCSliderProperties::slotFlashCheckClicked(bool checked)
 
 void VCSliderProperties::updatePlaybackFunctionName()
 {
-    Function* function = m_doc->function(m_playbackFunctionId);
+    const Function* function = m_doc->function(m_playbackFunctionId);
     if (function != NULL)
     {
         m_playbackFunctionEdit->setText(function->name());
@@ -761,7 +761,7 @@ void VCSliderProperties::storeLevelChannels()
         Q_ASSERT(fxi_item != NULL);
 
         quint32 fxi_id = fxi_item->text(KColumnID).toUInt();
-        Fixture *fxi = m_doc->fixture(fxi_id);
+        const Fixture *fxi = m_doc->fixture(fxi_id);
 
         for (int j = 0; j < fxi_item->childCount(); j++)
         {

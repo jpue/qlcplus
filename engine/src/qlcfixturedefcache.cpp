@@ -87,7 +87,7 @@ QStringList QLCFixtureDefCache::models(const QString& manufacturer) const
     QListIterator <QLCFixtureDef*> it(m_defs);
     while (it.hasNext() == true)
     {
-        QLCFixtureDef* def = it.next();
+        const QLCFixtureDef* def = it.next();
         if (def->manufacturer() == manufacturer)
             models << def->model();
     }
@@ -107,7 +107,7 @@ QMap<QString, QMap<QString, bool> > QLCFixtureDefCache::fixtureCache() const
     QListIterator <QLCFixtureDef*> it(m_defs);
     while (it.hasNext() == true)
     {
-        QLCFixtureDef *def = it.next();
+        const QLCFixtureDef *def = it.next();
         map[def->manufacturer()][def->model()] = def->isUser();
     }
 

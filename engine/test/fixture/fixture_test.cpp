@@ -871,7 +871,7 @@ void Fixture_Test::loader()
     QVERIFY(m_doc->fixtures().size() == 1);
     QVERIFY(m_doc->fixture(0) == NULL); // No ID auto-assignment
 
-    Fixture* fxi = m_doc->fixture(42);
+    const Fixture* fxi = m_doc->fixture(42);
     QVERIFY(fxi != NULL);
     QVERIFY(fxi->name() == "Foobar");
     QVERIFY(fxi->channels() == 18);
@@ -1288,7 +1288,7 @@ void Fixture_Test::crossUniverseLoad()
         xmlReader.readNextStartElement();
 
         QVERIFY(Fixture::loader(xmlReader, &doc) == true);
-        Fixture *fxi = doc.fixture(7);
+        const Fixture *fxi = doc.fixture(7);
         QVERIFY(fxi != NULL);
         QVERIFY(fxi->crossUniverse() == c.second);
         QCOMPARE(fxi->channels(), quint32(360));

@@ -143,7 +143,7 @@ void Scene::setValue(const SceneValue& scv, bool blind, bool checkHTP)
         // update/add the changed channel
         if (blind == false && m_fadersMap.isEmpty() == false)
         {
-            Fixture *fixture = doc()->fixture(scv.fxi);
+            const Fixture *fixture = doc()->fixture(scv.fxi);
             if (fixture != NULL)
             {
                 quint32 universe = fixture->universe();
@@ -233,7 +233,7 @@ QColor Scene::colorValue(quint32 fxi) const
         if (fxi != Fixture::invalidId() && fxi != scv.fxi)
             continue;
 
-        Fixture *fixture = doc()->fixture(scv.fxi);
+        const Fixture *fixture = doc()->fixture(scv.fxi);
         if (fixture == NULL)
             continue;
 
@@ -258,7 +258,7 @@ QColor Scene::colorValue(quint32 fxi) const
         }
         else if (channel->group() == QLCChannel::Colour)
         {
-            QLCCapability *cap = channel->searchCapability(scv.value);
+            const QLCCapability *cap = channel->searchCapability(scv.value);
             if (cap &&
                 (cap->presetType() == QLCCapability::SingleColor ||
                  cap->presetType() == QLCCapability::DoubleColor))
@@ -637,7 +637,7 @@ void Scene::postLoad()
     while (it.hasNext() == true)
     {
         SceneValue value(it.next().key());
-        Fixture* fxi = doc()->fixture(value.fxi);
+        const Fixture* fxi = doc()->fixture(value.fxi);
         if (fxi == NULL || fxi->channel(value.channel) == NULL)
             it.remove();
     }
@@ -730,7 +730,7 @@ void Scene::writeDMX(MasterTimer *timer, QList<Universe *> ua)
 
 void Scene::processValue(MasterTimer *timer, QList<Universe*> ua, uint fadeIn, const SceneValue &scv)
 {
-    Fixture *fixture = doc()->fixture(scv.fxi);
+    const Fixture *fixture = doc()->fixture(scv.fxi);
 
     if (fixture == NULL)
         return;
@@ -760,7 +760,7 @@ void Scene::processValue(MasterTimer *timer, QList<Universe*> ua, uint fadeIn, c
     }
 
     const bool doBlend = blendFunctionID() != Function::invalidId();
-    Scene *blendScene = doBlend ? qobject_cast<Scene *>(doc()->function(blendFunctionID())) : NULL;
+    const Scene *blendScene = doBlend ? qobject_cast<Scene *>(doc()->function(blendFunctionID())) : NULL;
 
     fader->updateChannel(doc(), universe, scv.fxi, scv.channel, [&](FadeChannel &fc)
     {
@@ -849,7 +849,7 @@ void Scene::write(MasterTimer *timer, QList<Universe*> ua)
 
         foreach (quint32 paletteID, palettes())
         {
-            QLCPalette *palette = doc()->palette(paletteID);
+            const QLCPalette *palette = doc()->palette(paletteID);
             if (palette == NULL)
                 continue;
 

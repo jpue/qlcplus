@@ -113,7 +113,7 @@ QImage WaveformImageProvider::requestImage(const QString &id,
     if (!ok || m_doc == nullptr)
         return QImage();
 
-    Function *f = m_doc->function(fid);
+    const Function *f = m_doc->function(fid);
     if (f == nullptr || f->type() != Function::AudioType)
         return QImage();
 

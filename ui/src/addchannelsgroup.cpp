@@ -60,7 +60,7 @@ AddChannelsGroup::AddChannelsGroup(QWidget* parent, Doc* doc, ChannelsGroup *gro
     QList <SceneValue> chans = group->getChannels();
     int ch = 0;
 
-    foreach (Fixture* fxi, m_doc->fixtures())
+    foreach (const Fixture* fxi, m_doc->fixtures())
     {
         QTreeWidgetItem *topItem = NULL;
         quint32 uni = fxi->universe();
@@ -162,7 +162,7 @@ void AddChannelsGroup::accept()
         {
             QTreeWidgetItem *fixItem = uniItem->child(f);
             quint32 fxID = fixItem->text(KColumnID).toUInt();
-            Fixture *fxi = m_doc->fixture(fxID);
+            const Fixture *fxi = m_doc->fixture(fxID);
             if (fxi != NULL)
             {
                 for (int c = 0; c < fixItem->childCount(); c++)
@@ -200,7 +200,7 @@ void AddChannelsGroup::slotItemChecked(QTreeWidgetItem *item, int col)
     }
     else
     {
-        Fixture *fixture = m_doc->fixture(item->text(KColumnID).toUInt());
+        const Fixture *fixture = m_doc->fixture(item->text(KColumnID).toUInt());
         if (fixture == NULL)
             return;
 
@@ -224,7 +224,7 @@ void AddChannelsGroup::slotItemChecked(QTreeWidgetItem *item, int col)
             {
                 QTreeWidgetItem *fixItem = uniItem->child(f);
                 quint32 fxID = fixItem->text(KColumnID).toUInt();
-                Fixture *fxi = m_doc->fixture(fxID);
+                const Fixture *fxi = m_doc->fixture(fxID);
                 if (fxi != NULL)
                 {
                     QString tmpMode = fxi->fixtureMode() ? fxi->fixtureMode()->name() : "";

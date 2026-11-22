@@ -235,7 +235,7 @@ bool Collection::loadXML(QXmlStreamReader &root)
 
 void Collection::postLoad()
 {
-    Doc* doc = qobject_cast <Doc*> (parent());
+    const Doc* doc = qobject_cast <Doc*> (parent());
     Q_ASSERT(doc != NULL);
 
     /* Check that all member functions exist (nonexistent functions can
@@ -244,7 +244,7 @@ void Collection::postLoad()
     while (it.hasNext() == true)
     {
         /* Remove any nonexistent member functions */
-        Function* function = doc->function(it.next());
+        const Function* function = doc->function(it.next());
 
         if (function == NULL || function->contains(id())) // forbid self-containment
             it.remove();
@@ -253,12 +253,12 @@ void Collection::postLoad()
 
 bool Collection::contains(quint32 functionId) const
 {
-    Doc* doc = qobject_cast <Doc*> (parent());
+    const Doc* doc = qobject_cast <Doc*> (parent());
     Q_ASSERT(doc != NULL);
 
     foreach (quint32 fid, m_functions)
     {
-        Function* function = doc->function(fid);
+        const Function* function = doc->function(fid);
         // contains() can be called during init, function may be NULL
         if (function == NULL)
             continue;
@@ -288,7 +288,7 @@ FunctionParent Collection::functionParent() const
 
 void Collection::preRun(MasterTimer *timer)
 {
-    Doc *doc = this->doc();
+    const Doc *doc = this->doc();
     Q_ASSERT(doc != NULL);
     {
         QMutexLocker locker(&m_functionListMutex);
@@ -325,7 +325,7 @@ void Collection::preRun(MasterTimer *timer)
 
 void Collection::setPause(bool enable)
 {
-    Doc *doc = this->doc();
+    const Doc *doc = this->doc();
     Q_ASSERT(doc != NULL);
     foreach (quint32 fid, m_runningChildren)
     {
@@ -350,13 +350,13 @@ void Collection::write(MasterTimer *timer, QList<Universe *> universes)
     else if (m_tick == 2)
     {
         m_tick = 0;
-        Doc *doc = this->doc();
+        const Doc *doc = this->doc();
         Q_ASSERT(doc != NULL);
 
         QMutexLocker locker(&m_functionListMutex);
         foreach (quint32 fid, m_runningChildren)
         {
-            Function *function = doc->function(fid);
+            const Function *function = doc->function(fid);
             Q_ASSERT(function != NULL);
 
             // First tick may correspond to this collection starting the function
@@ -379,7 +379,7 @@ void Collection::write(MasterTimer *timer, QList<Universe *> universes)
 
 void Collection::postRun(MasterTimer* timer, QList<Universe *> universes)
 {
-    Doc* doc = qobject_cast <Doc*> (parent());
+    const Doc* doc = qobject_cast <Doc*> (parent());
     Q_ASSERT(doc != NULL);
 
     {
@@ -398,7 +398,7 @@ void Collection::postRun(MasterTimer* timer, QList<Universe *> universes)
 
         for (int i = 0; i < m_functions.count(); i++)
         {
-            Function* function = doc->function(m_functions.at(i));
+            const Function* function = doc->function(m_functions.at(i));
             Q_ASSERT(function != NULL);
 
             disconnect(function, SIGNAL(stopped(quint32)),
@@ -434,7 +434,7 @@ int Collection::adjustAttribute(qreal fraction, int attributeId)
 
     if (isRunning() && attrIndex == Intensity)
     {
-        Doc* document = doc();
+        const Doc* document = doc();
         Q_ASSERT(document != NULL);
 
         QMutexLocker locker(&m_functionListMutex);

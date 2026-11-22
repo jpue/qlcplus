@@ -704,7 +704,7 @@ void VCSlider::slotUniverseWritten(quint32 idx, const QByteArray &universeData)
     while (it.hasNext() == true)
     {
         LevelChannel lch(it.next());
-        Fixture* fxi = m_doc->fixture(lch.fixture);
+        const Fixture* fxi = m_doc->fixture(lch.fixture);
         if (fxi == NULL || lch.channel >= fxi->channels())
             continue;
 
@@ -774,7 +774,7 @@ void VCSlider::setupClickAndGoWidget()
         if (m_cngType == ClickAndGoWidget::Preset && m_levelChannels.size() > 0)
         {
             LevelChannel lChan = m_levelChannels.first();
-            Fixture *fxi = m_doc->fixture(lChan.fixture);
+            const Fixture *fxi = m_doc->fixture(lChan.fixture);
             if (fxi != NULL)
             {
                 const QLCChannel *chan = fxi->channel(lChan.channel);
@@ -951,7 +951,7 @@ void VCSlider::mouseReleaseEvent(QMouseEvent *e)
 
 void VCSlider::setPlaybackFunction(quint32 fid)
 {
-    Function* old = m_doc->function(m_playbackFunction);
+    const Function* old = m_doc->function(m_playbackFunction);
     if (old != NULL)
     {
         /* Get rid of old function connections */
@@ -1200,7 +1200,7 @@ void VCSlider::writeDMXLevel(MasterTimer *timer, QList<Universe *> universes)
         while (it.hasNext() == true)
         {
             LevelChannel lch(it.next());
-            Fixture *fxi = m_doc->fixture(lch.fixture);
+            const Fixture *fxi = m_doc->fixture(lch.fixture);
             if (fxi == NULL)
                 continue;
 

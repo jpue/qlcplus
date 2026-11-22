@@ -398,7 +398,7 @@ quint32 AddFixture::findAddress(quint32 universe, quint32 numChannels,
     QListIterator <Fixture*> fxit(fixtures);
     while (fxit.hasNext() == true)
     {
-        Fixture* fxi(fxit.next());
+        const Fixture* fxi(fxit.next());
         Q_ASSERT(fxi != NULL);
 
         if (fxi->universe() != universe)
@@ -473,7 +473,7 @@ void AddFixture::slotModeActivated(int modeIndex)
     m_channelList->clear();
     for (int i = 0; i < m_mode->channels().size(); i++)
     {
-        QLCChannel* channel = m_mode->channel(i);
+        const QLCChannel* channel = m_mode->channel(i);
         Q_ASSERT(channel != NULL);
 
         new QListWidgetItem(
@@ -600,7 +600,7 @@ void AddFixture::slotSelectionChanged()
         /* Generic dimmer selected. User enters number of channels. */
         if (m_fixtureID != Fixture::invalidId())
         {
-            Fixture *fxi = m_doc->fixture(m_fixtureID);
+            const Fixture *fxi = m_doc->fixture(m_fixtureID);
             if (fxi != NULL)
             {
                 m_fixtureDef = fxi->fixtureDef();

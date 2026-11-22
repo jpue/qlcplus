@@ -104,7 +104,7 @@ void FixtureGroupEditor::updateTable()
         QLCPoint pt(it.key());
 
         GroupHead head(it.value());
-        Fixture* fxi = m_doc->fixture(head.fxi);
+        const Fixture* fxi = m_doc->fixture(head.fxi);
         if (fxi == NULL)
             continue;
 

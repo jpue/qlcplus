@@ -655,7 +655,7 @@ void VCFrame::slotModeChanged(Doc::Mode mode)
 void VCFrame::slotSubmasterValueChanged(qreal value)
 {
     qDebug() << Q_FUNC_INFO << "val:" << value;
-    VCSlider *submaster = qobject_cast<VCSlider *>(sender());
+    const VCSlider *submaster = qobject_cast<VCSlider *>(sender());
     QListIterator <VCWidget*> it(this->findChildren<VCWidget*>());
     while (it.hasNext() == true)
     {
@@ -745,7 +745,7 @@ void VCFrame::slotKeyPressed(const QKeySequence& keySequence)
         slotNextPage();
     else
     {
-        foreach (VCFramePageShortcut* shortcut, m_pageShortcuts)
+        foreach (const VCFramePageShortcut* shortcut, m_pageShortcuts)
         {
             if (shortcut->m_keySequence == keySequence)
                 slotSetPage(shortcut->m_page);
@@ -772,7 +772,7 @@ void VCFrame::updateFeedback()
         }
     }
 
-    foreach (VCFramePageShortcut* shortcut, m_pageShortcuts)
+    foreach (const VCFramePageShortcut* shortcut, m_pageShortcuts)
     {
         QSharedPointer<QLCInputSource> src = shortcut->m_inputSource;
         if (!src.isNull() && src->isValid() == true)
@@ -929,7 +929,7 @@ void VCFrame::applyProperties(VCFrameProperties const& prop)
                     bool multiPageFrame = false;
                     if (newWidget->type() == VCWidget::FrameWidget || newWidget->type() == VCWidget::SoloFrameWidget)
                     {
-                        VCFrame *fr = qobject_cast<VCFrame *>(newWidget);
+                        const VCFrame *fr = qobject_cast<VCFrame *>(newWidget);
                         multiPageFrame = fr->multipageMode();
                     }
                     /** If the cloned widget is again a multipage frame, then there's not much
@@ -1345,7 +1345,7 @@ bool VCFrame::saveXML(QXmlStreamWriter *doc)
         /* Solo frame mixing */
         if (this->type() == SoloFrameWidget)
         {
-            VCSoloFrame *solo = reinterpret_cast<VCSoloFrame*>(this);
+            const VCSoloFrame *solo = reinterpret_cast<VCSoloFrame*>(this);
             if (solo->soloframeMixing())
                 doc->writeTextElement(KXMLQLCVCSoloFrameMixing, KXMLQLCTrue);
             else
@@ -1467,7 +1467,7 @@ QString VCFrame::xmlTagName() const
 QMenu* VCFrame::customMenu(QMenu* parentMenu) const
 {
     QMenu* menu = NULL;
-    VirtualConsole* vc = VirtualConsole::instance();
+    const VirtualConsole* vc = VirtualConsole::instance();
 
     if (allowChildren() == true && vc != NULL)
     {

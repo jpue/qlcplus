@@ -277,7 +277,7 @@ bool VCXYPad::copyFrom(const VCWidget *widget)
     updateFixtureList();
 
     clearPresets();
-    for (VCXYPadPreset *preset : XYPad->presets())
+    for (const VCXYPadPreset *preset : XYPad->presets())
         addPresetInternal(new VCXYPadPreset(*preset));
     m_lastAssignedPresetId = XYPad->m_lastAssignedPresetId;
     setActivePresetId(-1);
@@ -543,7 +543,7 @@ QRectF VCXYPad::floorRangeArea() const
 
 QVector3D VCXYPad::floorSize() const
 {
-    MonitorProperties *mProps = m_doc->monitorProperties();
+    const MonitorProperties *mProps = m_doc->monitorProperties();
     if (mProps == nullptr)
         return QVector3D(10.0f, 10.0f, 10.0f);
 
@@ -578,7 +578,7 @@ void VCXYPad::addGroup(QVariant reference)
     // resolve the concrete type of the dropped item
     QObject *object = reference.value<QObject *>();
 
-    if (FixtureGroup *group = qobject_cast<FixtureGroup *>(object))
+    if (const FixtureGroup *group = qobject_cast<FixtureGroup *>(object))
     {
         if (hasGroup(group->id()))
             return;
@@ -601,7 +601,7 @@ void VCXYPad::addGroup(QVariant reference)
         if (presetId >= 0)
             setPresetName(quint8(presetId), group->name());
     }
-    else if (Universe *uni = qobject_cast<Universe *>(object))
+    else if (const Universe *uni = qobject_cast<Universe *>(object))
     {
         // a Universe has no persistent identity to keep, so it is expanded
         // to the fixtures it patches
@@ -619,7 +619,7 @@ void VCXYPad::addFixture(QVariant reference)
     if (reference.canConvert<Fixture *>() == false)
         return;
 
-    Fixture *fixture = reference.value<Fixture *>();
+    const Fixture *fixture = reference.value<Fixture *>();
     int hIdx = 0;
 
     for (QLCFixtureHead const &head : fixture->fixtureMode()->heads())
@@ -652,7 +652,7 @@ void VCXYPad::addFixture(QVariant reference)
 
 void VCXYPad::addHead(int fixtureID, int headIndex)
 {
-    Fixture *fixture = m_doc->fixture(fixtureID);
+    const Fixture *fixture = m_doc->fixture(fixtureID);
     if (fixture == nullptr)
         return;
 
@@ -754,7 +754,7 @@ QVariantMap VCXYPad::headsRangeInfo(QVariantList heads)
                 // a group entry contributes the smallest range among its members
                 for (const GroupHead &head : entryHeads(fixture))
                 {
-                    Fixture *fxi = m_doc->fixture(head.fxi);
+                    const Fixture *fxi = m_doc->fixture(head.fxi);
                     if (fxi == nullptr)
                         continue;
 
@@ -823,7 +823,7 @@ void VCXYPad::setHeadsRange(QVariantList heads, int xMin, int xMax, bool xRevers
 
                 for (const GroupHead &head : entryHeads(fixture))
                 {
-                    Fixture *fxi = m_doc->fixture(head.fxi);
+                    const Fixture *fxi = m_doc->fixture(head.fxi);
                     if (fxi == nullptr)
                         continue;
 
@@ -926,7 +926,7 @@ int VCXYPad::addPositionPreset()
 
 int VCXYPad::addFunctionPreset(quint32 functionID)
 {
-    Function *function = m_doc->function(functionID);
+    const Function *function = m_doc->function(functionID);
     if (function == nullptr)
         return -1;
 
@@ -962,26 +962,26 @@ int VCXYPad::addFixtureGroupPreset(QVariant reference)
     // resolve the concrete type of the dropped item
     QObject *object = reference.value<QObject *>();
 
-    if (FixtureGroup *group = qobject_cast<FixtureGroup *>(object))
+    if (const FixtureGroup *group = qobject_cast<FixtureGroup *>(object))
     {
         // keep a reference to the group rather than a snapshot of its heads,
         // so the preset follows the group when its members change
         groupID = group->id();
         heads = group->headList();
     }
-    else if (Universe *uni = qobject_cast<Universe *>(object))
+    else if (const Universe *uni = qobject_cast<Universe *>(object))
     {
         for (const XYPadFixture &fixture : m_fixtures)
         {
             for (const GroupHead &head : entryHeads(fixture))
             {
-                Fixture *fxi = m_doc->fixture(head.fxi);
+                const Fixture *fxi = m_doc->fixture(head.fxi);
                 if (fxi != nullptr && fxi->universe() == uni->id())
                     heads.append(head);
             }
         }
     }
-    else if (Fixture *fixture = qobject_cast<Fixture *>(object))
+    else if (const Fixture *fixture = qobject_cast<Fixture *>(object))
     {
         for (const XYPadFixture &fxItem : m_fixtures)
         {
@@ -1285,7 +1285,7 @@ QList<GroupHead> VCXYPad::presetHeads(const VCXYPadPreset *preset) const
     if (preset->m_fxGroupID == FixtureGroup::invalidId())
         return preset->m_fxGroup;
 
-    FixtureGroup *group = m_doc->fixtureGroup(preset->m_fxGroupID);
+    const FixtureGroup *group = m_doc->fixtureGroup(preset->m_fxGroupID);
     if (group == nullptr)
         return QList<GroupHead>();
 
@@ -1311,13 +1311,13 @@ bool VCXYPad::sceneHasPanTilt(quint32 functionID) const
     if (function == nullptr || function->type() != Function::SceneType)
         return false;
 
-    Scene *scene = qobject_cast<Scene*>(function);
+    const Scene *scene = qobject_cast<Scene*>(function);
     if (scene == nullptr)
         return false;
 
     for (const SceneValue &scv : scene->values())
     {
-        Fixture *fixture = m_doc->fixture(scv.fxi);
+        const Fixture *fixture = m_doc->fixture(scv.fxi);
         if (fixture == nullptr)
             continue;
 
@@ -1543,7 +1543,7 @@ QList<GroupHead> VCXYPad::entryHeads(const XYPadFixture &fixture) const
 
     // a group is resolved every time, so that fixtures added to or removed
     // from it after the drop are honoured
-    FixtureGroup *group = m_doc->fixtureGroup(fixture.m_groupID);
+    const FixtureGroup *group = m_doc->fixtureGroup(fixture.m_groupID);
     if (group == nullptr)
         return QList<GroupHead>();
 
@@ -1591,7 +1591,7 @@ void VCXYPad::updateFixtureList()
 
         if (isGroup)
         {
-            FixtureGroup *group = m_doc->fixtureGroup(fixture.m_groupID);
+            const FixtureGroup *group = m_doc->fixtureGroup(fixture.m_groupID);
             if (group == nullptr)
                 continue;
 
@@ -1611,7 +1611,7 @@ void VCXYPad::updateFixtureList()
 
                 for (const GroupHead &head : group->headList())
                 {
-                    Fixture *fxi = m_doc->fixture(head.fxi);
+                    const Fixture *fxi = m_doc->fixture(head.fxi);
                     if (fxi == nullptr)
                         continue;
 
@@ -1625,7 +1625,7 @@ void VCXYPad::updateFixtureList()
         }
         else
         {
-            Fixture *fxi = m_doc->fixture(fixture.m_head.fxi);
+            const Fixture *fxi = m_doc->fixture(fixture.m_head.fxi);
             if (fxi == NULL)
                 continue;
 
@@ -1732,7 +1732,7 @@ void VCXYPad::slotUniverseWritten(quint32 idx, const QByteArray &universeData)
 
         for (const GroupHead &head : entryHeads(fixture))
         {
-            Fixture *fxi = m_doc->fixture(head.fxi);
+            const Fixture *fxi = m_doc->fixture(head.fxi);
             if (fxi == nullptr)
                 continue;
 
@@ -1895,7 +1895,7 @@ void VCXYPad::writeDMX(MasterTimer *timer, QList<Universe *> universes)
 
             if (isGroup)
             {
-                Fixture *fxi = m_doc->fixture(head.fxi);
+                const Fixture *fxi = m_doc->fixture(head.fxi);
                 if (fxi == nullptr || head.head >= fxi->heads())
                     continue;
 
@@ -2004,7 +2004,7 @@ void VCXYPad::writeDMXFloor(QList<Universe *> universes)
 
     // While a Fixture Group preset is active, only the heads it selects are
     // tracked, even when they come from a wider group entry
-    VCXYPadPreset *activePreset = m_activePresetId >= 0 ? findPreset(m_activePresetId) : nullptr;
+    const VCXYPadPreset *activePreset = m_activePresetId >= 0 ? findPreset(m_activePresetId) : nullptr;
     bool restrictToPreset = activePreset != nullptr &&
                             activePreset->m_type == VCXYPadPreset::FixtureGroup;
     QList<GroupHead> presetSelection = restrictToPreset ? presetHeads(activePreset)
@@ -2045,7 +2045,7 @@ void VCXYPad::writeDMXFloor(QList<Universe *> universes)
     // Tilt values are passed through untouched.
     for (quint32 fixtureID : fixtureIDs)
     {
-        Fixture *fxi = m_doc->fixture(fixtureID);
+        const Fixture *fxi = m_doc->fixture(fixtureID);
         if (fxi == nullptr || fxi->fixtureMode() == nullptr)
             continue;
 
@@ -2094,7 +2094,7 @@ void VCXYPad::writeDMXFloor(QList<Universe *> universes)
 
     for (const SceneValue &scv : values)
     {
-        Fixture *fxi = m_doc->fixture(scv.fxi);
+        const Fixture *fxi = m_doc->fixture(scv.fxi);
         if (fxi == nullptr)
             continue;
 

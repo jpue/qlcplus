@@ -276,7 +276,7 @@ bool ChannelsGroup::loadXML(QXmlStreamReader &xmlDoc)
         {
             SceneValue scv(QString(varray.at(i)).toUInt(),
                            QString(varray.at(i + 1)).toUInt(), 0);
-            Fixture* fxi = m_doc->fixture(scv.fxi);
+            const Fixture* fxi = m_doc->fixture(scv.fxi);
             if (fxi == NULL)
             {
                 qWarning() << Q_FUNC_INFO << "Fixture not present:" << scv.fxi;

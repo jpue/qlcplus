@@ -83,9 +83,9 @@ InputOutputPatchEditor::InputOutputPatchEditor(QWidget* parent, quint32 universe
     m_infoBrowser->setOpenExternalLinks(true);
     m_infoBrowser->setFixedHeight(250);
 
-    InputPatch* inputPatch = m_ioMap->inputPatch(universe);
-    OutputPatch* outputPatch = m_ioMap->outputPatch(universe);
-    OutputPatch* feedbackPatch = m_ioMap->feedbackPatch(universe);
+    const InputPatch* inputPatch = m_ioMap->inputPatch(universe);
+    const OutputPatch* outputPatch = m_ioMap->outputPatch(universe);
+    const OutputPatch* feedbackPatch = m_ioMap->feedbackPatch(universe);
 
     /* Copy these so they can be applied if the user cancels */
     if (inputPatch != NULL)
@@ -216,7 +216,7 @@ void InputOutputPatchEditor::fillMappingTree()
         QStringList inputs = m_ioMap->pluginInputs(pluginName);
         QStringList outputs = m_ioMap->pluginOutputs(pluginName);
         bool hasFeedback = m_ioMap->pluginSupportsFeedback(pluginName);
-        QLCIOPlugin *plugin = m_doc->ioPluginCache()->plugin(pluginName);
+        const QLCIOPlugin *plugin = m_doc->ioPluginCache()->plugin(pluginName);
         int lineNumber = 1;
 
         // 1st case: this plugin has no input or output
@@ -534,7 +534,7 @@ void InputOutputPatchEditor::slotPluginConfigurationChanged(const QString& plugi
         return;
     }
 
-    QTreeWidgetItem* item = pluginItem(pluginName);
+    const QTreeWidgetItem* item = pluginItem(pluginName);
     if (item == NULL)
         return;
 
@@ -619,7 +619,7 @@ void InputOutputPatchEditor::updateProfileItem(const QString& name, QTreeWidgetI
     Q_ASSERT(item != NULL);
 
     item->setText(KProfileColumnName, name);
-    QLCInputProfile * prof = m_ioMap->profile(name);
+    const QLCInputProfile * prof = m_ioMap->profile(name);
     if (prof)
     {
         item->setText(KProfileColumnType, QLCInputProfile::typeToString(prof->type()));
@@ -748,7 +748,7 @@ edit:
 
 void InputOutputPatchEditor::slotRemoveProfileClicked()
 {
-    QLCInputProfile* profile;
+    const QLCInputProfile* profile;
     QTreeWidgetItem* item;
     QString name;
     int r;

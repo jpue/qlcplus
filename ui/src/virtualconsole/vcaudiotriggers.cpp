@@ -470,7 +470,7 @@ void VCAudioTriggers::slotModeChanged(Doc::Mode mode)
     {
         enableWidgetUI(true);
 
-        foreach (AudioBar *bar, getAudioBars())
+        foreach (const AudioBar *bar, getAudioBars())
         {
             if (bar->m_type == AudioBar::BarType::DMXBar)
             {
@@ -706,7 +706,7 @@ bool VCAudioTriggers::saveXML(QXmlStreamWriter *doc)
         hasAssignment = true;
     else
     {
-        foreach (AudioBar *bar, m_spectrumBars)
+        foreach (const AudioBar *bar, m_spectrumBars)
         {
             if (bar->m_type != AudioBar::BarType::None)
             {

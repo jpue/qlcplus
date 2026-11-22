@@ -237,7 +237,7 @@ QList<VCWidget *> VCFrame::children(bool recursive) const
             widgetsList.append(widget);
             if (widget->type() == FrameWidget || widget->type() == SoloFrameWidget)
             {
-                VCFrame *frame = qobject_cast<VCFrame *>(widget);
+                const VCFrame *frame = qobject_cast<VCFrame *>(widget);
                 widgetsList.append(frame->children(true));
             }
         }
@@ -513,7 +513,7 @@ void VCFrame::addWidgetsFromClipboard(QQuickItem *parent, QVariantList idsList, 
             sources.append(widget);
     }
 
-    for (VCWidget *widget : sources)
+    for (const VCWidget *widget : sources)
     {
         // do not allow pasting an item into itself or into one of its children,
         // since the copy would end up inside the widget being copied
@@ -522,7 +522,7 @@ void VCFrame::addWidgetsFromClipboard(QQuickItem *parent, QVariantList idsList, 
 
         // children of a frame in the clipboard are copied along with it
         bool parentInClipboard = false;
-        for (VCWidget *other : sources)
+        for (const VCWidget *other : sources)
         {
             if (other != widget && isDescendantOf(widget, other))
             {
@@ -568,7 +568,7 @@ void VCFrame::addFunctions(QQuickItem *parent, QVariantList idsList, QPoint pos,
     for (QVariant vID : idsList) // C++11
     {
         quint32 funcID = vID.toUInt();
-        Function *func = m_doc->function(funcID);
+        const Function *func = m_doc->function(funcID);
 
         if (func == nullptr)
             continue;
@@ -596,7 +596,7 @@ void VCFrame::addFunctions(QQuickItem *parent, QVariantList idsList, QPoint pos,
         }
         else if (keyModifiers & Qt::ControlModifier)
         {
-            Function *f = m_doc->function(funcID);
+            const Function *f = m_doc->function(funcID);
             if (f->type() != Function::ChaserType)
                 return;
 
@@ -1112,7 +1112,7 @@ void VCFrame::adjustIntensity(qreal intensity)
         {
             if (child->type() == WidgetType::SliderWidget)
             {
-                VCSlider* slider = reinterpret_cast<VCSlider*>(child);
+                const VCSlider* slider = reinterpret_cast<VCSlider*>(child);
                 if (slider != nullptr && slider->sliderMode() == VCSlider::SliderMode::Submaster)
                     continue;
             }

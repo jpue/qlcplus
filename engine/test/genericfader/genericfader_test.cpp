@@ -84,7 +84,7 @@ void GenericFader_Test::addRemove()
     QVERIFY(fader->m_channels.contains(chHash) == true);
     QCOMPARE(fader->m_channels.count(), 1);
 
-    FadeChannel *fc3 = fader->getChannelFader(m_doc, ua[0], 0, 0);
+    const FadeChannel *fc3 = fader->getChannelFader(m_doc, ua[0], 0, 0);
     fader->remove(fc3);
     QVERIFY(fader->m_channels.contains(chHash) == false);
     QCOMPARE(fader->m_channels.count(), 0);

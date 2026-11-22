@@ -250,7 +250,7 @@ void VCSlider_Test::submaster()
 {
     VCFrame frame(m_env->doc(), m_env->vc());
     VCSlider *submaster = qobject_cast<VCSlider *>(frame.addWidget(nullptr, "Slider", QPoint()));
-    VCWidget *btn = frame.addWidget(nullptr, "Button", QPoint());
+    const VCWidget *btn = frame.addWidget(nullptr, "Button", QPoint());
     QVERIFY(submaster != nullptr && btn != nullptr);
 
     QSignalSpy spy(submaster, &VCSlider::submasterValueChanged);
@@ -274,7 +274,7 @@ void VCSlider_Test::submaster()
 
 void VCSlider_Test::grandMaster()
 {
-    InputOutputMap *ioMap = m_env->doc()->inputOutputMap();
+    const InputOutputMap *ioMap = m_env->doc()->inputOutputMap();
 
     VCSlider slider(m_env->doc());
     slider.setSliderMode(VCSlider::GrandMaster);
@@ -380,7 +380,7 @@ void VCSlider_Test::copy()
     slider.setMonitorEnabled(true);
     slider.setValue(100, false, false);
 
-    VCSlider *copy = qobject_cast<VCSlider *>(slider.createCopy(&parent));
+    const VCSlider *copy = qobject_cast<VCSlider *>(slider.createCopy(&parent));
     QVERIFY(copy != nullptr);
     QCOMPARE(copy->caption(), QString("Copied"));
     QCOMPARE(copy->widgetStyle(), VCSlider::WKnob);

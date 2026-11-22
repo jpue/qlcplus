@@ -164,7 +164,7 @@ void MultiTrackView::resetView()
 void MultiTrackView::addTrack(Track *track)
 {
     // check if track already exists
-    foreach (TrackItem *item, m_tracks)
+    foreach (const TrackItem *item, m_tracks)
     {
         if (item->getTrack()->id() == track->id())
             return;
@@ -334,14 +334,14 @@ quint32 MultiTrackView::deleteSelectedItem()
     {
         if (item->isActive() == true)
         {
-            Track *track = item->getTrack();
+            const Track *track = item->getTrack();
             quint32 trackID = track->id();
             QList <ShowFunction *> sfList = track->showFunctions();
             QString msg = tr("Do you want to DELETE track:") + QString("\n\n") + track->name();
             if (sfList.count() > 0)
             {
                 msg += QString("\n\n") + tr("This operation will also DELETE:") + QString("\n\n");
-                foreach (ShowItem *item, m_items)
+                foreach (const ShowItem *item, m_items)
                 {
                     if (item->getTrackIndex() == trackIndex)
                         msg += item->functionName() + QString("\n");

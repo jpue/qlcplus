@@ -134,7 +134,7 @@ void RGBText_Test::clone()
 
     RGBAlgorithm* algo = text.clone();
     QCOMPARE(algo->type(), RGBAlgorithm::Text);
-    RGBText* text3 = static_cast<RGBText*> (algo);
+    const RGBText* text3 = static_cast<RGBText*> (algo);
     QVERIFY(text3 != NULL);
     QCOMPARE(text3->text(), QString("Foo"));
     QCOMPARE(text3->font(), text.font());

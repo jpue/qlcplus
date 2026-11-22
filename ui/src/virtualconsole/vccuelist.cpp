@@ -337,7 +337,7 @@ bool VCCueList::copyFrom(const VCWidget *widget)
 
 void VCCueList::setChaser(quint32 id)
 {
-    Function *old = m_doc->function(m_chaserID);
+    const Function *old = m_doc->function(m_chaserID);
     if (old != NULL)
     {
         /* Get rid of old function connections */
@@ -407,7 +407,7 @@ void VCCueList::updateStepList()
     {
         ChaserStep step(it.next());
 
-        Function *function = m_doc->function(step.fid);
+        const Function *function = m_doc->function(step.fid);
         Q_ASSERT(function != NULL);
 
         QTreeWidgetItem *item = new QTreeWidgetItem(m_tree);
@@ -478,7 +478,7 @@ int VCCueList::getCurrentIndex() const
 
 int VCCueList::getNextIndex() const
 {
-    Chaser *ch = chaser();
+    const Chaser *ch = chaser();
     if (ch == NULL)
         return -1;
 
@@ -490,7 +490,7 @@ int VCCueList::getNextIndex() const
 
 int VCCueList::getPrevIndex() const
 {
-    Chaser *ch = chaser();
+    const Chaser *ch = chaser();
     if (ch == NULL)
         return -1;
 
@@ -502,7 +502,7 @@ int VCCueList::getPrevIndex() const
 
 int VCCueList::getFirstIndex() const
 {
-    Chaser *ch = chaser();
+    const Chaser *ch = chaser();
     if (ch == NULL)
         return -1;
 
@@ -514,7 +514,7 @@ int VCCueList::getFirstIndex() const
 
 int VCCueList::getLastIndex() const
 {
-    Chaser *ch = chaser();
+    const Chaser *ch = chaser();
     if (ch == NULL)
         return -1;
 
@@ -594,7 +594,7 @@ void VCCueList::slotFunctionNameChanged(quint32 fid)
     else
     {
         // fid might be an ID of a ChaserStep of m_chaser
-        Chaser *ch = chaser();
+        const Chaser *ch = chaser();
         if (ch == NULL)
             return;
         foreach (ChaserStep step, ch->steps())
@@ -952,7 +952,7 @@ void VCCueList::slotFunctionStopped(quint32 fid)
 
 void VCCueList::slotProgressTimeout()
 {
-    Chaser *ch = chaser();
+    const Chaser *ch = chaser();
     if (ch == NULL || !ch->isRunning())
         return;
 
@@ -1386,7 +1386,7 @@ void VCCueList::updateFeedback()
                         float(0), float(UCHAR_MAX)));
     sendFeedback(fbv, sideFaderInputSourceId);
 
-    Chaser *ch = chaser();
+    const Chaser *ch = chaser();
     if (ch == NULL)
         return;
 
@@ -1743,7 +1743,7 @@ bool VCCueList::loadXML(QXmlStreamReader &root)
 
         foreach (quint32 id, legacyStepList)
         {
-            Function *function = m_doc->function(id);
+            const Function *function = m_doc->function(id);
             if (function == NULL)
                 continue;
 

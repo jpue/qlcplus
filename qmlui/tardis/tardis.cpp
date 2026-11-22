@@ -392,7 +392,7 @@ QByteArray Tardis::actionToByteArray(int code, quint32 objID, QVariant data)
             if (objID >= quint32(m_doc->inputOutputMap()->universes().count()))
                 break;
 
-            Universe *universe = m_doc->inputOutputMap()->universes().at(int(objID));
+            const Universe *universe = m_doc->inputOutputMap()->universes().at(int(objID));
             universe->saveXML(&xmlWriter);
         }
         break;
@@ -400,7 +400,7 @@ QByteArray Tardis::actionToByteArray(int code, quint32 objID, QVariant data)
         case FixtureCreate:
         case FixtureDelete:
         {
-            Fixture *fixture = qobject_cast<Fixture *>(m_doc->fixture(objID));
+            const Fixture *fixture = qobject_cast<Fixture *>(m_doc->fixture(objID));
             if (fixture)
                 fixture->saveXML(&xmlWriter);
         }
@@ -408,7 +408,7 @@ QByteArray Tardis::actionToByteArray(int code, quint32 objID, QVariant data)
         case FixtureGroupCreate:
         case FixtureGroupDelete:
         {
-            FixtureGroup *group = qobject_cast<FixtureGroup *>(m_doc->fixtureGroup(objID));
+            const FixtureGroup *group = qobject_cast<FixtureGroup *>(m_doc->fixtureGroup(objID));
             if (group)
                 group->saveXML(&xmlWriter);
         }
@@ -416,7 +416,7 @@ QByteArray Tardis::actionToByteArray(int code, quint32 objID, QVariant data)
         case FunctionCreate:
         case FunctionDelete:
         {
-            Function *function = qobject_cast<Function *>(m_doc->function(objID));
+            const Function *function = qobject_cast<Function *>(m_doc->function(objID));
             if (function)
                 function->saveXML(&xmlWriter);
         }
@@ -425,7 +425,7 @@ QByteArray Tardis::actionToByteArray(int code, quint32 objID, QVariant data)
         case ChaserRemoveStep:
         {
             Chaser *chaser = qobject_cast<Chaser *>(m_doc->function(objID));
-            ChaserStep *step = chaser->stepAt(data.toInt());
+            const ChaserStep *step = chaser->stepAt(data.toInt());
             step->saveXML(&xmlWriter, data.toInt(), chaser->type() == Function::SequenceType ? true : false);
         }
         break;
@@ -433,31 +433,31 @@ QByteArray Tardis::actionToByteArray(int code, quint32 objID, QVariant data)
         case EFXRemoveFixture:
         {
             // EFXFixture reference is stored on data, so let's C-cast the QVariant value
-            EFXFixture *fixture = (EFXFixture *)data.value<void *>();
+            const EFXFixture *fixture = (EFXFixture *)data.value<void *>();
             fixture->saveXML(&xmlWriter);
         }
         break;
         case ShowManagerAddTrack:
         case ShowManagerDeleteTrack:
         {
-            Show *show = qobject_cast<Show *>(m_doc->function(objID));
-            Track *track = show->track(data.toInt());
+            const Show *show = qobject_cast<Show *>(m_doc->function(objID));
+            const Track *track = show->track(data.toInt());
             track->saveXML(&xmlWriter);
         }
         break;
         case ShowManagerAddFunction:
         case ShowManagerDeleteFunction:
         {
-            Show *show = qobject_cast<Show *>(m_doc->function(objID));
-            ShowFunction *sf = show->showFunction(data.toUInt());
-            Track *track = show->getTrackFromShowFunctionID(sf->id());
+            const Show *show = qobject_cast<Show *>(m_doc->function(objID));
+            const ShowFunction *sf = show->showFunction(data.toUInt());
+            const Track *track = show->getTrackFromShowFunctionID(sf->id());
             sf->saveXML(&xmlWriter, track->id());
         }
         break;
         case VCWidgetCreate:
         case VCWidgetDelete:
         {
-            VCWidget *widget = qobject_cast<VCWidget *>(m_virtualConsole->widget(objID));
+            const VCWidget *widget = qobject_cast<VCWidget *>(m_virtualConsole->widget(objID));
             if (widget)
                 widget->saveXML(&xmlWriter);
         }
@@ -635,7 +635,7 @@ bool Tardis::processBufferedAction(int action, quint32 objID, QVariant &value)
         case ShowManagerDeleteFunction:
         {
             QXmlStreamAttributes attrs = xmlReader.attributes();
-            Show *show = qobject_cast<Show *>(m_doc->function(objID));
+            const Show *show = qobject_cast<Show *>(m_doc->function(objID));
             if (attrs.hasAttribute(KXMLShowFunctionUid))
             {
                 quint32 sfUID = attrs.value(KXMLShowFunctionUid).toUInt();
@@ -1447,7 +1447,7 @@ int Tardis::processAction(TardisAction &action, bool undo)
 
         case ShowManagerItemSetStartTime:
         {
-            Show *show = m_showManager->currentShow();
+            const Show *show = m_showManager->currentShow();
             if (show != nullptr)
             {
                 ShowFunction *sf = show->showFunction(action.m_objID);
@@ -1459,7 +1459,7 @@ int Tardis::processAction(TardisAction &action, bool undo)
 
         case ShowManagerItemSetDuration:
         {
-            Show *show = m_showManager->currentShow();
+            const Show *show = m_showManager->currentShow();
             if (show != nullptr)
             {
                 ShowFunction *sf = show->showFunction(action.m_objID);
@@ -1471,7 +1471,7 @@ int Tardis::processAction(TardisAction &action, bool undo)
 
         case ShowManagerItemSetLock:
         {
-            Show *show = m_showManager->currentShow();
+            const Show *show = m_showManager->currentShow();
             if (show != nullptr)
             {
                 ShowFunction *sf = show->showFunction(action.m_objID);
@@ -1502,7 +1502,7 @@ int Tardis::processAction(TardisAction &action, bool undo)
 
         case ShowManagerTrackSetMute:
         {
-            Show *show = qobject_cast<Show *>(m_doc->function(action.m_objID));
+            const Show *show = qobject_cast<Show *>(m_doc->function(action.m_objID));
             UIntPair pairValue = value->value<UIntPair>(); // track ID on first, mute flag on second
             Track *track = show ? show->track(pairValue.first) : nullptr;
             if (track != nullptr)
@@ -1526,7 +1526,7 @@ int Tardis::processAction(TardisAction &action, bool undo)
 
         case ShowManagerItemSetTrack:
         {
-            Show *show = m_showManager->currentShow();
+            const Show *show = m_showManager->currentShow();
             if (show != nullptr)
             {
                 ShowFunction *sf = show->showFunction(action.m_objID);

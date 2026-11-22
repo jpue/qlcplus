@@ -227,7 +227,7 @@ void VCXYPad_Test::copy()
     pad.setVerticalRange(QPointF(20, 100));
     pad.addPositionPreset();
 
-    VCXYPad *copy = qobject_cast<VCXYPad *>(pad.createCopy(&parent));
+    const VCXYPad *copy = qobject_cast<VCXYPad *>(pad.createCopy(&parent));
     QVERIFY(copy != nullptr);
     QCOMPARE(copy->caption(), QString("Copied"));
     QCOMPARE(copy->invertedAppearance(), true);

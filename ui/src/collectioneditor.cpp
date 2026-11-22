@@ -77,7 +77,7 @@ void CollectionEditor::slotAdd()
     {
         QList<quint32> disabledList;
         disabledList << m_collection->id();
-        foreach (Function* function, m_doc->functions())
+        foreach (const Function* function, m_doc->functions())
         {
             if (function->contains(m_collection->id()))
                 disabledList << function->id();
@@ -197,7 +197,7 @@ void CollectionEditor::updateFunctionList()
 
     foreach (QVariant fid, m_collection->functions())
     {
-        Function* function = m_doc->function(fid.toUInt());
+        const Function* function = m_doc->function(fid.toUInt());
         Q_ASSERT(function != NULL);
 
         QTreeWidgetItem* item = new QTreeWidgetItem(m_tree);

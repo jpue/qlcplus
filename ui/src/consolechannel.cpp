@@ -71,7 +71,7 @@ ConsoleChannel::~ConsoleChannel()
 
 void ConsoleChannel::init()
 {
-    Fixture* fxi = m_doc->fixture(m_fixture);
+    const Fixture* fxi = m_doc->fixture(m_fixture);
     //Q_ASSERT(fxi != NULL);
 
     new QVBoxLayout(this);
@@ -345,7 +345,7 @@ void ConsoleChannel::slotResetButtonClicked()
 
 void ConsoleChannel::initMenu()
 {
-    Fixture* fxi = m_doc->fixture(fixture());
+    const Fixture* fxi = m_doc->fixture(fixture());
     Q_ASSERT(fxi != NULL);
 
     const QLCChannel* ch = fxi->channel(m_chIndex);
@@ -497,7 +497,7 @@ void ConsoleChannel::setIntensityButton(const QLCChannel* channel)
 
 void ConsoleChannel::initCapabilityMenu(const QLCChannel* ch)
 {
-    QLCCapability* cap;
+    const QLCCapability* cap;
     QMenu* valueMenu;
     QAction* action;
     QString s;

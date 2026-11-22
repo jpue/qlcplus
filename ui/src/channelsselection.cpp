@@ -182,7 +182,7 @@ void ChannelsSelection::updateFixturesTree()
                 combo->setItemData(bIdx == 0 ? 1 : 0, true, Qt::UserRole);
 
                 QPushButton *button = new QPushButton();
-                ChannelModifier *mod = fxi->channelModifier(c);
+                const ChannelModifier *mod = fxi->channelModifier(c);
                 if (mod == NULL)
                     button->setText("...");
                 else
@@ -213,7 +213,7 @@ void ChannelsSelection::updateFixturesTree()
 QList<QTreeWidgetItem *> ChannelsSelection::getSameChannels(QTreeWidgetItem *item)
 {
     QList<QTreeWidgetItem *> sameChannelsList;
-    Fixture *fixture = m_doc->fixture(item->text(KColumnID).toUInt());
+    const Fixture *fixture = m_doc->fixture(item->text(KColumnID).toUInt());
     if (fixture == NULL)
         return sameChannelsList;
 
@@ -234,7 +234,7 @@ QList<QTreeWidgetItem *> ChannelsSelection::getSameChannels(QTreeWidgetItem *ite
         {
             QTreeWidgetItem *fixItem = uniItem->child(f);
             quint32 fxID = fixItem->text(KColumnID).toUInt();
-            Fixture *fxi = m_doc->fixture(fxID);
+            const Fixture *fxi = m_doc->fixture(fxID);
             if (fxi != NULL)
             {
                 const QLCFixtureDef *tmpDef = fxi->fixtureDef();
@@ -315,7 +315,7 @@ void ChannelsSelection::slotModifierButtonClicked()
         return; // User pressed cancel
 
     QString displayName = "...";
-    ChannelModifier *modif = cme.selectedModifier();
+    const ChannelModifier *modif = cme.selectedModifier();
     if (modif != NULL)
         displayName = modif->name();
 

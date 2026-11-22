@@ -211,7 +211,7 @@ void SceneEditor::registerFixtureConsole(int index, QQuickItem *item)
     // initialize cache if fixture is not present
     if (!m_channelsCache.contains(fixtureID))
     {
-        Fixture *fixture = m_doc->fixture(fixtureID);
+        const Fixture *fixture = m_doc->fixture(fixtureID);
         if (fixture == nullptr)
             return;
         values.fill(0, fixture->channels());
@@ -307,7 +307,7 @@ void SceneEditor::slotAliasChanged()
 
     qDebug() << "Fixture alias changed";
 
-    Fixture *fxi = qobject_cast<Fixture *>(sender());
+    const Fixture *fxi = qobject_cast<Fixture *>(sender());
     if (fxi == nullptr)
         return;
 
@@ -406,7 +406,7 @@ void SceneEditor::pasteToAllFixtureSameType()
 
     for (SceneValue &scv : m_selectedChannels)
     {
-        Fixture *sourceFixture = m_doc->fixture(scv.fxi);
+        const Fixture *sourceFixture = m_doc->fixture(scv.fxi);
         if (sourceFixture == nullptr)
             continue;
 
@@ -414,7 +414,7 @@ void SceneEditor::pasteToAllFixtureSameType()
 
         for (quint32 &dstFxId : m_scene->fixtures())
         {
-            Fixture *destFixture = m_doc->fixture(dstFxId);
+            const Fixture *destFixture = m_doc->fixture(dstFxId);
             if (dstFxId == scv.fxi || destFixture == nullptr)
                 continue;
 
@@ -456,7 +456,7 @@ void SceneEditor::deleteItems(QVariantList list)
         {
             case App::FixtureDragItem:
             {
-                Fixture *fixture = dataMap["cRef"].value<Fixture *>();
+                const Fixture *fixture = dataMap["cRef"].value<Fixture *>();
                 quint32 fixtureID = fixture->id();
                 qDebug() << "removing fixture with ID" << fixtureID;
 
@@ -476,7 +476,7 @@ void SceneEditor::deleteItems(QVariantList list)
             break;
             case App::FixtureGroupDragItem:
             {
-                FixtureGroup *group = dataMap["cRef"].value<FixtureGroup *>();
+                const FixtureGroup *group = dataMap["cRef"].value<FixtureGroup *>();
                 qDebug() << "removing fixture group with ID" << group->id();
                 Tardis::instance()->enqueueAction(Tardis::SceneRemoveFixtureGroup, m_scene->id(), group->id(), group->id());
                 m_scene->removeFixtureGroup(group->id());
@@ -484,7 +484,7 @@ void SceneEditor::deleteItems(QVariantList list)
             break;
             case App::PaletteDragItem:
             {
-                QLCPalette *palette = dataMap["cRef"].value<QLCPalette *>();
+                const QLCPalette *palette = dataMap["cRef"].value<QLCPalette *>();
                 qDebug() << "removing palette with ID" << palette->id();
                 Tardis::instance()->enqueueAction(Tardis::SceneRemovePalette, m_scene->id(), palette->id(), palette->id());
                 m_scene->removePalette(palette->id());
@@ -530,7 +530,7 @@ void SceneEditor::updateLists()
 
     for (quint32 &fxID : m_fixtureIDs)
     {
-        Fixture *fixture = m_doc->fixture(fxID);
+        const Fixture *fixture = m_doc->fixture(fxID);
         if (fixture == nullptr)
             continue;
 
@@ -626,7 +626,7 @@ void SceneEditor::setCacheChannelValue(SceneValue scv)
     }
     else
     {
-        Fixture *fixture = m_doc->fixture(scv.fxi);
+        const Fixture *fixture = m_doc->fixture(scv.fxi);
         if (fixture == nullptr)
             return;
 
@@ -804,13 +804,13 @@ void SceneEditor::updateExternalMap()
 {
     clearExternalMap();
 
-    for (Universe *universe : m_doc->inputOutputMap()->universes())
+    for (const Universe *universe : m_doc->inputOutputMap()->universes())
     {
-        InputPatch *patch = universe->inputPatch();
+        const InputPatch *patch = universe->inputPatch();
         if (patch == nullptr)
             continue;
 
-        QLCInputProfile *profile = patch->profile();
+        const QLCInputProfile *profile = patch->profile();
         if (profile == nullptr)
             continue;
 
@@ -819,7 +819,7 @@ void SceneEditor::updateExternalMap()
         QMapIterator <quint32, QLCInputChannel*> it(profile->channels());
         while (it.hasNext() == true)
         {
-            QLCInputChannel *channel = it.next().value();
+            const QLCInputChannel *channel = it.next().value();
             ExternalControl control = { universe->id(), it.key(),
                                         QSharedPointer<QLCInputSource>() };
 
@@ -877,7 +877,7 @@ void SceneEditor::updateChannelMap()
 
     for (quint32 &fxID : m_fixtureIDs)
     {
-        Fixture *fixture = m_doc->fixture(fxID);
+        const Fixture *fixture = m_doc->fixture(fxID);
         if (fixture == nullptr)
             continue;
 
@@ -959,7 +959,7 @@ SceneValue SceneEditor::faderTarget(int faderIndex) const
         if (faderIndex > 3 || m_externalPage >= m_movingFixtures.count())
             return invalidTarget;
 
-        Fixture *fixture = m_doc->fixture(m_movingFixtures.at(m_externalPage));
+        const Fixture *fixture = m_doc->fixture(m_movingFixtures.at(m_externalPage));
         if (fixture == nullptr)
             return invalidTarget;
 
@@ -1039,7 +1039,7 @@ void SceneEditor::selectCurrentPageFixture()
         if (dataMap["type"].toInt() != App::FixtureDragItem)
             continue;
 
-        Fixture *fixture = dataMap["cRef"].value<Fixture *>();
+        const Fixture *fixture = dataMap["cRef"].value<Fixture *>();
         bool selected = (fixture != nullptr && fixture->id() == target.fxi);
 
         m_componentList->setDataWithRole(m_componentList->index(i, 0, QModelIndex()),
@@ -1235,7 +1235,7 @@ void SceneEditor::cachePositionDegrees()
     if (m_scene == nullptr || m_externalPage >= m_movingFixtures.count())
         return;
 
-    Fixture *fixture = m_doc->fixture(m_movingFixtures.at(m_externalPage));
+    const Fixture *fixture = m_doc->fixture(m_movingFixtures.at(m_externalPage));
     if (fixture == nullptr || fixture->fixtureMode() == nullptr)
         return;
 
@@ -1352,7 +1352,7 @@ void SceneEditor::highlightCurrentFixture()
             return;
 
     quint32 fxID = m_movingFixtures.at(m_externalPage);
-    Fixture *fixture = m_doc->fixture(fxID);
+    const Fixture *fixture = m_doc->fixture(fxID);
     if (fixture == nullptr)
         return;
 
@@ -1384,7 +1384,7 @@ void SceneEditor::highlightCurrentFixture()
             case QLCChannel::Shutter:
             {
                 /** Look for an explicit "shutter open" capability */
-                for (QLCCapability *cap : channel->capabilities())
+                for (const QLCCapability *cap : channel->capabilities())
                 {
                     if (cap->preset() == QLCCapability::ShutterOpen)
                     {
@@ -1398,7 +1398,7 @@ void SceneEditor::highlightCurrentFixture()
             case QLCChannel::Maintenance:
             {
                 /** Some Fixtures need the lamp to be explicitly struck */
-                for (QLCCapability *cap : channel->capabilities())
+                for (const QLCCapability *cap : channel->capabilities())
                 {
                     if (cap->preset() == QLCCapability::LampOn)
                     {
@@ -1483,7 +1483,7 @@ void SceneEditor::cacheChannelValues()
 
     for (quint32 &pId : m_scene->palettes())
     {
-        QLCPalette *palette = m_doc->palette(pId);
+        const QLCPalette *palette = m_doc->palette(pId);
         if (palette == nullptr)
             continue;
 

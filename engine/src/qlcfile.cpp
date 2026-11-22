@@ -157,7 +157,7 @@ QString QLCFile::currentUserName()
     return QString(getenv("USER"));
  #else
     QString name;
-    struct passwd* passwd = getpwuid(getuid());
+    const struct passwd* passwd = getpwuid(getuid());
     if (passwd == NULL)
         name.append(getenv("USER"));
     else

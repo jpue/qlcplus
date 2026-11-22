@@ -210,7 +210,7 @@ parse_uevent_info(const char *uevent, int *bus_type,
 	char *tmp = strdup(uevent);
 	char *saveptr = NULL;
 	char *line;
-	char *key;
+	const char *key;
 	char *value;
 
 	int found_id = 0;

@@ -64,7 +64,7 @@
 
 QVector3D StageWizard::fixtureDrawnSizeMM(quint32 fixtureID) const
 {
-    MainView3D *view3D = m_contextManager ? m_contextManager->get3DView() : nullptr;
+    const MainView3D *view3D = m_contextManager ? m_contextManager->get3DView() : nullptr;
     if (view3D != nullptr)
     {
         QVector3D drawn = view3D->fixtureDrawnSize(fixtureID) * 1000.0f;
@@ -74,7 +74,7 @@ QVector3D StageWizard::fixtureDrawnSizeMM(quint32 fixtureID) const
 
     // No 3D view at all (headless / tests): fall back to the declared size.
     QVector3D declared(300.0f, 300.0f, 300.0f);
-    Fixture *fx = m_doc->fixture(fixtureID);
+    const Fixture *fx = m_doc->fixture(fixtureID);
     if (fx && fx->fixtureMode())
     {
         QLCPhysical phy = fx->fixtureMode()->physical();
@@ -87,7 +87,7 @@ QVector3D StageWizard::fixtureDrawnSizeMM(quint32 fixtureID) const
 
 void StageWizard::trussGeometryMM(float &halfMM, float &bottomYMM, float &topYMM) const
 {
-    MainView3D *view3D = m_contextManager ? m_contextManager->get3DView() : nullptr;
+    const MainView3D *view3D = m_contextManager ? m_contextManager->get3DView() : nullptr;
 
     if (view3D != nullptr)
     {

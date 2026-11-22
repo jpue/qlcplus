@@ -126,9 +126,9 @@ bool ChaserEditor::addStep(int insertIndex)
         return false;
     }
 
-    Sequence *sequence = qobject_cast<Sequence*>(m_chaser);
+    const Sequence *sequence = qobject_cast<Sequence*>(m_chaser);
     ChaserStep step(sequence->boundSceneID());
-    Scene *currScene = qobject_cast<Scene*> (m_doc->function(sequence->boundSceneID()));
+    const Scene *currScene = qobject_cast<Scene*> (m_doc->function(sequence->boundSceneID()));
 
     if (currScene == nullptr)
     {
@@ -253,7 +253,7 @@ bool ChaserEditor::duplicateSteps(QVariantList indicesList)
     for (QVariant &vIndex : indicesList)
     {
         int stepIndex = vIndex.toInt();
-        ChaserStep *sourceStep = m_chaser->stepAt(stepIndex);
+        const ChaserStep *sourceStep = m_chaser->stepAt(stepIndex);
         ChaserStep step(*sourceStep);
         m_chaser->addStep(step);
 
@@ -351,7 +351,7 @@ void ChaserEditor::setPlaybackIndex(int playbackIndex)
     if (m_chaser != nullptr && m_previewEnabled == false &&
         m_chaser->type() == Function::SequenceType && playbackIndex >= 0)
     {
-        Sequence *sequence = qobject_cast<Sequence*>(m_chaser);
+        const Sequence *sequence = qobject_cast<Sequence*>(m_chaser);
         Scene *currScene = qobject_cast<Scene*> (m_doc->function(sequence->boundSceneID()));
 
         if (currScene != nullptr)
@@ -454,8 +454,8 @@ void ChaserEditor::removeFixtures(QVariantList list)
     if (m_chaser == nullptr)
         return;
 
-    Sequence *sequence = qobject_cast<Sequence *>(m_chaser);
-    Scene *scene = qobject_cast<Scene *>(m_doc->function(sequence->boundSceneID()));
+    const Sequence *sequence = qobject_cast<Sequence *>(m_chaser);
+    const Scene *scene = qobject_cast<Scene *>(m_doc->function(sequence->boundSceneID()));
     if (scene == nullptr)
         return;
 

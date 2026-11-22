@@ -157,7 +157,7 @@ QString EnttecWing::inputInfo(quint32 input)
     {
         /* A specific input line selected. Display its information if
            available. */
-        Wing* dev = device(input);
+        const Wing* dev = device(input);
         if (dev != NULL)
             str += dev->infoText();
     }
@@ -310,6 +310,6 @@ void EnttecWing::slotReadSocket()
 
 void EnttecWing::slotValueChanged(quint32 channel, uchar value)
 {
-    Wing* wing = qobject_cast<Wing*> (QObject::sender());
+    const Wing* wing = qobject_cast<Wing*> (QObject::sender());
     emit valueChanged(UINT_MAX, m_devices.indexOf(wing), channel, value);
 }

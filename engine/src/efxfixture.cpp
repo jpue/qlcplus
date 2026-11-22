@@ -98,7 +98,7 @@ void EFXFixture::setHead(GroupHead const & head)
 {
     m_head = head;
 
-    Fixture *fxi = doc()->fixture(head.fxi);
+    const Fixture *fxi = doc()->fixture(head.fxi);
     if (fxi == NULL)
         return;
 
@@ -167,7 +167,7 @@ quint32 EFXFixture::universe() const
 
 bool EFXFixture::isValid() const
 {
-    Fixture *fxi = doc()->fixture(head().fxi);
+    const Fixture *fxi = doc()->fixture(head().fxi);
 
     if (fxi == NULL)
         return false;
@@ -212,7 +212,7 @@ void EFXFixture::durationChanged()
 
 QStringList EFXFixture::modeList() const
 {
-    Fixture* fxi = doc()->fixture(head().fxi);
+    const Fixture* fxi = doc()->fixture(head().fxi);
     Q_ASSERT(fxi != NULL);
 
     QStringList modes;
@@ -396,7 +396,7 @@ uint EFXFixture::timeOffset() const
 
 void EFXFixture::start(QSharedPointer<GenericFader> fader)
 {
-    Fixture *fxi = doc()->fixture(head().fxi);
+    const Fixture *fxi = doc()->fixture(head().fxi);
 
     /* Cache channels to reduce processing while running */
     switch (m_mode)
@@ -688,7 +688,7 @@ void EFXFixture::setPointRGB(QList<Universe *> universes, QSharedPointer<Generic
     if (fader.isNull())
         return;
 
-    Fixture* fxi = doc()->fixture(head().fxi);
+    const Fixture* fxi = doc()->fixture(head().fxi);
     Q_ASSERT(fxi != NULL);
     Universe *uni = universes[universe()];
 

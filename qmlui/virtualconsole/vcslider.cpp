@@ -715,7 +715,7 @@ void VCSlider::checkFixtureTree(TreeModel *tree, Fixture *sourceFixture, quint32
             quint32 chIndex = itemData.at(4).toUInt();
             quint32 fixtureID = FixtureUtils::itemFixtureID(itemID);
             quint16 linkedIndex = FixtureUtils::itemLinkedIndex(itemID);
-            Fixture *destFixture = m_doc->fixture(fixtureID);
+            const Fixture *destFixture = m_doc->fixture(fixtureID);
 
             if (destFixture == nullptr)
                 continue;
@@ -848,7 +848,7 @@ QVariantList VCSlider::clickAndGoPresetsList()
     /* Find the first valid channel and return it to QML */
     for (SceneValue &scv : m_levelChannels)
     {
-        Fixture *fixture = m_doc->fixture(scv.fxi);
+        const Fixture *fixture = m_doc->fixture(scv.fxi);
         if (fixture == nullptr)
             continue;
 
@@ -911,7 +911,7 @@ void VCSlider::updateClickAndGoResource()
      * resource from the current slider value */
     for (SceneValue &scv : m_levelChannels)
     {
-        Fixture *fixture = m_doc->fixture(scv.fxi);
+        const Fixture *fixture = m_doc->fixture(scv.fxi);
         if (fixture == nullptr)
             continue;
 
@@ -919,7 +919,7 @@ void VCSlider::updateClickAndGoResource()
         if (ch == nullptr)
             return;
 
-        for (QLCCapability *cap : ch->capabilities())
+        for (const QLCCapability *cap : ch->capabilities())
         {
             if (m_value < cap->min() || m_value > cap->max())
                 continue;
@@ -1217,7 +1217,7 @@ QStringList VCSlider::availableAttributes() const
 {
     QStringList list;
 
-    Function *function = m_doc->function(m_controlledFunctionId);
+    const Function *function = m_doc->function(m_controlledFunctionId);
     if (function == nullptr)
         return list;
 
@@ -1324,7 +1324,7 @@ void VCSlider::writeDMXLevel(MasterTimer* timer, QList<Universe *> universes)
 
         for (SceneValue &scv : m_levelChannels)
         {
-            Fixture* fxi = m_doc->fixture(scv.fxi);
+            const Fixture* fxi = m_doc->fixture(scv.fxi);
             if (fxi != nullptr)
             {
                 const QLCChannel* qlcch = fxi->channel(scv.channel);
@@ -1381,7 +1381,7 @@ void VCSlider::writeDMXLevel(MasterTimer* timer, QList<Universe *> universes)
     {
         for (SceneValue &scv : m_levelChannels)
         {
-            Fixture* fxi = m_doc->fixture(scv.fxi);
+            const Fixture* fxi = m_doc->fixture(scv.fxi);
             if (fxi == nullptr)
                 continue;
 

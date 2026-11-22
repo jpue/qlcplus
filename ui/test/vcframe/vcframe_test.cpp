@@ -382,7 +382,7 @@ void VCFrame_Test::saveXML()
 
 void VCFrame_Test::customMenu()
 {
-    VCFrame* frame = VirtualConsole::instance()->contents();
+    const VCFrame* frame = VirtualConsole::instance()->contents();
     QVERIFY(frame != NULL);
 
     QMenu menu;

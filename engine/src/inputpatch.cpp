@@ -273,7 +273,7 @@ void InputPatch::setProfilePageControls()
         while (it.hasNext() == true)
         {
             it.next();
-            QLCInputChannel *ch = it.value();
+            const QLCInputChannel *ch = it.value();
             if (ch != NULL)
             {
                 if (m_nextPageCh == USHRT_MAX && ch->type() == QLCInputChannel::NextPage)

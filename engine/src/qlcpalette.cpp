@@ -727,7 +727,7 @@ QList<SceneValue> QLCPalette::valuesFromFixtureGroups(Doc *doc, QList<quint32> g
 
     foreach (quint32 id, groups)
     {
-        FixtureGroup *group = doc->fixtureGroup(id);
+        const FixtureGroup *group = doc->fixtureGroup(id);
         if (group == NULL)
             continue;
 

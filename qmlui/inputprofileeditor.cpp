@@ -266,7 +266,7 @@ int InputProfileEditor::saveChannel(int originalChannelNumber, int channelNumber
 
     if (originalChannelNumber >= 0 && originalChannelNumber != channelNumber)
     {
-        QLCInputChannel *ich = m_profile->channel(channelNumber);
+        const QLCInputChannel *ich = m_profile->channel(channelNumber);
         if (ich != nullptr)
             return -1;
     }

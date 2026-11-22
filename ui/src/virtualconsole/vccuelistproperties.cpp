@@ -224,7 +224,7 @@ void VCCueListProperties::slotPlaybackLayoutChanged()
 
 void VCCueListProperties::updateChaserName()
 {
-    Function* function = m_doc->function(m_chaserId);
+    const Function* function = m_doc->function(m_chaserId);
     if (function == NULL)
         m_chaserEdit->setText(tr("No function"));
     else

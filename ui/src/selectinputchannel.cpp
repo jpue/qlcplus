@@ -137,10 +137,10 @@ quint32 SelectInputChannel::channel() const
 
 void SelectInputChannel::fillTree()
 {
-    QLCInputChannel* channel;
+    const QLCInputChannel* channel;
     QTreeWidgetItem* uniItem;
     QTreeWidgetItem* chItem;
-    QLCInputProfile* profile;
+    const QLCInputProfile* profile;
     quint32 uni;
     InputPatch* patch;
 

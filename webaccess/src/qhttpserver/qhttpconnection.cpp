@@ -181,7 +181,7 @@ void QHttpConnection::waitForBytesWritten()
 
 void QHttpConnection::responseDone()
 {
-    QHttpResponse *response = qobject_cast<QHttpResponse *>(QObject::sender());
+    const QHttpResponse *response = qobject_cast<QHttpResponse *>(QObject::sender());
     if (response->m_last && m_isWebSocket == false && m_socket != nullptr)
         m_socket->disconnectFromHost();
 }

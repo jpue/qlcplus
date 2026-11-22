@@ -231,7 +231,7 @@ void ScriptEditor::slotAddStartFunction()
 
         foreach (quint32 id, fs.selection())
         {
-            Function* function = m_doc->function(id);
+            const Function* function = m_doc->function(id);
             Q_ASSERT(function != NULL);
             QString cmd = QString("%1:%2 // %3\n").arg(Script::startFunctionCmd)
                                                    .arg(id)
@@ -253,7 +253,7 @@ void ScriptEditor::slotAddStopFunction()
 
         foreach (quint32 id, fs.selection())
         {
-            Function* function = m_doc->function(id);
+            const Function* function = m_doc->function(id);
             Q_ASSERT(function != NULL);
             QString cmd = QString("%1:%2 // %3\n").arg(Script::stopFunctionCmd)
                                                   .arg(id)
@@ -357,7 +357,7 @@ void ScriptEditor::slotAddSetFixture()
     QList<SceneValue> channelsList = cfg.channelsList();
     foreach (SceneValue sv, channelsList)
     {
-        Fixture* fxi = m_doc->fixture(sv.fxi);
+        const Fixture* fxi = m_doc->fixture(sv.fxi);
         if (fxi != NULL)
         {
             const QLCChannel* channel = fxi->channel(sv.channel);

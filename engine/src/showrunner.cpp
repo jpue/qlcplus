@@ -72,7 +72,7 @@ ShowRunner::ShowRunner(const Doc* doc, quint32 showID, quint32 startTime)
             m_elapsedBeats = Function::timeToBeats(startTime, 60000 / bpm);
     }
 
-    foreach (Track *track, m_show->tracks())
+    foreach (const Track *track, m_show->tracks())
     {
         // some sanity checks
         if (track == NULL ||
@@ -85,7 +85,7 @@ ShowRunner::ShowRunner(const Doc* doc, quint32 showID, quint32 startTime)
         // get all the functions of the track and append them to the runner queue
         foreach (ShowFunction *sfunc, track->showFunctions())
         {
-            Function *f = m_doc->function(sfunc->functionID());
+            const Function *f = m_doc->function(sfunc->functionID());
             if (f == NULL)
                 continue;
 
@@ -118,11 +118,11 @@ ShowRunner::ShowRunner(const Doc* doc, quint32 showID, quint32 startTime)
 
 #if 1
     qDebug() << "Ordered list of ShowFunctions (time):";
-    foreach (ShowFunction *sfunc, m_timeFunctions)
+    foreach (const ShowFunction *sfunc, m_timeFunctions)
         qDebug() << "[Show] Function ID:" << sfunc->functionID() << "start time:" << sfunc->startTime() << "duration:" << sfunc->duration(m_doc);
 
     qDebug() << "Ordered list of ShowFunctions (beats):";
-    foreach (ShowFunction *sfunc, m_beatFunctions)
+    foreach (const ShowFunction *sfunc, m_beatFunctions)
         qDebug() << "[Show] Function ID:" << sfunc->functionID() << "start time:" << sfunc->startTime() << "duration:" << sfunc->duration(m_doc);
 #endif
     m_runningQueue.clear();
@@ -189,7 +189,7 @@ void ShowRunner::startShowFunction(ShowFunction *sf, Function *f, quint32 startT
     // and it will be stopped when the last of its items ends
     if (isQueued(f) == false)
     {
-        foreach (Track *track, m_show->tracks())
+        foreach (const Track *track, m_show->tracks())
         {
             if (track->showFunctions().contains(sf))
             {
@@ -386,7 +386,7 @@ void ShowRunner::adjustIntensity(qreal fraction, const Track *track)
     qDebug() << Q_FUNC_INFO << "Track ID: " << track->id() << ", val:" << fraction;
     m_intensityMap[track->id()] = fraction;
 
-    foreach (ShowFunction *sf, track->showFunctions())
+    foreach (const ShowFunction *sf, track->showFunctions())
     {
         Function *f = m_doc->function(sf->functionID());
         if (f == NULL)

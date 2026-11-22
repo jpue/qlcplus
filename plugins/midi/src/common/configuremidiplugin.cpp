@@ -226,7 +226,7 @@ QWidget* ConfigureMidiPlugin::createInitMessageWidget(QString midiTemplateName)
     QListIterator <MidiTemplate*> it(m_plugin->midiTemplates());
     while (it.hasNext() == true)
     {
-        MidiTemplate* templ = it.next();
+        const MidiTemplate* templ = it.next();
         combo->addItem(templ->name(), templ->initMessage());
         //qDebug() << "msg: " << templ->initMessage();
     }

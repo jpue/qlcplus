@@ -334,7 +334,7 @@ void GPIOPlugin::writeUniverse(quint32 universe, quint32 output, const QByteArra
 
     for (int i = 0; i < qMin(data.size(), m_gpioList.count()); i++)
     {
-        GPIOLineInfo *gpio = m_gpioList.at(i);
+        const GPIOLineInfo *gpio = m_gpioList.at(i);
         if (gpio->m_enabled == false || gpio->m_direction != OutputDirection)
             continue;
 
@@ -389,7 +389,7 @@ void GPIOPlugin::setLineDirection(int lineNumber, GPIOPlugin::LineDirection dire
         return;
 
     qDebug() << "[GPIO] setLineDirection" << lineNumber << direction;
-    GPIOLineInfo *gpio = m_gpioList.at(lineNumber);
+    const GPIOLineInfo *gpio = m_gpioList.at(lineNumber);
 
     if (gpio->m_direction == direction)
         return;

@@ -407,7 +407,7 @@ void VCMatrix::slotSetColor5(QColor color)
 
 QColor VCMatrix::mtxColor(int id) const
 {
-    RGBMatrix *matrix = qobject_cast<RGBMatrix*>(m_doc->function(m_matrixID));
+    const RGBMatrix *matrix = qobject_cast<RGBMatrix*>(m_doc->function(m_matrixID));
     if (matrix == NULL)
         return QColor();
 
@@ -600,7 +600,7 @@ void VCMatrix::adjustIntensity(qreal val)
 
 void VCMatrix::setFunction(quint32 id)
 {
-    Function *old = m_doc->function(m_matrixID);
+    const Function *old = m_doc->function(m_matrixID);
     if (old != NULL)
     {
         disconnect(old, SIGNAL(stopped(quint32)),
@@ -1160,7 +1160,7 @@ QMap<quint32,QString> VCMatrix::customControlsMap() const
 {
     QMap<quint32,QString> map;
 
-    foreach (VCMatrixControl *control, m_controls)
+    foreach (const VCMatrixControl *control, m_controls)
         map.insert(control->m_id, VCMatrixControl::typeToString(control->m_type));
 
     return map;
@@ -1396,7 +1396,7 @@ void VCMatrix::slotKeyPressed(const QKeySequence &keySequence)
     for (QHash<QWidget *, VCMatrixControl *>::iterator it = m_controls.begin();
             it != m_controls.end(); ++it)
     {
-        VCMatrixControl *control = it.value();
+        const VCMatrixControl *control = it.value();
         if (control->m_keySequence == keySequence &&
                 control->widgetType() == VCMatrixControl::Button) // Only for buttons
         {

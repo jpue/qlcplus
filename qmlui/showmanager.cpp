@@ -69,7 +69,7 @@ ShowManager::ShowManager(QQuickView *view, Doc *doc, QObject *parent)
 
 void ShowManager::initialize()
 {
-    App *app = qobject_cast<App *>(m_view);
+    const App *app = qobject_cast<App *>(m_view);
     m_tickSize = app->pixelDensity() * 18;
 
     if (m_waveformProvider)
@@ -210,9 +210,9 @@ QVariantList ShowManager::getSnapEdges(quint32 excludeFuncId,
 
     int beatsDivision = m_currentShow->beatsDivision();
 
-    for (Track *track : m_currentShow->tracks())
+    for (const Track *track : m_currentShow->tracks())
     {
-        for (ShowFunction *sf : track->showFunctions())
+        for (const ShowFunction *sf : track->showFunctions())
         {
             if (sf->functionID() == excludeFuncId)
                 continue;
@@ -263,11 +263,11 @@ bool ShowManager::hasBeatBasedItems() const
     if (m_currentShow == nullptr)
         return false;
 
-    foreach (Track *track, m_currentShow->tracks())
+    foreach (const Track *track, m_currentShow->tracks())
     {
-        foreach (ShowFunction *sf, track->showFunctions())
+        foreach (const ShowFunction *sf, track->showFunctions())
         {
-            Function *func = m_doc->function(sf->functionID());
+            const Function *func = m_doc->function(sf->functionID());
             if (func != nullptr && func->tempoType() == Function::Beats)
                 return true;
         }
@@ -297,11 +297,11 @@ void ShowManager::setTimeDivision(Show::TimeDivision division)
        user is warned about this beforehand, see hasBeatBasedItems()) */
     if (division != Show::Time && m_currentShow->timeDivisionType() == Show::Time)
     {
-        foreach (Track *track, m_currentShow->tracks())
+        foreach (const Track *track, m_currentShow->tracks())
         {
             foreach (ShowFunction *sf, track->showFunctions())
             {
-                Function *func = m_doc->function(sf->functionID());
+                const Function *func = m_doc->function(sf->functionID());
                 if (func == nullptr || func->tempoType() != Function::Beats)
                     continue;
 
@@ -368,7 +368,7 @@ void ShowManager::setTimeScale(float timeScale)
     }
     else
     {
-        App *app = qobject_cast<App *>(m_view);
+        const App *app = qobject_cast<App *>(m_view);
         m_tickSize = app->pixelDensity() * (18 * tickScale);
     }
 
@@ -430,7 +430,7 @@ void ShowManager::setTrackSolo(int trackId, bool solo)
     if (m_currentShow == nullptr || m_currentShow->track(trackId) == nullptr)
         return;
 
-    for (Track *track : m_currentShow->tracks())
+    for (const Track *track : m_currentShow->tracks())
         setTrackMute(track->id(), int(track->id()) == trackId ? false : solo);
 }
 
@@ -474,7 +474,7 @@ void ShowManager::deleteSelectedTrack()
     if (m_currentShow == nullptr)
         return;
 
-    Track *track = m_currentShow->track(selectedTrackId());
+    const Track *track = m_currentShow->track(selectedTrackId());
     if (track == nullptr)
         return;
 
@@ -625,7 +625,7 @@ void ShowManager::addItems(QQuickItem *parent, int trackIdx, int startTime, QVar
                same unit conversion as startTime above, relative to the
                Function this ShowFunction actually wraps */
             quint32 pastedDuration = sourceFunc->duration();
-            Function *sourceOwnerFunc = m_doc->function(sourceFunc->functionID());
+            const Function *sourceOwnerFunc = m_doc->function(sourceFunc->functionID());
             bool sourceIsBeats = (sourceOwnerFunc != nullptr) ?
                         (sourceOwnerFunc->tempoType() == Function::Beats) : funcIsBeats;
 
@@ -971,7 +971,7 @@ bool ShowManager::setChaserStepDurationWithUndo(Chaser *chaser, int stepIndex, q
     if (chaser == nullptr || stepIndex < 0 || stepIndex >= chaser->stepsCount())
         return false;
 
-    ChaserStep *stepRef = chaser->stepAt(stepIndex);
+    const ChaserStep *stepRef = chaser->stepAt(stepIndex);
     if (stepRef == nullptr)
         return false;
 
@@ -1005,7 +1005,7 @@ void ShowManager::convertChaserCommonToPerStep(Chaser *chaser)
     chaser->setDurationMode(Chaser::PerStep);
     for (int i = 0; i < chaser->stepsCount(); ++i)
     {
-        ChaserStep *stepRef = chaser->stepAt(i);
+        const ChaserStep *stepRef = chaser->stepAt(i);
         if (stepRef == nullptr)
             continue;
 
@@ -1028,7 +1028,7 @@ bool ShowManager::moveAllItemsAfterCursor(int cursorTime, int delta)
         return true;
 
     QList<ShowFunction *> itemsToMove;
-    foreach (Track *track, m_currentShow->tracks())
+    foreach (const Track *track, m_currentShow->tracks())
     {
         foreach (ShowFunction *sf, track->showFunctions())
         {
@@ -1135,7 +1135,7 @@ bool ShowManager::insertShowItemTimeAt(ShowFunction *sf, int length, int cursorT
             // so we can stretch only the step covering the cursor.
             convertChaserCommonToPerStep(chaser);
 
-            ChaserStep *targetStepRef = chaser->stepAt(insertIndex);
+            const ChaserStep *targetStepRef = chaser->stepAt(insertIndex);
             if (targetStepRef == nullptr)
                 return false;
 
@@ -1223,7 +1223,7 @@ bool ShowManager::cutShowItemTimeAt(ShowFunction *sf, int length, int cursorTime
 
             while (cutRemaining > 0 && stepIndex < chaser->stepsCount())
             {
-                ChaserStep *stepRef = chaser->stepAt(stepIndex);
+                const ChaserStep *stepRef = chaser->stepAt(stepIndex);
                 if (stepRef == nullptr)
                     break;
 
@@ -1318,9 +1318,9 @@ bool ShowManager::insertTimeAtCursor(int length, int cursorTime)
 
     bool hasTarget = false;
     bool hasItemsAfterCursor = false;
-    foreach (Track *track, m_currentShow->tracks())
+    foreach (const Track *track, m_currentShow->tracks())
     {
-        foreach (ShowFunction *sf, track->showFunctions())
+        foreach (const ShowFunction *sf, track->showFunctions())
         {
             if (sf == nullptr || sf->isLocked())
                 continue;
@@ -1349,7 +1349,7 @@ bool ShowManager::insertTimeAtCursor(int length, int cursorTime)
         return false;
 
     bool changed = false;
-    foreach (Track *track, m_currentShow->tracks())
+    foreach (const Track *track, m_currentShow->tracks())
     {
         foreach (ShowFunction *sf, track->showFunctions())
         {
@@ -1377,7 +1377,7 @@ bool ShowManager::cutTimeAtCursor(int length, int cursorTime)
         return false;
 
     bool changed = false;
-    foreach (Track *track, m_currentShow->tracks())
+    foreach (const Track *track, m_currentShow->tracks())
     {
         foreach (ShowFunction *sf, track->showFunctions())
         {
@@ -1463,7 +1463,7 @@ void ShowManager::renderView(QQuickItem *parent)
 
     int trkIdx = 0;
 
-    foreach (Track *track, m_currentShow->tracks())
+    foreach (const Track *track, m_currentShow->tracks())
     {
         foreach (ShowFunction *sf, track->showFunctions())
         {
@@ -1692,7 +1692,7 @@ QStringList ShowManager::selectedItemNames() const
         if (si.m_showFunc == nullptr)
             continue;
 
-        Function *func = m_doc->function(si.m_showFunc->functionID());
+        const Function *func = m_doc->function(si.m_showFunc->functionID());
         if (func != nullptr)
             names.append(func->name());
     }
@@ -1769,12 +1769,12 @@ bool ShowManager::checkOverlapping(Track *track, ShowFunction *sourceFunc,
     if (track == nullptr)
         return false;
 
-    foreach (ShowFunction *sf, track->showFunctions())
+    foreach (const ShowFunction *sf, track->showFunctions())
     {
         if (sf == sourceFunc)
             continue;
 
-        Function *func = m_doc->function(sf->functionID());
+        const Function *func = m_doc->function(sf->functionID());
         if (func != nullptr)
         {
             quint32 fst = sf->startTime();
@@ -1800,7 +1800,7 @@ QVariantList ShowManager::previewData(Function *f) const
         case Function::ChaserType:
         case Function::SequenceType:
         {
-            Chaser *chaser = qobject_cast<Chaser *>(f);
+            const Chaser *chaser = qobject_cast<Chaser *>(f);
             quint32 stepsTimeCounter = 0;
 
             foreach (ChaserStep step, chaser->steps())
@@ -1929,7 +1929,7 @@ bool ShowManager::pasteFromClipboard()
         if (func->type() == Function::SequenceType)
         {
             Sequence *sequence = qobject_cast<Sequence*>(func);
-            Scene *scene = qobject_cast<Scene*>(m_doc->function(sequence->boundSceneID()));
+            const Scene *scene = qobject_cast<Scene*>(m_doc->function(sequence->boundSceneID()));
             if (scene == nullptr)
                 continue;
 

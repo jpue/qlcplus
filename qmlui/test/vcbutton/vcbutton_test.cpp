@@ -147,7 +147,7 @@ void VCButton_Test::properties()
 
 void VCButton_Test::functionAttachment()
 {
-    Scene *scene = createScene("MyScene");
+    const Scene *scene = createScene("MyScene");
 
     VCButton btn(m_env->doc());
     btn.setID(0);
@@ -165,7 +165,7 @@ void VCButton_Test::functionAttachment()
     QCOMPARE(spy.count(), 1);
 
     /* A custom caption is not replaced */
-    Scene *scene2 = createScene("Other");
+    const Scene *scene2 = createScene("Other");
     btn.setCaption("Custom");
     btn.setFunctionID(scene2->id());
     QCOMPARE(btn.functionID(), scene2->id());
@@ -187,7 +187,7 @@ void VCButton_Test::toggle()
     QCOMPARE(btn.state(), VCButton::Inactive);
     QCOMPARE(startSpy.count(), 0);
 
-    Scene *scene = createScene("S");
+    const Scene *scene = createScene("S");
     btn.setFunctionID(scene->id());
 
     btn.requestStateChange(true);
@@ -202,7 +202,7 @@ void VCButton_Test::toggle()
 
 void VCButton_Test::flash()
 {
-    Scene *scene = createScene("S");
+    const Scene *scene = createScene("S");
 
     VCButton btn(m_env->doc());
     btn.setActionType(VCButton::Flash);
@@ -223,7 +223,7 @@ void VCButton_Test::flash()
 
 void VCButton_Test::flashReleasedWhenHidden()
 {
-    Scene *scene = createScene("S");
+    const Scene *scene = createScene("S");
 
     VCButton btn(m_env->doc());
     btn.setActionType(VCButton::Flash);
@@ -241,7 +241,7 @@ void VCButton_Test::flashReleasedWhenHidden()
 
 void VCButton_Test::blackout()
 {
-    InputOutputMap *ioMap = m_env->doc()->inputOutputMap();
+    const InputOutputMap *ioMap = m_env->doc()->inputOutputMap();
     bool initialBlackout = ioMap->blackout();
 
     VCButton btn(m_env->doc());
@@ -258,7 +258,7 @@ void VCButton_Test::blackout()
 
 void VCButton_Test::inputValue()
 {
-    Scene *scene = createScene("S");
+    const Scene *scene = createScene("S");
 
     VCButton btn(m_env->doc());
     btn.setFunctionID(scene->id());
@@ -287,7 +287,7 @@ void VCButton_Test::inputValue()
 
 void VCButton_Test::copy()
 {
-    Scene *scene = createScene("S");
+    const Scene *scene = createScene("S");
 
     VCWidget parent(m_env->doc());
     VCButton btn(m_env->doc());
@@ -329,7 +329,7 @@ void VCButton_Test::copy()
 
 void VCButton_Test::saveLoad()
 {
-    Scene *scene = createScene("S");
+    const Scene *scene = createScene("S");
 
     VCButton btn(m_env->doc());
     btn.setID(3);

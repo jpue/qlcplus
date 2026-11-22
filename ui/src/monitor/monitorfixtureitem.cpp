@@ -104,7 +104,7 @@ MonitorFixtureItem::MonitorFixtureItem(Doc *doc, quint32 fid)
         {
             // retrieve the PAN max degrees from the fixture mode
             fxiItem->m_panMaxDegrees = 360; // fallback. Very unprecise
-            QLCFixtureMode *mode = fxi->fixtureMode();
+            const QLCFixtureMode *mode = fxi->fixtureMode();
             if (mode != NULL)
             {
                 if (mode->physical().focusPanMax() != 0)
@@ -119,7 +119,7 @@ MonitorFixtureItem::MonitorFixtureItem(Doc *doc, quint32 fid)
         {
             // retrieve the TILT max degrees from the fixture mode
             fxiItem->m_tiltMaxDegrees = 270; // fallback. Very unprecise
-            QLCFixtureMode *mode = fxi->fixtureMode();
+            const QLCFixtureMode *mode = fxi->fixtureMode();
             if (mode != NULL)
             {
                 if (mode->physical().focusTiltMax() != 0)
@@ -129,20 +129,20 @@ MonitorFixtureItem::MonitorFixtureItem(Doc *doc, quint32 fid)
             qDebug() << "Tilt channel on" << fxiItem->m_tiltChannel << "max degrees:" << fxiItem->m_tiltMaxDegrees;
         }
 
-        QLCFixtureMode *mode = fxi->fixtureMode();
+        const QLCFixtureMode *mode = fxi->fixtureMode();
         if (mode != NULL)
         {
             foreach (quint32 wheel, head.colorWheels())
             {
                QList<QColor> values;
-               QLCChannel *ch = mode->channel(wheel);
+               const QLCChannel *ch = mode->channel(wheel);
                if (ch == NULL)
                    continue;
 
                bool containsColor = false;
                for (quint32 v = 0; v < 256; ++v)
                {
-                   QLCCapability *cap = ch->searchCapability(v);
+                   const QLCCapability *cap = ch->searchCapability(v);
                    if (cap != NULL && cap->resource(0).isValid())
                    {
                        values << cap->resource(0).value<QColor>();
@@ -164,7 +164,7 @@ MonitorFixtureItem::MonitorFixtureItem(Doc *doc, quint32 fid)
             foreach (quint32 shutter, head.shutterChannels())
             {
                QList<FixtureHead::ShutterState> values;
-               QLCChannel *ch = mode->channel(shutter);
+               const QLCChannel *ch = mode->channel(shutter);
                if (ch == NULL)
                    continue;
 
@@ -185,7 +185,7 @@ MonitorFixtureItem::MonitorFixtureItem(Doc *doc, quint32 fid)
                    break;
                    case QLCChannel::Custom:
                    {
-                       foreach (QLCCapability *cap, ch->capabilities())
+                       foreach (const QLCCapability *cap, ch->capabilities())
                        {
                            for (int v = cap->min(); v <= cap->max(); v++)
                            {
@@ -243,7 +243,7 @@ MonitorFixtureItem::~MonitorFixtureItem()
 {
     if (m_fid != Fixture::invalidId())
     {
-        Fixture* fxi = m_doc->fixture(m_fid);
+        const Fixture* fxi = m_doc->fixture(m_fid);
         if (fxi != NULL)
             disconnect(fxi, SIGNAL(valuesChanged()), this, SLOT(slotUpdateValues()));
     }
@@ -497,7 +497,7 @@ void MonitorFixtureItem::slotUpdateValues()
 
 void MonitorFixtureItem::slotStrobeTimer()
 {
-    QTimer* timer = qobject_cast<QTimer*>(sender());
+    const QTimer* timer = qobject_cast<QTimer*>(sender());
     foreach (FixtureHead *head, m_heads)
     {
         if (head->m_strobeTimer != timer)

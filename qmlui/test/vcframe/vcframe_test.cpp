@@ -103,7 +103,7 @@ void VCFrame_Test::addWidgets()
     int knobs = 0;
     for (VCWidget *widget : frame.children())
     {
-        VCSlider *slider = qobject_cast<VCSlider *>(widget);
+        const VCSlider *slider = qobject_cast<VCSlider *>(widget);
         if (slider != nullptr && slider->widgetStyle() == VCSlider::WKnob)
             knobs++;
     }
@@ -121,7 +121,7 @@ void VCFrame_Test::addWidgets()
             child = qobject_cast<VCFrame *>(widget);
     }
     QVERIFY(child != nullptr);
-    VCWidget *grandChild = child->addWidget(nullptr, "Button", QPoint());
+    const VCWidget *grandChild = child->addWidget(nullptr, "Button", QPoint());
     QVERIFY(grandChild != nullptr);
     QCOMPARE(frame.children(false).count(), types.count());
     QCOMPARE(frame.children(true).count(), types.count() + 1);
@@ -135,8 +135,8 @@ void VCFrame_Test::deleteChildren()
 
     VCFrame *child = qobject_cast<VCFrame *>(frame.addWidget(nullptr, "Frame", QPoint()));
     QVERIFY(child != nullptr);
-    VCWidget *btn = frame.addWidget(nullptr, "Button", QPoint());
-    VCWidget *grandChild = child->addWidget(nullptr, "Label", QPoint());
+    const VCWidget *btn = frame.addWidget(nullptr, "Button", QPoint());
+    const VCWidget *grandChild = child->addWidget(nullptr, "Label", QPoint());
 
     quint32 childId = child->id();
     quint32 btnId = btn->id();
@@ -174,7 +174,7 @@ void VCFrame_Test::multiPage()
     QCOMPARE(frame.pageLabels(), QStringList() << "Page 1" << "Page 2" << "Page 3");
     QCOMPARE(frame.externalControlsCount(), 7);
 
-    VCWidget *btn = frame.addWidget(nullptr, "Button", QPoint());
+    const VCWidget *btn = frame.addWidget(nullptr, "Button", QPoint());
     QCOMPARE(btn->page(), 0);
     QCOMPARE(btn->isVisible(), true);
 
@@ -228,7 +228,7 @@ void VCFrame_Test::totalPagesKeepsUsedPages()
     frame.setCurrentPage(2);
 
     /* New widgets are placed on the current page */
-    VCWidget *label = frame.addWidget(nullptr, "Label", QPoint());
+    const VCWidget *label = frame.addWidget(nullptr, "Label", QPoint());
     QCOMPARE(label->page(), 2);
     QCOMPARE(frame.usedPagesNumber(), 3);
 
@@ -268,7 +268,7 @@ void VCFrame_Test::cloneFirstPage()
     QCOMPARE(children.count(), 3);
 
     QList<int> pages;
-    for (VCWidget *widget : children)
+    for (const VCWidget *widget : children)
     {
         QCOMPARE(widget->type(), int(VCWidget::ButtonWidget));
         QCOMPARE(widget->caption(), QString("Clone me"));
@@ -287,8 +287,8 @@ void VCFrame_Test::disable()
 {
     VCFrame frame(m_env->doc(), m_env->vc());
     VCFrame *child = qobject_cast<VCFrame *>(frame.addWidget(nullptr, "Frame", QPoint()));
-    VCWidget *btn = frame.addWidget(nullptr, "Button", QPoint());
-    VCWidget *grandChild = child->addWidget(nullptr, "Button", QPoint());
+    const VCWidget *btn = frame.addWidget(nullptr, "Button", QPoint());
+    const VCWidget *grandChild = child->addWidget(nullptr, "Button", QPoint());
 
     frame.setDisabled(true);
     QCOMPARE(frame.isDisabled(), true);
@@ -477,9 +477,9 @@ void VCFrame_Test::saveLoad()
     QList<VCWidget *> children = frame2.children();
     QCOMPARE(children.count(), 2);
 
-    VCWidget *btn2 = nullptr;
-    VCWidget *label2 = nullptr;
-    for (VCWidget *widget : children)
+    const VCWidget *btn2 = nullptr;
+    const VCWidget *label2 = nullptr;
+    for (const VCWidget *widget : children)
     {
         if (widget->type() == VCWidget::ButtonWidget)
             btn2 = widget;

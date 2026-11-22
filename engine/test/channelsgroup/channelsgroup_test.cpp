@@ -206,7 +206,7 @@ void ChannelsGroup_Test::loader()
     int before = m_doc->channelsGroups().count();
     QVERIFY(ChannelsGroup::loader(xmlReader, m_doc) == true);
     QCOMPARE(m_doc->channelsGroups().count(), before + 1);
-    ChannelsGroup *grp = m_doc->channelsGroups().last();
+    const ChannelsGroup *grp = m_doc->channelsGroups().last();
     QCOMPARE(grp->id(), quint32(5));
     QCOMPARE(grp->name(), QString("LoadedGroup"));
 }

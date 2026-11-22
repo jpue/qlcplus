@@ -154,7 +154,7 @@ QStringList FixtureBrowser::modesList()
     if (definition != nullptr)
     {
         QList<QLCFixtureMode *> fxModesList = definition->modes();
-        foreach (QLCFixtureMode *mode, fxModesList)
+        foreach (const QLCFixtureMode *mode, fxModesList)
         {
             modesList.append(mode->name());
             if (m_selectedMode.isEmpty())
@@ -223,7 +223,7 @@ QVariant FixtureBrowser::modeChannelList() const
     if (m_mode != nullptr)
     {
         int i = 1;
-        for (QLCChannel *channel : m_mode->channels()) // C++11
+        for (const QLCChannel *channel : m_mode->channels()) // C++11
         {
             QVariantMap chMap;
             chMap.insert("mIcon", channel->getIconNameFromGroup(channel->group(), true));
@@ -304,7 +304,7 @@ int FixtureBrowser::availableChannel(quint32 fixtureID, int requested)
     qDebug() << "[FixtureBrowser] fxID:" << fixtureID << ", requested:" << requested;
     bool isAvailable = true;
 
-    Fixture *fixture = m_doc->fixture(fixtureID);
+    const Fixture *fixture = m_doc->fixture(fixtureID);
     if (fixture == nullptr)
         return -1;
 

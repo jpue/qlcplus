@@ -144,7 +144,7 @@ void VCCueList_Test::chaser()
 {
     QWidget w;
     VCCueList cl(&w, m_doc);
-    Chaser* c = createChaser(m_doc);
+    const Chaser* c = createChaser(m_doc);
 
     // Try to put a non-chaser as the chaser
     cl.setChaser(c->steps().first().fid);
@@ -169,7 +169,7 @@ void VCCueList_Test::functionRemoved()
 {
     QWidget w;
     VCCueList cl(&w, m_doc);
-    Chaser* c = createChaser(m_doc);
+    const Chaser* c = createChaser(m_doc);
     cl.setChaser(c->id());
 
     // Chaser members are removed from list
@@ -223,7 +223,7 @@ void VCCueList_Test::copy()
     QWidget w;
     VCFrame parent(&w, m_doc);
     VCCueList cl(&parent, m_doc);
-    Chaser* c = createChaser(m_doc);
+    const Chaser* c = createChaser(m_doc);
 
     cl.setChaser(c->id());
     cl.setCaption("Wheeee");
@@ -261,7 +261,7 @@ void VCCueList_Test::modeChange()
     QWidget w;
     VCFrame parent(&w, m_doc);
     VCCueList cl(&parent, m_doc);
-    Chaser* c = createChaser(m_doc);
+    const Chaser* c = createChaser(m_doc);
     cl.setChaser(c->id());
 
     m_doc->setMode(Doc::Operate);
@@ -438,7 +438,7 @@ void VCCueList_Test::saveXML()
 {
     QWidget w;
     VCCueList cl(&w, m_doc);
-    Chaser* c = createChaser(m_doc);
+    const Chaser* c = createChaser(m_doc);
     cl.setChaser(c->id());
 
     cl.setCaption("Testing");

@@ -123,7 +123,7 @@ void PaletteGenerator_Test::createColours()
     QCOMPARE(doc.functions().size(), 11); // 10 colours
     for (quint32 i = 0; i < 10; i++)
     {
-        Scene* s = qobject_cast<Scene*> (doc.function(i));
+        const Scene* s = qobject_cast<Scene*> (doc.function(i));
         QVERIFY(s != NULL);
         QCOMPARE(s->values().size(), 2); // One colour for two fixtures
         QCOMPARE(s->values().at(0).fxi, fxi1->id());
@@ -160,7 +160,7 @@ void PaletteGenerator_Test::createGobos()
     QCOMPARE(doc.functions().size(), 11); // 10 "gobos"
     for (quint32 i = 0; i < 10; i++)
     {
-        Scene* s = qobject_cast<Scene*> (doc.function(i));
+        const Scene* s = qobject_cast<Scene*> (doc.function(i));
         QVERIFY(s != NULL);
         QCOMPARE(s->values().size(), 2); // One gobo for two fixtures
         QCOMPARE(s->values().at(0).fxi, fxi1->id());
@@ -198,7 +198,7 @@ void PaletteGenerator_Test::createShutters()
     QCOMPARE(doc.functions().size(), 14);
     for (quint32 i = 0; i < 13; i++)
     {
-        Scene* s = qobject_cast<Scene*> (doc.function(i));
+        const Scene* s = qobject_cast<Scene*> (doc.function(i));
         QVERIFY(s != NULL);
         QCOMPARE(s->values().size(), 2); // One cap for two fixtures
         QCOMPARE(s->values().at(0).fxi, fxi1->id());

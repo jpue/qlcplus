@@ -60,7 +60,7 @@ void GroupsConsole::init()
     int idx = 0;
     foreach (quint32 id, m_ids)
     {
-        ChannelsGroup *grp = m_doc->channelsGroup(id);
+        const ChannelsGroup *grp = m_doc->channelsGroup(id);
         if (grp != NULL && grp->getChannels().count() > 0)
         {
             SceneValue scv = grp->getChannels().at(0);

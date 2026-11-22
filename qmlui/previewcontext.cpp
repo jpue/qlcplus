@@ -186,7 +186,7 @@ void PreviewContext::setDetached(bool detached)
     }
     else
     {
-        ContextQuickView *cqView = qobject_cast<ContextQuickView *>(m_view);
+        const ContextQuickView *cqView = qobject_cast<ContextQuickView *>(m_view);
         disconnect(cqView, &ContextQuickView::keyPressed, this, &PreviewContext::keyPressed);
         disconnect(cqView, &ContextQuickView::keyReleased, this, &PreviewContext::keyReleased);
         m_view->deleteLater();

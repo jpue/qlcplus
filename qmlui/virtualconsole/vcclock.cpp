@@ -155,7 +155,7 @@ bool VCClock::copyFrom(const VCWidget *widget)
     setEnableSchedule(clock->enableSchedule());
 
     /* Copy schedules */
-    for (VCClockSchedule *sch : clock->schedules())
+    for (const VCClockSchedule *sch : clock->schedules())
     {
         VCClockSchedule *dst = new VCClockSchedule();
         dst->setFunctionID(sch->functionID());
@@ -330,7 +330,7 @@ void VCClock::setTimerRunning(bool running)
 
 void VCClock::triggerCountdownSchedules()
 {
-    for (VCClockSchedule *sch : m_scheduleList) // C++11
+    for (const VCClockSchedule *sch : m_scheduleList) // C++11
     {
         Function *f = m_doc->function(sch->functionID());
         if (f != nullptr)
@@ -706,7 +706,7 @@ bool VCClock::saveXML(QXmlStreamWriter *doc) const
     /* Appearance */
     saveXMLAppearance(doc);
 
-    for (VCClockSchedule *sch : m_scheduleList) // C++11
+    for (const VCClockSchedule *sch : m_scheduleList) // C++11
         sch->saveXML(doc);
 
     /* External control */

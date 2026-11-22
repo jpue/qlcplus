@@ -114,7 +114,7 @@ void AudioBar::attachDmxChannels(Doc *doc, QList<SceneValue> list)
     m_absDmxChannels.clear();
     foreach (SceneValue scv, m_dmxChannels)
     {
-        Fixture *fx = doc->fixture(scv.fxi);
+        const Fixture *fx = doc->fixture(scv.fxi);
         if (fx != NULL)
         {
             quint32 absAddr = fx->channelAddress(scv.channel);

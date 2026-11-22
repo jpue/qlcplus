@@ -570,7 +570,7 @@ QString Script::handleStartFunction(const QList<QStringList>& tokens, MasterTime
     if (ok == false)
         return QString("Invalid function ID: %1").arg(tokens[0][1]);
 
-    Doc* doc = qobject_cast<Doc*> (parent());
+    const Doc* doc = qobject_cast<Doc*> (parent());
     Q_ASSERT(doc != NULL);
 
     Function* function = doc->function(id);
@@ -602,7 +602,7 @@ QString Script::handleStopFunction(const QList <QStringList>& tokens)
     if (ok == false)
         return QString("Invalid function ID: %1").arg(tokens[0][1]);
 
-    Doc *doc = qobject_cast<Doc*> (parent());
+    const Doc *doc = qobject_cast<Doc*> (parent());
     Q_ASSERT(doc != NULL);
 
     Function *function = doc->function(id);
@@ -641,7 +641,7 @@ QString Script::handleBlackout(const QList <QStringList>& tokens)
         return QString("Invalid argument: %1").arg(tokens[0][1]);
     }
 
-    Doc* doc = qobject_cast<Doc*> (parent());
+    const Doc* doc = qobject_cast<Doc*> (parent());
     Q_ASSERT(doc != NULL);
 
     doc->inputOutputMap()->requestBlackout(request);
@@ -691,7 +691,7 @@ QString Script::handleWaitFunction(const QList<QStringList> &tokens, bool start)
     if (ok == false)
         return QString("Invalid function ID: %1").arg(tokens[0][1]);
 
-    Doc *doc = qobject_cast<Doc *>(parent());
+    const Doc *doc = qobject_cast<Doc *>(parent());
     Q_ASSERT(doc != NULL);
 
     Function *function = doc->function(id);
@@ -775,10 +775,10 @@ QString Script::handleSetFixture(const QList<QStringList>& tokens, QList<Univers
         }
     }
 
-    Doc *doc = qobject_cast<Doc*> (parent());
+    const Doc *doc = qobject_cast<Doc*> (parent());
     Q_ASSERT(doc != NULL);
 
-    Fixture *fxi = doc->fixture(id);
+    const Fixture *fxi = doc->fixture(id);
     if (fxi != NULL)
     {
         if (ch < fxi->channels())

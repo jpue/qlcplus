@@ -735,7 +735,7 @@ void FunctionManager::initTree()
 
 void FunctionManager::selectFunction(quint32 id)
 {
-    Function* function = m_doc->function(id);
+    const Function* function = m_doc->function(id);
     if (function == NULL)
         return;
     QTreeWidgetItem* item = m_tree->functionItem(function);
@@ -770,7 +770,7 @@ void FunctionManager::deleteSelectedFunctions()
          * forever since bound Scenes are hidden and users cannot delete them */
         if (func->type() == Function::SequenceType)
         {
-            Sequence *seq = qobject_cast<Sequence *>(func);
+            const Sequence *seq = qobject_cast<Sequence *>(func);
             quint32 boundSceneID = seq->boundSceneID();
             m_doc->deleteFunction(fid);
 
@@ -858,7 +858,7 @@ void FunctionManager::copyFunction(quint32 fid)
             Function *scene = m_doc->function(sceneID);
             if (scene != NULL)
             {
-                Function *sceneCopy = scene->createCopy(m_doc);
+                const Function *sceneCopy = scene->createCopy(m_doc);
                 if (sceneCopy != NULL)
                     sequence->setBoundSceneID(sceneCopy->id());
             }

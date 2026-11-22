@@ -208,13 +208,13 @@ void GrandMasterSlider::sendFeedback()
     if (universe == InputOutputMap::invalidUniverse() || channel == QLCChannel::invalid())
         return;
 
-    InputPatch* pat = m_ioMap->inputPatch(universe);
+    const InputPatch* pat = m_ioMap->inputPatch(universe);
     if (pat != NULL)
     {
-        QLCInputProfile* profile = pat->profile();
+        const QLCInputProfile* profile = pat->profile();
         if (profile != NULL)
         {
-            QLCInputChannel* ich = profile->channel(channel);
+            const QLCInputChannel* ich = profile->channel(channel);
             if (ich != NULL)
                 chName = ich->name();
         }

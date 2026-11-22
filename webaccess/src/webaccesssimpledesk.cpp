@@ -104,7 +104,7 @@ QString WebAccessSimpleDesk::getChannelsMessage(const Doc *doc, const SimpleDesk
     {
         QString type = "";
         uchar value = sd->getAbsoluteChannelValue(universeAddr + i);
-        Fixture* fxi = doc->fixture(doc->fixtureForAddress(universeAddr + i));
+        const Fixture* fxi = doc->fixture(doc->fixtureForAddress(universeAddr + i));
         if (fxi != NULL)
         {
             const QLCChannel *ch = fxi->channel(universeAddr + i - fxi->universeAddress());

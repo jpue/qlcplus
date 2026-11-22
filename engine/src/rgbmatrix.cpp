@@ -132,7 +132,7 @@ void RGBMatrix::setTotalDuration(quint32 msec)
     if (m_algorithm == NULL)
         return;
 
-    FixtureGroup *grp = doc()->fixtureGroup(fixtureGroup());
+    const FixtureGroup *grp = doc()->fixtureGroup(fixtureGroup());
     if (grp == NULL)
         return;
 
@@ -149,7 +149,7 @@ quint32 RGBMatrix::totalDuration()
     if (m_algorithm == NULL)
         return 0;
 
-    FixtureGroup *grp = doc()->fixtureGroup(fixtureGroup());
+    const FixtureGroup *grp = doc()->fixtureGroup(fixtureGroup());
     if (grp == NULL)
         return 0;
 
@@ -333,7 +333,7 @@ int RGBMatrix::algorithmStepsCount()
     if (m_algorithm == NULL)
         return 0;
 
-    FixtureGroup *grp = doc()->fixtureGroup(fixtureGroup());
+    const FixtureGroup *grp = doc()->fixtureGroup(fixtureGroup());
     if (grp != NULL)
         return m_algorithm->rgbMapStepCount(grp->size());
 
@@ -496,7 +496,7 @@ QString RGBMatrix::property(QString propName)
     /** Otherwise, let's retrieve it from the Script */
     if (m_algorithm != NULL && m_algorithm->type() == RGBAlgorithm::Script)
     {
-        RGBScript *script = static_cast<RGBScript*> (m_algorithm);
+        const RGBScript *script = static_cast<RGBScript*> (m_algorithm);
         return script->property(propName);
     }
 
@@ -660,7 +660,7 @@ void RGBMatrix::tap()
 {
     if (stopped() == false)
     {
-        FixtureGroup *grp = doc()->fixtureGroup(fixtureGroup());
+        const FixtureGroup *grp = doc()->fixtureGroup(fixtureGroup());
         // Filter out taps that are too close to each other
         if (grp != NULL && uint(m_roundTime.elapsed()) >= (duration() / 4))
         {

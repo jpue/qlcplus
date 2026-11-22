@@ -753,7 +753,7 @@ bool EFX::removeFixture(quint32 fxi, int head)
     QMutexLocker locker(&m_fixturesMutex);
     for (int i = 0; i < m_fixtures.count(); i++)
     {
-        EFXFixture *ef = m_fixtures.at(i);
+        const EFXFixture *ef = m_fixtures.at(i);
         if (ef->head().fxi == fxi && ef->head().head == head)
         {
             m_fixtures.removeAt(i);
@@ -829,7 +829,7 @@ QList<quint32> EFX::components() const
 {
     QList<quint32> ids;
 
-    foreach (EFXFixture *ef, m_fixtures)
+    foreach (const EFXFixture *ef, m_fixtures)
     {
         if (ids.contains(ef->head().fxi) == false)
             ids.append(ef->head().fxi);

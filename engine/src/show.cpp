@@ -65,9 +65,9 @@ quint32 Show::totalDuration()
 {
     quint32 totalDuration = 0;
 
-    foreach (Track *track, m_tracks)
+    foreach (const Track *track, m_tracks)
     {
-        foreach (ShowFunction *sf, track->showFunctions())
+        foreach (const ShowFunction *sf, track->showFunctions())
         {
             if (sf->startTime() + sf->duration(doc()) > totalDuration)
                 totalDuration = sf->startTime() + sf->duration(doc());
@@ -112,7 +112,7 @@ bool Show::copyFrom(const Function* function)
     m_latestShowFunctionID = show->m_latestShowFunctionID;
 
     // create a copy of each track
-    foreach (Track *track, show->tracks())
+    foreach (const Track *track, show->tracks())
     {
         quint32 sceneID = track->getSceneID();
         Track* newTrack = new Track(sceneID, this);
@@ -120,7 +120,7 @@ bool Show::copyFrom(const Function* function)
         addTrack(newTrack);
 
         // create a copy of each sequence/audio in a track
-        foreach (ShowFunction *sfunc, track->showFunctions())
+        foreach (const ShowFunction *sfunc, track->showFunctions())
         {
             Function* function = doc()->function(sfunc->functionID());
             if (function == NULL)
@@ -346,7 +346,7 @@ quint32 Show::getLatestShowFunctionId()
 
 ShowFunction *Show::showFunction(quint32 id) const
 {
-    foreach (Track *track, m_tracks)
+    foreach (const Track *track, m_tracks)
     {
         ShowFunction *sf = track->showFunction(id);
         if (sf != NULL)
@@ -375,7 +375,7 @@ bool Show::saveXML(QXmlStreamWriter *doc) const
     doc->writeAttribute(KXMLQLCShowTimeBPM, QString::number(m_timeDivisionBPM));
     doc->writeEndElement();
 
-    foreach (Track *track, m_tracks)
+    foreach (const Track *track, m_tracks)
         track->saveXML(doc);
 
     /* End the <Function> tag */
@@ -441,7 +441,7 @@ bool Show::contains(quint32 functionId) const
     if (functionId == id())
         return true;
 
-    foreach (Track* track, m_tracks)
+    foreach (const Track* track, m_tracks)
     {
         if (track->contains(doc, functionId))
             return true;
@@ -454,7 +454,7 @@ QList<quint32> Show::components() const
 {
     QList<quint32> ids;
 
-    foreach (Track* track, m_tracks)
+    foreach (const Track* track, m_tracks)
         ids.append(track->components());
 
     return ids;
@@ -476,7 +476,7 @@ void Show::preRun(MasterTimer* timer)
 
     m_runner = new ShowRunner(doc(), this->id(), elapsed());
     int i = 0;
-    foreach (Track *track, m_tracks)
+    foreach (const Track *track, m_tracks)
         m_runner->adjustIntensity(getAttributeValue(i++), track);
 
     connect(m_runner, SIGNAL(timeChanged(quint32)), this, SIGNAL(timeChanged(quint32)));
@@ -531,7 +531,7 @@ int Show::adjustAttribute(qreal fraction, int attributeId)
         if (trkList.isEmpty() == false &&
             attrIndex >= 0 && attrIndex < trkList.count())
         {
-            Track *track = trkList.at(attrIndex);
+            const Track *track = trkList.at(attrIndex);
             if (track != NULL)
                 m_runner->adjustIntensity(getAttributeValue(attrIndex), track);
         }

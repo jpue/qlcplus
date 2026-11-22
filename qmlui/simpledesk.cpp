@@ -194,7 +194,7 @@ QVariant SimpleDesk::universesListModel() const
 {
     QVariantList universesList;
 
-    for (Universe *uni : m_doc->inputOutputMap()->universes())
+    for (const Universe *uni : m_doc->inputOutputMap()->universes())
     {
         QVariantMap uniMap;
         uniMap.insert("mLabel", uni->name());
@@ -623,7 +623,7 @@ void SimpleDesk::writeDMX(MasterTimer *timer, QList<Universe *> ua)
                     {
                         it.next();
                         FadeChannel fc = it.value();
-                        Fixture *fixture = m_doc->fixture(fc.fixture());
+                        const Fixture *fixture = m_doc->fixture(fc.fixture());
                         quint32 chIndex = fc.channel() & 0x01FF;
                         if (fixture != NULL)
                         {
@@ -659,7 +659,7 @@ void SimpleDesk::writeDMX(MasterTimer *timer, QList<Universe *> ua)
                 if (!fader.isNull())
                 {
                     FadeChannel fc(m_doc, Fixture::invalidId(), channel);
-                    Fixture *fixture = m_doc->fixture(fc.fixture());
+                    const Fixture *fixture = m_doc->fixture(fc.fixture());
                     quint32 chIndex = fc.channel() & 0x01FF;
                     fader->remove(&fc);
                     ua[universe]->reset(channel & 0x01FF, 1);

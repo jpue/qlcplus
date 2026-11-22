@@ -200,7 +200,7 @@ void VCAudioTriggers_Test::copy()
     triggers.setBarType(VCAudioTriggers::FunctionBar);
     triggers.setBarFunction(scene->id());
 
-    VCAudioTriggers *copy = qobject_cast<VCAudioTriggers *>(triggers.createCopy(&parent));
+    const VCAudioTriggers *copy = qobject_cast<VCAudioTriggers *>(triggers.createCopy(&parent));
     QVERIFY(copy != nullptr);
     QCOMPARE(copy->caption(), QString("Copied"));
     QCOMPARE(copy->geometry(), QRectF(1, 2, 3, 4));

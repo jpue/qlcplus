@@ -420,12 +420,12 @@ void EFXEditor::addGroup(QVariant reference)
 
     if (reference.canConvert<Universe *>())
     {
-        Universe *uni = reference.value<Universe *>();
+        const Universe *uni = reference.value<Universe *>();
 
         if (uni != nullptr)
         {
             qDebug() << "Adding a universe";
-            for (Fixture *fixture : m_doc->fixtures()) // C++11
+            for (const Fixture *fixture : m_doc->fixtures()) // C++11
             {
                 if (fixture->universe() != uni->id())
                     continue;
@@ -452,14 +452,14 @@ void EFXEditor::addGroup(QVariant reference)
     }
     else if (reference.canConvert<FixtureGroup *>())
     {
-        FixtureGroup *group = reference.value<FixtureGroup *>();
+        const FixtureGroup *group = reference.value<FixtureGroup *>();
 
         if (group != nullptr)
         {
             qDebug() << "Adding a fixture group";
             for (GroupHead head : group->headList())
             {
-                Fixture *fixture = m_doc->fixture(head.fxi);
+                const Fixture *fixture = m_doc->fixture(head.fxi);
                 if (fixture == nullptr)
                     continue;
 
@@ -498,7 +498,7 @@ void EFXEditor::addFixture(QVariant reference)
     if (reference.canConvert<Fixture *>() == false)
         return;
 
-    Fixture *fixture = reference.value<Fixture *>();
+    const Fixture *fixture = reference.value<Fixture *>();
     int count = 0;
 
     for (int headIdx = 0; headIdx < fixture->heads(); headIdx++)
@@ -772,7 +772,7 @@ void EFXEditor::updateAlgorithmData()
      *  along the EFX algorithm, and store the start index and
      *  the direction of the animation that will happen in the UI
      *  NOTE: the data array is filled backward to display first fixtures on top */
-    for (EFXFixture *fixture : m_efx->fixtures()) // C++11
+    for (const EFXFixture *fixture : m_efx->fixtures()) // C++11
     {
         float x = 0, y = 0;
 

@@ -174,7 +174,7 @@ QList<SceneValue> FixtureRemapper::remapSceneValues(const QList<SceneValue> &fun
 void FixtureRemapper::remapEFX(EFX *efx, Doc *doc)
 {
     QList<EFXFixture*> fixListCopy;
-    foreach (EFXFixture *efxFix, efx->fixtures())
+    foreach (const EFXFixture *efxFix, efx->fixtures())
     {
         EFXFixture *ef = new EFXFixture(efx);
         ef->copyFrom(efxFix);
@@ -184,9 +184,9 @@ void FixtureRemapper::remapEFX(EFX *efx, Doc *doc)
     efx->removeAllFixtures();
     QList<quint32> remappedFixtures;
 
-    foreach (EFXFixture *efxFix, fixListCopy)
+    foreach (const EFXFixture *efxFix, fixListCopy)
     {
-        quint32 fxID = efxFix->head().fxi;
+        const quint32 fxID = efxFix->head().fxi;
         for (int i = 0; i < m_sourceList.count(); i++)
         {
             const SceneValue &srcVal = m_sourceList.at(i);
@@ -197,7 +197,7 @@ void FixtureRemapper::remapEFX(EFX *efx, Doc *doc)
             if (remappedFixtures.contains(tgtVal.fxi))
                 continue;
 
-            Fixture *docFix = doc->fixture(tgtVal.fxi);
+            const Fixture *docFix = doc->fixture(tgtVal.fxi);
             if (docFix == nullptr)
                 continue;
 

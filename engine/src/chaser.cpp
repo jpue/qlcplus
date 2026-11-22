@@ -469,14 +469,14 @@ void Chaser::postLoad()
         setDuration((value / MasterTimer::frequency()) * 1000);
     }
 
-    Doc *doc = this->doc();
+    const Doc *doc = this->doc();
     Q_ASSERT(doc != NULL);
 
     QMutableListIterator <ChaserStep> it(m_steps);
     while (it.hasNext() == true)
     {
         ChaserStep step(it.next());
-        Function *function = doc->function(step.fid);
+        const Function *function = doc->function(step.fid);
 
         if (function == NULL)
             it.remove();
@@ -572,7 +572,7 @@ ChaserRunnerStep Chaser::currentRunningStep() const
 #endif
         if (m_runner != NULL)
         {
-            ChaserRunnerStep *step = m_runner->currentRunningStep();
+            const ChaserRunnerStep *step = m_runner->currentRunningStep();
             if (step != NULL)
                 ret = *step;
         }
@@ -582,12 +582,12 @@ ChaserRunnerStep Chaser::currentRunningStep() const
 
 bool Chaser::contains(quint32 functionId) const
 {
-    Doc *doc = this->doc();
+    const Doc *doc = this->doc();
     Q_ASSERT(doc != NULL);
 
     foreach (ChaserStep step, m_steps)
     {
-        Function *function = doc->function(step.fid);
+        const Function *function = doc->function(step.fid);
         // contains() can be called during init, function may be NULL
         if (function == NULL)
             continue;

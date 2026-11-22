@@ -51,7 +51,7 @@ CustomFeedbackDialog::CustomFeedbackDialog(Doc *doc, const QSharedPointer<QLCInp
 
     if (enableControls)
     {
-        InputPatch *ip = m_doc->inputOutputMap()->inputPatch(m_inputSource->universe());
+        const InputPatch *ip = m_doc->inputOutputMap()->inputPatch(m_inputSource->universe());
         if (ip != NULL && ip->profile() != NULL)
         {
             m_profile = ip->profile();

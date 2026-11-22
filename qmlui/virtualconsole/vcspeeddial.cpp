@@ -173,7 +173,7 @@ bool VCSpeedDial::copyFrom(const VCWidget *widget)
     setFunctions(speedDial->functions());
 
     clearPresets();
-    for (VCSpeedDialPreset *preset : speedDial->presets())
+    for (const VCSpeedDialPreset *preset : speedDial->presets())
         addPresetInternal(new VCSpeedDialPreset(*preset));
     m_lastAssignedPresetId = speedDial->m_lastAssignedPresetId;
     emit presetsListChanged();
@@ -484,7 +484,7 @@ QList<VCSpeedDialPreset*> VCSpeedDial::presets() const
 
 void VCSpeedDial::clearPresets()
 {
-    for (VCSpeedDialPreset *preset : m_presets)
+    for (const VCSpeedDialPreset *preset : m_presets)
     {
         if (preset->m_id <= UCHAR_MAX - INPUT_PRESETS_BASE_ID)
             unregisterExternalControl(INPUT_PRESETS_BASE_ID + preset->m_id);
@@ -670,7 +670,7 @@ void VCSpeedDial::slotInputValueChanged(quint8 id, uchar value)
     if (id >= INPUT_PRESETS_BASE_ID)
     {
         quint8 presetId = id - INPUT_PRESETS_BASE_ID;
-        VCSpeedDialPreset *preset = findPreset(presetId);
+        const VCSpeedDialPreset *preset = findPreset(presetId);
         if (preset != nullptr)
             setCurrentTime(preset->m_value);
         return;
@@ -893,7 +893,7 @@ bool VCSpeedDial::saveXML(QXmlStreamWriter *doc) const
     for (quint8 iId = INPUT_TAP_ID; iId <= INPUT_16X_ID; iId++)
         saveXMLInputControl(doc, iId);
 
-    for (VCSpeedDialPreset *preset : presets())
+    for (const VCSpeedDialPreset *preset : presets())
         preset->saveXML(doc);
 
     /* Write the <end> tag */

@@ -323,7 +323,7 @@ bool EditorView::deleteChannels(QVariantList channels)
     bool res;
     for (int i = 0; i < channels.count(); i++)
     {
-        QLCChannel *channel = channels.at(i).value<QLCChannel*>();
+        const QLCChannel *channel = channels.at(i).value<QLCChannel*>();
         res = deleteChannel(channel);
         if (res == false)
             return false;
@@ -367,7 +367,7 @@ ModeEdit *EditorView::requestModeEditor(QString name)
 bool EditorView::deleteMode(QString name)
 {
     qDebug() << "Remove mode" << name;
-    QLCFixtureMode *mode = m_fixtureDef->mode(name);
+    const QLCFixtureMode *mode = m_fixtureDef->mode(name);
     if (mode != nullptr)
     {
         bool ret = m_fixtureDef->removeMode(mode);
@@ -385,7 +385,7 @@ void EditorView::updateModeList()
 {
     m_modeList->clear();
 
-    for (QLCFixtureMode *mode : m_fixtureDef->modes())
+    for (const QLCFixtureMode *mode : m_fixtureDef->modes())
     {
         QVariantMap modeMap;
         modeMap.insert("name", mode->name());
@@ -434,7 +434,7 @@ void EditorView::updateAliasList()
         const QList<QLCCapability*> caps = channel->capabilities();
         for (int capIndex = 0; capIndex < caps.count(); capIndex++)
         {
-            QLCCapability *cap = caps.at(capIndex);
+            const QLCCapability *cap = caps.at(capIndex);
             if (cap->preset() != QLCCapability::Alias)
                 continue;
 
@@ -508,19 +508,19 @@ QString EditorView::checkFixture()
     }
     else
     {
-        for (QLCChannel *channel : m_fixtureDef->channels())
+        for (const QLCChannel *channel : m_fixtureDef->channels())
         {
             if (channel->capabilities().isEmpty())
                 errors.append(tr("<li>No capability provided in channel '%1'</li>").arg(channel->name()));
 
-            for (QLCCapability *cap : channel->capabilities())
+            for (const QLCCapability *cap : channel->capabilities())
             {
                 if (cap->name().isEmpty())
                     errors.append(tr("<li>Empty capability description provided in channel '%1'</li>").arg(channel->name()));
             }
         }
 
-        for (QLCFixtureMode *mode : m_fixtureDef->modes())
+        for (const QLCFixtureMode *mode : m_fixtureDef->modes())
         {
             if (mode->name().isEmpty())
                 errors.append(tr("<li>Empty mode name provided</li>"));
@@ -529,7 +529,7 @@ QString EditorView::checkFixture()
                 errors.append(tr("<li>Mode '%1' has no channels defined</li>").arg(mode->name()));
 
             quint32 chIndex = 0;
-            for (QLCChannel *channel : mode->channels())
+            for (const QLCChannel *channel : mode->channels())
             {
 
                 if (mode->channelActsOn(chIndex) == chIndex)

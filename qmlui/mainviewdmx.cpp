@@ -67,7 +67,7 @@ void MainViewDMX::setUniverseFilter(quint32 universeFilter)
         it.next();
         quint32 fxID = it.key();
         QQuickItem *fxItem = it.value();
-        Fixture *fixture = m_doc->fixture(fxID);
+        const Fixture *fixture = m_doc->fixture(fxID);
         if (fixture == nullptr || fxItem == nullptr)
             continue;
 
@@ -84,7 +84,7 @@ void MainViewDMX::reset()
     while (it.hasNext())
     {
         it.next();
-        Fixture *fixture = m_doc->fixture(it.key());
+        const Fixture *fixture = m_doc->fixture(it.key());
         if (fixture)
             disconnect(fixture, SIGNAL(aliasChanged()), this, SLOT(slotAliasChanged()));
         delete it.value().data();
@@ -235,7 +235,7 @@ void MainViewDMX::slotRefreshView()
 
     reset();
 
-    for (Fixture *fixture : m_doc->fixtures())
+    for (const Fixture *fixture : m_doc->fixtures())
         createFixtureItem(fixture->id());
 }
 
@@ -244,7 +244,7 @@ void MainViewDMX::slotAliasChanged()
     if (isEnabled() == false)
         return;
 
-    Fixture *fixture = qobject_cast<Fixture *>(sender());
+    const Fixture *fixture = qobject_cast<Fixture *>(sender());
     if (fixture == nullptr)
         return;
 

@@ -75,17 +75,17 @@ void VCSoloFrame_Test::soloParent()
     VCSoloFrame solo(m_env->doc(), m_env->vc());
     VCFrame frame(m_env->doc(), m_env->vc());
 
-    VCWidget *soloChild = solo.addWidget(nullptr, "Button", QPoint());
+    const VCWidget *soloChild = solo.addWidget(nullptr, "Button", QPoint());
     QCOMPARE(soloChild->hasSoloParent(), true);
 
     /* A frame inside a solo frame passes the solo behavior through */
     VCFrame *inner = qobject_cast<VCFrame *>(solo.addWidget(nullptr, "Frame", QPoint()));
     QVERIFY(inner != nullptr);
     QCOMPARE(inner->hasSoloParent(), true);
-    VCWidget *nested = inner->addWidget(nullptr, "Button", QPoint());
+    const VCWidget *nested = inner->addWidget(nullptr, "Button", QPoint());
     QCOMPARE(nested->hasSoloParent(), true);
 
-    VCWidget *frameChild = frame.addWidget(nullptr, "Button", QPoint());
+    const VCWidget *frameChild = frame.addWidget(nullptr, "Button", QPoint());
     QCOMPARE(frameChild->hasSoloParent(), false);
     QCOMPARE(solo.hasSoloParent(), false);
 }
@@ -137,7 +137,7 @@ void VCSoloFrame_Test::copy()
     VCWidget *child = solo.addWidget(nullptr, "Button", QPoint());
     child->setCaption("Child");
 
-    VCSoloFrame *copy = qobject_cast<VCSoloFrame *>(solo.createCopy(&parent));
+    const VCSoloFrame *copy = qobject_cast<VCSoloFrame *>(solo.createCopy(&parent));
     QVERIFY(copy != nullptr);
     QCOMPARE(copy->type(), int(VCWidget::SoloFrameWidget));
     QCOMPARE(copy->caption(), QString("Solo"));

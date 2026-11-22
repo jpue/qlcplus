@@ -67,7 +67,7 @@ void ChannelModifierGraphicsView::addNewHandler()
     HandlerItem *nextHandler = NULL;
     for (prevHdlrIdx = 0; prevHdlrIdx < m_handlers.count(); prevHdlrIdx++)
     {
-        HandlerItem *hdlr = m_handlers.at(prevHdlrIdx);
+        const HandlerItem *hdlr = m_handlers.at(prevHdlrIdx);
         if (hdlr == prevHandler)
         {
             nextHandler = m_handlers.at(prevHdlrIdx + 1);
@@ -305,7 +305,7 @@ void ChannelModifierGraphicsView::slotItemSelected(HandlerGraphicsItem *item)
     if (m_currentHandler != NULL)
         m_currentHandler->setBrush(QBrush(Qt::yellow));
     m_currentHandler = item;
-    HandlerItem *handler = getSelectedHandler();
+    const HandlerItem *handler = getSelectedHandler();
     if (handler != NULL)
         emit itemClicked(handler->m_dmxMap.first, handler->m_dmxMap.second);
 }

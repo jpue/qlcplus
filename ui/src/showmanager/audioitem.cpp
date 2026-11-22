@@ -184,7 +184,7 @@ void AudioItem::contextMenuEvent(QGraphicsSceneContextMenuEvent *)
 
     if (m_audio->getAudioDecoder() != NULL)
     {
-        AudioDecoder *ad = m_audio->getAudioDecoder();
+        const AudioDecoder *ad = m_audio->getAudioDecoder();
         AudioParameters ap = ad->audioParameters();
 
         if (ap.channels() == 1)
@@ -219,12 +219,12 @@ qint32 PreviewThread::getSample(const unsigned char *data, quint32 idx, int samp
     }
     else if (sampleSize == 2)
     {
-        qint16 *array = (qint16 *)data;
+        const qint16 *array = (qint16 *)data;
         value = array[idx / 2];
     }
     else if (sampleSize == 3 || sampleSize == 4)
     {
-        qint32 *array = (qint32 *)data;
+        const qint32 *array = (qint32 *)data;
         value = array[idx / 4] >> 16;
     }
     //qDebug() << "sampleValue:" << value;

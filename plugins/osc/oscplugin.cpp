@@ -142,7 +142,7 @@ QString OSCPlugin::outputInfo(quint32 output)
 
     str += QString("<H3>%1 %2</H3>").arg(tr("Output")).arg(outputs()[output]);
     str += QString("<P>");
-    OSCController *ctrl = m_IOmapping.at(output).controller;
+    const OSCController *ctrl = m_IOmapping.at(output).controller;
     if (ctrl == NULL || ctrl->type() == OSCController::Input)
         str += tr("Status: Not open");
     else
@@ -275,7 +275,7 @@ QString OSCPlugin::inputInfo(quint32 input)
 
     str += QString("<H3>%1 %2</H3>").arg(tr("Input")).arg(inputs()[input]);
     str += QString("<P>");
-    OSCController *ctrl = m_IOmapping.at(input).controller;
+    const OSCController *ctrl = m_IOmapping.at(input).controller;
     if (ctrl == NULL || ctrl->type() == OSCController::Output)
         str += tr("Status: Not open");
     else

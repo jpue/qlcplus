@@ -363,15 +363,15 @@ void VCWidget_Test::copy()
     QCOMPARE(copy.pos(), QPoint(10, 20));
     QCOMPARE(copy.size(), QSize(20, 30));
 
-    QLCInputSource *src1 = new QLCInputSource(0, 12);
+    const QLCInputSource *src1 = new QLCInputSource(0, 12);
     QCOMPARE(copy.inputSource()->universe(), src1->universe());
     QCOMPARE(copy.inputSource()->channel(), src1->channel());
 
-    QLCInputSource *src2 = new QLCInputSource(1, 2);
+    const QLCInputSource *src2 = new QLCInputSource(1, 2);
     QCOMPARE(copy.inputSource(15)->universe(), src2->universe());
     QCOMPARE(copy.inputSource(15)->channel(), src2->channel());
 
-    QLCInputSource *src3 = new QLCInputSource(3, 4);
+    const QLCInputSource *src3 = new QLCInputSource(3, 4);
     QCOMPARE(copy.inputSource(1)->universe(), src3->universe());
     QCOMPARE(copy.inputSource(1)->channel(), src3->channel());
 
@@ -429,7 +429,7 @@ void VCWidget_Test::loadInput()
     StubWidget stub(&w, m_doc);
     QCOMPARE(stub.loadXMLInput(xmlReader), true);
 
-    QLCInputSource *src = new QLCInputSource(12, 34);
+    const QLCInputSource *src = new QLCInputSource(12, 34);
     QCOMPARE(stub.inputSource()->universe(), src->universe());
     QCOMPARE(stub.inputSource()->channel(), src->channel());
 

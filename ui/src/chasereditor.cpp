@@ -372,12 +372,12 @@ void ChaserEditor::slotAddClicked()
 
     if (m_chaser->type() == Function::SequenceType)
     {
-        Sequence *sequence = qobject_cast<Sequence*>(m_chaser);
+        const Sequence *sequence = qobject_cast<Sequence*>(m_chaser);
         ChaserStep step(sequence->boundSceneID());
         item = new QTreeWidgetItem;
         updateItem(item, step);
         // if this is the first step we add, then copy all DMX channels non-zero values
-        Scene *currScene = qobject_cast<Scene*> (m_doc->function(sequence->boundSceneID()));
+        const Scene *currScene = qobject_cast<Scene*> (m_doc->function(sequence->boundSceneID()));
         QListIterator <SceneValue> it(currScene->values());
         qDebug() << "First step added !!";
         while (it.hasNext() == true)
@@ -398,7 +398,7 @@ void ChaserEditor::slotAddClicked()
         {
             QList<quint32> disabledList;
             disabledList << m_chaser->id();
-            foreach (Function* function, m_doc->functions())
+            foreach (const Function* function, m_doc->functions())
             {
                 if (function->contains(m_chaser->id()))
                     disabledList << function->id();
@@ -718,7 +718,7 @@ void ChaserEditor::slotCutClicked()
 void ChaserEditor::slotCopyClicked()
 {
     QList <ChaserStep> copyList;
-    foreach (QTreeWidgetItem *item, m_tree->selectedItems())
+    foreach (const QTreeWidgetItem *item, m_tree->selectedItems())
         copyList << stepAtItem(item);
     QLCClipboard *clipboard = m_doc->clipboard();
     clipboard->copyContent(m_chaser->id(), copyList);
@@ -736,9 +736,9 @@ void ChaserEditor::slotPasteClicked()
     // this scene
     if (m_chaser->type() == Function::SequenceType)
     {
-        Sequence *sequence = qobject_cast<Sequence*>(m_chaser);
+        const Sequence *sequence = qobject_cast<Sequence*>(m_chaser);
         quint32 sceneID = sequence->boundSceneID();
-        Scene *scene = qobject_cast<Scene*>(m_doc->function(sceneID));
+        const Scene *scene = qobject_cast<Scene*>(m_doc->function(sceneID));
         foreach (ChaserStep step, pasteList)
         {
             if (step.fid != sceneID) // if IDs are the same then it's a valid step
@@ -1214,7 +1214,7 @@ void ChaserEditor::updateTree(bool clear)
 
 void ChaserEditor::updateItem(QTreeWidgetItem* item, ChaserStep& step)
 {
-    Function* function = step.resolveFunction(m_doc);
+    const Function* function = step.resolveFunction(m_doc);
     Q_ASSERT(function != NULL);
     Q_ASSERT(item != NULL);
 

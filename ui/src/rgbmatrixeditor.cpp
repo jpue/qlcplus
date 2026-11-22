@@ -317,7 +317,7 @@ void RGBMatrixEditor::fillFixtureGroupCombo()
     QListIterator <FixtureGroup*> it(m_doc->fixtureGroups());
     while (it.hasNext() == true)
     {
-        FixtureGroup* grp(it.next());
+        const FixtureGroup* grp(it.next());
         Q_ASSERT(grp != NULL);
         m_fixtureGroupCombo->addItem(grp->name(), grp->id());
         if (m_matrix->fixtureGroup() == grp->id())
@@ -366,7 +366,7 @@ void RGBMatrixEditor::updateExtraOptions()
         m_imageGroup->show();
         m_offsetGroup->show();
 
-        RGBImage *image = static_cast<RGBImage*> (m_matrix->algorithm());
+        const RGBImage *image = static_cast<RGBImage*> (m_matrix->algorithm());
         Q_ASSERT(image != NULL);
         m_imageEdit->setText(image->filename());
 
@@ -384,7 +384,7 @@ void RGBMatrixEditor::updateExtraOptions()
         m_offsetGroup->show();
         m_imageGroup->hide();
 
-        RGBText *text = static_cast<RGBText*> (m_matrix->algorithm());
+        const RGBText *text = static_cast<RGBText*> (m_matrix->algorithm());
         Q_ASSERT(text != NULL);
         m_textEdit->setText(text->text());
 
@@ -706,7 +706,7 @@ bool RGBMatrixEditor::createPreviewItems()
     m_previewHash.clear();
     m_scene->clear();
 
-    FixtureGroup* grp = m_doc->fixtureGroup(m_matrix->fixtureGroup());
+    const FixtureGroup* grp = m_doc->fixtureGroup(m_matrix->fixtureGroup());
     if (grp == NULL)
     {
         QGraphicsTextItem* text = new QGraphicsTextItem(tr("No fixture group to control"));
@@ -1238,7 +1238,7 @@ void RGBMatrixEditor::slotFixtureGroupChanged(quint32 id)
         int index = m_fixtureGroupCombo->findData(id);
         if (index != -1)
         {
-            FixtureGroup* grp = m_doc->fixtureGroup(id);
+            const FixtureGroup* grp = m_doc->fixtureGroup(id);
             m_fixtureGroupCombo->setItemText(index, grp->name());
         }
     }
@@ -1249,7 +1249,7 @@ void RGBMatrixEditor::slotSaveToSequenceClicked()
     if (m_matrix == NULL || m_matrix->fixtureGroup() == FixtureGroup::invalidId())
         return;
 
-    FixtureGroup* grp = m_doc->fixtureGroup(m_matrix->fixtureGroup());
+    const FixtureGroup* grp = m_doc->fixtureGroup(m_matrix->fixtureGroup());
     if (grp != NULL && m_matrix->algorithm() != NULL)
     {
         bool testRunning = false;
@@ -1269,7 +1269,7 @@ void RGBMatrixEditor::slotSaveToSequenceClicked()
         QList<GroupHead> headList = grp->headList();
         foreach (GroupHead head, headList)
         {
-            Fixture *fxi = m_doc->fixture(head.fxi);
+            const Fixture *fxi = m_doc->fixture(head.fxi);
             if (fxi == NULL)
                 continue;
 
@@ -1374,7 +1374,7 @@ void RGBMatrixEditor::slotSaveToSequenceClicked()
                     uint col = m_previewHandler->m_map[y][x];
                     GroupHead head = grp->head(QLCPoint(x, y));
 
-                    Fixture *fxi = m_doc->fixture(head.fxi);
+                    const Fixture *fxi = m_doc->fixture(head.fxi);
                     if (fxi == NULL)
                         continue;
 

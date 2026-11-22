@@ -589,7 +589,7 @@ bool WebAccessBase::handleCommonWebSocketCommand(QHttpConnection *conn, const We
             if (cmdList.count() < 4)
                 return true;
 
-            InputPatch *inPatch = m_doc->inputOutputMap()->inputPatch(universe);
+            const InputPatch *inPatch = m_doc->inputOutputMap()->inputPatch(universe);
             if (inPatch != nullptr)
             {
                 m_doc->inputOutputMap()->setInputPatch(universe, inPatch->pluginName(), "", "", inPatch->input(), cmdList[3]);

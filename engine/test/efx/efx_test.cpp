@@ -2657,7 +2657,7 @@ void EFX_Test::createCopy()
     QVERIFY(f != e1);
     QVERIFY(f->id() != e1->id());
 
-    EFX* copy = qobject_cast<EFX*> (f);
+    const EFX* copy = qobject_cast<EFX*> (f);
     QVERIFY(copy != NULL);
     QVERIFY(copy->name() == e1->name());
     QVERIFY(copy->direction() == EFX::Forward);

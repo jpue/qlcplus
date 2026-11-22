@@ -92,7 +92,7 @@ void VCWidgetSelection::updateWidgetsTree()
 
     foreach (QObject *object, m_widgetsList)
     {
-        VCWidget *widget = qobject_cast<VCWidget *>(object);
+        const VCWidget *widget = qobject_cast<VCWidget *>(object);
 
         QTreeWidgetItem *item = new QTreeWidgetItem(m_tree);
         item->setText(KColumnName, widget->caption());

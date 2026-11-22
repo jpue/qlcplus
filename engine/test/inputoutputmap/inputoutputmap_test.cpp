@@ -183,7 +183,7 @@ void InputOutputMap_Test::universeNames()
     QVERIFY(iom.universeNames().at(2).contains("Universe"));
     QVERIFY(iom.universeNames().at(3).contains("Universe"));
 
-    IOPluginStub* stub = static_cast<IOPluginStub*>
+    const IOPluginStub* stub = static_cast<IOPluginStub*>
                                 (m_doc->ioPluginCache()->plugins().at(0));
     QVERIFY(stub != NULL);
 
@@ -416,7 +416,7 @@ void InputOutputMap_Test::setMultipleOutputPatches()
 {
     InputOutputMap iom(m_doc, 4);
 
-    IOPluginStub* stub = static_cast<IOPluginStub*>
+    const IOPluginStub* stub = static_cast<IOPluginStub*>
                                 (m_doc->ioPluginCache()->plugins().at(0));
     QVERIFY(stub != NULL);
 

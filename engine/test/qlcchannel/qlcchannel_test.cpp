@@ -405,7 +405,7 @@ void QLCChannel_Test::copy()
     QVERIFY(channel->addCapability(cap8) == true);
 
     /* Create a copy of the original channel */
-    QLCChannel* copy = channel->createCopy();
+    const QLCChannel* copy = channel->createCopy();
 
     QVERIFY(copy->name() == "Foobar");
     QVERIFY(copy->group() == QLCChannel::Tilt);

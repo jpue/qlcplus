@@ -307,7 +307,7 @@ void FunctionSelection::refillTree()
     }
 
     /* Fill the tree */
-    foreach (Function* function, m_doc->functions())
+    foreach (const Function* function, m_doc->functions())
     {
         if (m_runningOnlyFlag == true && !function->isRunning())
             continue;

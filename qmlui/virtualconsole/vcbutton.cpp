@@ -302,7 +302,7 @@ void VCButton::slotFunctionFlashing(quint32 fid, bool state)
         return;
 
     // if the function was flashed by another button, and the function is still running, keep the button pushed
-    Function* f = m_doc->function(m_functionID);
+    const Function* f = m_doc->function(m_functionID);
     if (state == false && actionType() == Toggle && f != nullptr && f->isRunning())
     {
         return;

@@ -130,7 +130,7 @@ void Track_Test::load()
     QCOMPARE(t.isMute(), true);
 
     QVERIFY(t.showFunctions().count() == 1);
-    ShowFunction *sf = t.showFunctions().first();
+    const ShowFunction *sf = t.showFunctions().first();
 
     QVERIFY(sf->functionID() == 789);
     QVERIFY(sf->duration() == 112233);

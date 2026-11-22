@@ -240,7 +240,7 @@ void EditChannel::slotPresetActivated(int index)
         }
     }
 
-    foreach (QLCCapability *cap, m_channel->capabilities())
+    foreach (const QLCCapability *cap, m_channel->capabilities())
         m_channel->removeCapability(cap);
 
     m_channel->addPresetCapability();
@@ -344,7 +344,7 @@ void EditChannel::slotCapabilityCellSelected(int currentRow, int currentColumn,
                                              int previousRow, int previousColumn)
 {
     QTableWidgetItem *prevItem = m_capabilityList->item(previousRow, previousColumn);
-    QTableWidgetItem *currItem = m_capabilityList->item(currentRow, currentColumn);
+    const QTableWidgetItem *currItem = m_capabilityList->item(currentRow, currentColumn);
 
     Q_UNUSED(prevItem)
 
@@ -361,7 +361,7 @@ void EditChannel::slotCapabilityCellSelected(int currentRow, int currentColumn,
         {
             for (int i = currentRow; i >= 0; i--)
             {
-                QLCCapability *cap = getRowCapability(i);
+                const QLCCapability *cap = getRowCapability(i);
                 if (cap)
                 {
                     // maximum already reached. Nothing to do here
@@ -428,7 +428,7 @@ void EditChannel::slotRemoveCapabilityClicked()
     if (item != NULL)
     {
         // This also deletes the capability
-        QLCCapability *cap = (QLCCapability *) item->data(Qt::UserRole).value<void *>();
+        const QLCCapability *cap = (QLCCapability *) item->data(Qt::UserRole).value<void *>();
         m_channel->removeCapability(cap);
         delete item;
     }
@@ -750,7 +750,7 @@ void EditChannel::checkOverlapping()
     QListIterator <QLCCapability*> it(m_channel->capabilities());
     while (it.hasNext() == true)
     {
-        QLCCapability *cap = it.next();
+        const QLCCapability *cap = it.next();
         for (int i = cap->min(); i <= cap->max(); i++)
         {
             if (valArray[i])

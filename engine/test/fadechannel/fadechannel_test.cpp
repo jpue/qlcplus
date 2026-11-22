@@ -88,7 +88,7 @@ void FadeChannel_Test::crossUniverse()
     /* Pixel: U0 360-509 + U1 0-209 */
     {
         Doc doc(this);
-        Fixture *fxi = createRow(&doc, Fixture::CrossUniversePixel);
+        const Fixture *fxi = createRow(&doc, Fixture::CrossUniversePixel);
 
         FadeChannel fc(&doc, fxi->id(), 149);
         QCOMPARE(fc.universe(), quint32(0));
@@ -124,7 +124,7 @@ void FadeChannel_Test::crossUniverse()
     /* Fill: U0 360-511 + U1 0-207 */
     {
         Doc doc(this);
-        Fixture *fxi = createRow(&doc, Fixture::CrossUniverseFill);
+        const Fixture *fxi = createRow(&doc, Fixture::CrossUniverseFill);
 
         FadeChannel fc(&doc, fxi->id(), 151);
         QCOMPARE(fc.universe(), quint32(0));

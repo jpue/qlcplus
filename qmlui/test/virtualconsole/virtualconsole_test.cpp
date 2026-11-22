@@ -41,7 +41,7 @@ void VirtualConsole_Test::cleanup()
 
 void VirtualConsole_Test::pages()
 {
-    VirtualConsole *vc = m_env->vc();
+    const VirtualConsole *vc = m_env->vc();
 
     QCOMPARE(vc->pagesCount(), DEFAULT_PAGES_NUMBER);
     QVERIFY(vc->page(DEFAULT_PAGES_NUMBER) == nullptr);
@@ -81,7 +81,7 @@ void VirtualConsole_Test::widgetsMap()
     VirtualConsole *vc = m_env->vc();
     VCPage *page = vc->page(0);
 
-    VCWidget *btn = page->addWidget(nullptr, "Button", QPoint());
+    const VCWidget *btn = page->addWidget(nullptr, "Button", QPoint());
     QVERIFY(btn != nullptr);
     QVERIFY(vc->widget(btn->id()) == btn);
 
@@ -117,7 +117,7 @@ void VirtualConsole_Test::widgetsMap()
 
 void VirtualConsole_Test::widgetsList()
 {
-    VirtualConsole *vc = m_env->vc();
+    const VirtualConsole *vc = m_env->vc();
 
     /* No widgets */
     QVariantList list = vc->widgetsList();
@@ -126,8 +126,8 @@ void VirtualConsole_Test::widgetsList()
 
     VCPage *page = vc->page(0);
     VCWidget *btn1 = page->addWidget(nullptr, "Button", QPoint());
-    VCWidget *btn2 = page->addWidget(nullptr, "Button", QPoint());
-    VCWidget *label = page->addWidget(nullptr, "Label", QPoint());
+    const VCWidget *btn2 = page->addWidget(nullptr, "Button", QPoint());
+    const VCWidget *label = page->addWidget(nullptr, "Label", QPoint());
     btn1->setCaption("B1");
 
     list = vc->widgetsList();
@@ -235,7 +235,7 @@ void VirtualConsole_Test::resetContents()
     VirtualConsole *vc = m_env->vc();
     VCPage *page = vc->page(0);
 
-    VCWidget *btn = page->addWidget(nullptr, "Button", QPoint());
+    const VCWidget *btn = page->addWidget(nullptr, "Button", QPoint());
     quint32 btnId = btn->id();
     page->setCaption("Custom");
     QVERIFY(vc->setPagePIN(0, "", "1234"));

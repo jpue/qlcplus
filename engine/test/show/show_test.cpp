@@ -81,13 +81,13 @@ void Show_Test::copy()
 
     QVERIFY(showCopy.getTracksCount() == show.getTracksCount());
 
-    Track *copyTrack = showCopy.tracks().first();
+    const Track *copyTrack = showCopy.tracks().first();
 
     QVERIFY(copyTrack->getSceneID() == 456);
     QVERIFY(copyTrack->name() == "Original track");
     QVERIFY(copyTrack->showFunctions().count() == 1);
 
-    ShowFunction *copySF = copyTrack->showFunctions().first();
+    const ShowFunction *copySF = copyTrack->showFunctions().first();
     QVERIFY(copySF->functionID() != scene->id());
     QVERIFY(copySF->startTime() == 1000);
     QVERIFY(copySF->duration() == 2000);
@@ -259,7 +259,7 @@ void Show_Test::load()
 
     QCOMPARE(s.getTracksCount(), 2);
 
-    Track *t, *t2;
+    const Track *t, *t2;
     t = s.track(111);
     QVERIFY(t == NULL);
 
@@ -327,7 +327,7 @@ void Show_Test::loadSelfReference()
     QCOMPARE(show->getTracksCount(), 1);
 
     // the self reference must be dropped, the Scene must be kept
-    Track *track = show->tracks().first();
+    const Track *track = show->tracks().first();
     QCOMPARE(track->showId(), quint32(0));
     QCOMPARE(track->showFunctions().count(), 1);
     QCOMPARE(track->showFunctions().first()->functionID(), quint32(1));

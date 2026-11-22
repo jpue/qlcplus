@@ -200,7 +200,7 @@ QTreeWidgetItem *FunctionWizard::getFixtureGroupItem(QString manufacturer, QStri
 
 void FunctionWizard::addFixture(quint32 fxi_id)
 {
-    Fixture* fxi = m_doc->fixture(fxi_id);
+    const Fixture* fxi = m_doc->fixture(fxi_id);
     Q_ASSERT(fxi != NULL);
 
     QStringList caps = PaletteGenerator::getCapabilities(fxi);
@@ -325,7 +325,7 @@ void FunctionWizard::updateAvailableFunctionsTree()
         // child and create categories on its capabilities
         QTreeWidgetItem *fxItem = fxGrpItem->child(0);
         quint32 fxID = fxItem->data(KFixtureColumnName, Qt::UserRole).toUInt();
-        Fixture* fxi = m_doc->fixture(fxID);
+        const Fixture* fxi = m_doc->fixture(fxID);
         Q_ASSERT(fxi != NULL);
 
         QStringList caps = PaletteGenerator::getCapabilities(fxi);
@@ -424,19 +424,19 @@ void FunctionWizard::updateResultFunctionsTree()
                                                                  (PaletteGenerator::PaletteSubType)subType);
                 m_paletteList.append(palette);
 
-                foreach (Scene *scene, palette->scenes())
+                foreach (const Scene *scene, palette->scenes())
                 {
                     QTreeWidgetItem *item = new QTreeWidgetItem(getFunctionGroupItem(scene));
                     item->setText(KFunctionName, scene->name());
                     item->setIcon(KFunctionName, scene->getIcon());
                 }
-                foreach (Chaser *chaser, palette->chasers())
+                foreach (const Chaser *chaser, palette->chasers())
                 {
                     QTreeWidgetItem *item = new QTreeWidgetItem(getFunctionGroupItem(chaser));
                     item->setText(KFunctionName, chaser->name());
                     item->setIcon(KFunctionName, chaser->getIcon());
                 }
-                foreach (RGBMatrix *matrix, palette->matrices())
+                foreach (const RGBMatrix *matrix, palette->matrices())
                 {
                     QTreeWidgetItem *item = new QTreeWidgetItem(getFunctionGroupItem(matrix));
                     item->setText(KFunctionName, matrix->name());
@@ -520,7 +520,7 @@ void FunctionWizard::addChannelsToTree(QTreeWidgetItem *frame, QTreeWidgetItem *
 {
     QTreeWidgetItem *fxItem = fxGrpItem->child(0);
     quint32 fxID = fxItem->data(KFixtureColumnName, Qt::UserRole).toUInt();
-    Fixture *fxi = m_doc->fixture(fxID);
+    const Fixture *fxi = m_doc->fixture(fxID);
     Q_ASSERT(fxi != NULL);
 
     qint32 lastPanTilt[] = {-1, -1, -1, -1};
@@ -872,7 +872,7 @@ VCWidget *FunctionWizard::createWidget(int type, VCWidget *parent, int xpos, int
             // Click & Go Slider in Pallette Frames
             if (func != NULL)
             {
-                Scene *scene = qobject_cast<Scene*> (func);
+                const Scene *scene = qobject_cast<Scene*> (func);
                 foreach (SceneValue scv, scene->values())
                     slider->addLevelChannel(scv.fxi, scv.channel);
 
@@ -887,7 +887,7 @@ VCWidget *FunctionWizard::createWidget(int type, VCWidget *parent, int xpos, int
             {
                 // get channel of first Fixture
                 int fxID = fxGrpItem->child(0)->data(KFixtureColumnName, Qt::UserRole).toInt();
-                Fixture *fixture = m_doc->fixture(fxID);
+                const Fixture *fixture = m_doc->fixture(fxID);
                 const QLCChannel *channel = fixture->channel(chan);
 
                 bool isRGB = channel->colour()==QLCChannel::Red;
@@ -899,7 +899,7 @@ VCWidget *FunctionWizard::createWidget(int type, VCWidget *parent, int xpos, int
 
                     QTreeWidgetItem *fxItem = fxGrpItem->child(c);
                     int fxi = fxItem->data(KFixtureColumnName, Qt::UserRole).toInt();
-                    Fixture *fixture = m_doc->fixture(fxID);
+                    const Fixture *fixture = m_doc->fixture(fxID);
                     qint16 chanIndex = fixture->head(0).channels().indexOf(chan);
                     for (qint32 h = 0; h < fixture->heads(); h++)
                     {
@@ -959,7 +959,7 @@ VCWidget *FunctionWizard::createWidget(int type, VCWidget *parent, int xpos, int
 
                 QTreeWidgetItem *fxItem = fxGrpItem->child(c);
                 int fxID = fxItem->data(KFixtureColumnName, Qt::UserRole).toInt();
-                Fixture *fixture = m_doc->fixture(fxID);
+                const Fixture *fixture = m_doc->fixture(fxID);
                 for (qint32 h = 0; h < fixture->heads(); h++)
                 {
                     if (headId >= 0 && h != headId)
@@ -984,7 +984,7 @@ VCWidget *FunctionWizard::createWidget(int type, VCWidget *parent, int xpos, int
     {
         if (func->type() == Function::SceneType && type == VCWidget::ButtonWidget)
         {
-            Scene *scene = qobject_cast<Scene*> (func);
+            const Scene *scene = qobject_cast<Scene*> (func);
 
             if (pType == PaletteGenerator::PrimaryColors ||
                 pType == PaletteGenerator::SixteenColors ||
@@ -998,14 +998,14 @@ VCWidget *FunctionWizard::createWidget(int type, VCWidget *parent, int xpos, int
             {
                 foreach (SceneValue scv, scene->values())
                 {
-                    Fixture *fixture = m_doc->fixture(scv.fxi);
+                    const Fixture *fixture = m_doc->fixture(scv.fxi);
                     if (fixture == NULL)
                         continue;
 
                     const QLCChannel* channel(fixture->channel(scv.channel));
                     if (channel->group() == QLCChannel::Gobo)
                     {
-                        QLCCapability *cap = channel->searchCapability(scv.value);
+                        const QLCCapability *cap = channel->searchCapability(scv.value);
                         if (cap->resource(0).isValid())
                         {
                             widget->setBackgroundImage(cap->resource(0).toString());
@@ -1186,7 +1186,7 @@ void FunctionWizard::addWidgetsToVirtualConsole()
             int pType = 0;
             if (!wItem->text(KWidgetName).contains("Channels"))
             {
-                PaletteGenerator *pal = (PaletteGenerator *) wItem->data(KWidgetName, Qt::UserRole + 1).value<void *>();
+                const PaletteGenerator *pal = (PaletteGenerator *) wItem->data(KWidgetName, Qt::UserRole + 1).value<void *>();
                 pType = pal->type();
             }
 

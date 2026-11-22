@@ -37,7 +37,7 @@ WebAccessConfiguration::WebAccessConfiguration()
 QString WebAccessConfiguration::getIOConfigHTML(const Doc *doc)
 {
     QString html = "";
-    InputOutputMap *ioMap = doc->inputOutputMap();
+    const InputOutputMap *ioMap = doc->inputOutputMap();
 
     QStringList IOplugins = ioMap->inputPluginNames();
     foreach (QString out, ioMap->outputPluginNames())
@@ -72,9 +72,9 @@ QString WebAccessConfiguration::getIOConfigHTML(const Doc *doc)
 
     for (quint32 i = 0; i < ioMap->universesCount(); i++)
     {
-        InputPatch* ip = ioMap->inputPatch(i);
-        OutputPatch* op = ioMap->outputPatch(i);
-        OutputPatch* fp = ioMap->feedbackPatch(i);
+        const InputPatch* ip = ioMap->inputPatch(i);
+        const OutputPatch* op = ioMap->outputPatch(i);
+        const OutputPatch* fp = ioMap->feedbackPatch(i);
         QString uniName = ioMap->getUniverseNameByIndex(i);
         bool uniPass = ioMap->getUniversePassthrough(i);
 

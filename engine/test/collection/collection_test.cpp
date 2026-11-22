@@ -413,7 +413,7 @@ void Collection_Test::createCopy()
     QVERIFY(f != c1);
     QVERIFY(f->id() != c1->id());
 
-    Collection* copy = qobject_cast<Collection*> (f);
+    const Collection* copy = qobject_cast<Collection*> (f);
     QVERIFY(copy != NULL);
     QVERIFY(copy->functions().size() == 3);
     QVERIFY(copy->functions().at(0) == 20);

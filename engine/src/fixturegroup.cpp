@@ -107,7 +107,7 @@ QString FixtureGroup::name() const
 
 bool FixtureGroup::assignFixture(quint32 id, const QLCPoint& pt)
 {
-    Fixture* fxi = doc()->fixture(id);
+    const Fixture* fxi = doc()->fixture(id);
     Q_ASSERT(fxi != NULL);
     QLCPoint tmp = pt;
     int headAddedcount = 0;

@@ -56,7 +56,7 @@ void SimpleDeskEngine_Test::values()
 void SimpleDeskEngine_Test::cueStack()
 {
     SimpleDeskEngine eng(m_doc);
-    CueStack* stack = eng.cueStack(0);
+    const CueStack* stack = eng.cueStack(0);
     QVERIFY(stack != NULL);
     QCOMPARE(eng.cueStack(0), stack);
 }
@@ -95,7 +95,7 @@ void SimpleDeskEngine_Test::xml()
 
     SimpleDeskEngine eng2(m_doc);
     QVERIFY(eng2.loadXML(xmlReader) == true);
-    CueStack* cs2 = eng2.cueStack(3);
+    const CueStack* cs2 = eng2.cueStack(3);
     QCOMPARE(cs2->cues().size(), 1);
     QCOMPARE(cs2->cues().at(0).name(), QString("Test"));
 }

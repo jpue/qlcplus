@@ -161,7 +161,7 @@ QStringList FunctionManager::selectedItemNames()
 
     for (QVariant &fID : m_selectedIDList)
     {
-        Function *f = m_doc->function(fID.toInt());
+        const Function *f = m_doc->function(fID.toInt());
         if (f == nullptr)
             continue;
         names.append(f->name());
@@ -302,7 +302,7 @@ quint32 FunctionManager::createFunction(int type, QVariantList fixturesList)
                 {
                     for (QVariant &fixtureID : fixturesList)
                     {
-                        Fixture *fixture = m_doc->fixture(fixtureID.toUInt());
+                        const Fixture *fixture = m_doc->fixture(fixtureID.toUInt());
                         if (fixture == nullptr)
                             continue;
 
@@ -333,7 +333,7 @@ quint32 FunctionManager::createFunction(int type, QVariantList fixturesList)
                 EFX *efx = qobject_cast<EFX *>(f);
                 for (QVariant &fixtureID : fixturesList)
                 {
-                    Fixture *fixture = m_doc->fixture(fixtureID.toUInt());
+                    const Fixture *fixture = m_doc->fixture(fixtureID.toUInt());
                     if (fixture == nullptr)
                         continue;
 
@@ -495,7 +495,7 @@ QString FunctionManager::functionIcon(int type)
 
 QString FunctionManager::functionPath(quint32 id)
 {
-    Function *f = m_doc->function(id);
+    const Function *f = m_doc->function(id);
     if (f == nullptr)
         return "";
 
@@ -571,7 +571,7 @@ void FunctionManager::setScenePreviewEnabled(bool enable)
         }
         else if (m_currentEditor->functionType() == Function::SequenceType)
         {
-            Sequence *sequence = qobject_cast<Sequence *>(m_doc->function(m_currentEditor->functionID()));
+            const Sequence *sequence = qobject_cast<Sequence *>(m_doc->function(m_currentEditor->functionID()));
             if (sequence != nullptr)
                 scene = qobject_cast<Scene *>(m_doc->function(sequence->boundSceneID()));
         }
@@ -634,7 +634,7 @@ void FunctionManager::selectFunctionID(quint32 fID, bool multiSelection)
 
 QString FunctionManager::getEditorResource(int funcID)
 {
-    Function *f = m_doc->function((quint32)funcID);
+    const Function *f = m_doc->function((quint32)funcID);
     if (f == nullptr)
         return "qrc:/FunctionManager.qml";
 
@@ -716,7 +716,7 @@ void FunctionManager::setEditorFunction(quint32 fID, bool requestUI, bool back)
         break;
         case Function::SequenceType:
         {
-            Sequence *sequence = qobject_cast<Sequence *>(f);
+            const Sequence *sequence = qobject_cast<Sequence *>(f);
             m_sceneEditor = new SceneEditor(m_view, m_doc, this);
             m_sceneEditor->setFunctionID(sequence->boundSceneID());
             m_currentEditor = new ChaserEditor(m_view, m_doc, this);
@@ -788,7 +788,7 @@ static void collectExpandedPaths(TreeModel *model, const QString &parentPath, QS
         return;
 
     const QChar sep = TreeModel::separator();
-    for (TreeModelItem *item : model->items())
+    for (const TreeModelItem *item : model->items())
     {
         if (item == nullptr)
             continue;
@@ -1036,7 +1036,7 @@ void FunctionManager::cloneFunctions()
                 Function *scene = m_doc->function(sceneID);
                 if (scene != nullptr)
                 {
-                    Function *sceneCopy = scene->createCopy(m_doc);
+                    const Function *sceneCopy = scene->createCopy(m_doc);
                     if (sceneCopy != nullptr)
                     {
                         sequence->setBoundSceneID(sceneCopy->id());
@@ -1332,7 +1332,7 @@ bool FunctionManager::createFolder(QString folderName)
     else if (m_selectedIDList.count())
     {
         quint32 firstID = m_selectedIDList.first().toUInt();
-        Function *firstFunc = m_doc->function(firstID);
+        const Function *firstFunc = m_doc->function(firstID);
         if (firstFunc)
             basePath = firstFunc->path(true).replace("/", TreeModel::separator());
     }
@@ -1347,7 +1347,7 @@ bool FunctionManager::createFolder(QString folderName)
         return false;
 
     QString lowerPath = compPath.toLower();
-    for (Function *f : m_doc->functions())
+    for (const Function *f : m_doc->functions())
     {
         if (f->path(true).toLower().startsWith(lowerPath))
             return false;
@@ -1379,7 +1379,7 @@ void FunctionManager::deleteSelectedFolders()
             // use TreeModel::separator(). Convert before comparing.
             QString slashedPath = QString(path).replace(TreeModel::separator(), '/');
 
-            for (Function *func : m_doc->functions())
+            for (const Function *func : m_doc->functions())
             {
                 if (func == nullptr)
                     continue;
@@ -1495,7 +1495,7 @@ void FunctionManager::dumpDmxValues(QList<SceneValue> dumpValues, QList<quint32>
 
     // 4- iterate over all channels of all gathered fixtures and collect values
     QList<SceneValue> dumpedValues;
-    for (Fixture *fixture : fixtureList)
+    for (const Fixture *fixture : fixtureList)
     {
         for (quint32 chIndex = 0; chIndex < fixture->channels(); chIndex++)
         {
@@ -1572,7 +1572,7 @@ void FunctionManager::dumpDmxValues(QList<SceneValue> dumpValues, QList<quint32>
         if (m_currentEditor != nullptr && m_currentEditor->functionType() == Function::SequenceType &&
             m_currentEditor->functionID() == targetSequence->id())
         {
-            ChaserEditor *chaserEditor = qobject_cast<ChaserEditor*>(m_currentEditor);
+            const ChaserEditor *chaserEditor = qobject_cast<ChaserEditor*>(m_currentEditor);
             if (chaserEditor != nullptr)
             {
                 targetStepIndex = chaserEditor->playbackIndex();
@@ -1606,7 +1606,7 @@ void FunctionManager::dumpDmxValues(QList<SceneValue> dumpValues, QList<quint32>
 
 quint32 FunctionManager::getChannelTypeMask(quint32 fxID, quint32 channel)
 {
-    Fixture *fixture = m_doc->fixture(fxID);
+    const Fixture *fixture = m_doc->fixture(fxID);
     if (fixture == nullptr)
         return 0;
 
@@ -1921,7 +1921,7 @@ void FunctionManager::slotFunctionNameChanged(quint32 fid)
     }
     else
     {
-        TreeModelItem *node = m_functionTree->itemAtPath(fPath);
+        const TreeModelItem *node = m_functionTree->itemAtPath(fPath);
         if (node == nullptr || node->hasChildren() == false)
             return;
         items = node->children()->items();
@@ -1929,7 +1929,7 @@ void FunctionManager::slotFunctionNameChanged(quint32 fid)
 
     // the item is found by the Function it refers to, since the name it is
     // registered under is the one the Function had before the rename
-    for (TreeModelItem *item : items)
+    for (const TreeModelItem *item : items)
     {
         QVariantList data = item->data();
         if (data.isEmpty() || data.at(0).value<Function *>() != func)

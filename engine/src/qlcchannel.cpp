@@ -1007,7 +1007,7 @@ bool QLCChannel::addCapability(QLCCapability* cap)
     Q_ASSERT(cap != NULL);
 
     /* Check for overlapping values */
-    foreach (QLCCapability* another, m_capabilities)
+    foreach (const QLCCapability* another, m_capabilities)
     {
         if (another->overlaps(cap) == true)
             return false;
@@ -1027,7 +1027,7 @@ bool QLCChannel::setCapabilityRange(QLCCapability* cap, uchar min, uchar max)
     cap->setMax(max);
 
     /* Check for overlapping values */
-    foreach (QLCCapability* another, m_capabilities)
+    foreach (const QLCCapability* another, m_capabilities)
     {
         if (another == cap)
             continue;

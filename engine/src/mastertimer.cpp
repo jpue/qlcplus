@@ -109,7 +109,7 @@ void MasterTimer::stop()
 
 void MasterTimer::timerTick()
 {
-    Doc *doc = qobject_cast<Doc*> (parent());
+    const Doc *doc = qobject_cast<Doc*> (parent());
     Q_ASSERT(doc != NULL);
 
 #ifdef DEBUG_MASTERTIMER
@@ -205,7 +205,7 @@ void MasterTimer::fadeAndStopAll(int timeout)
 {
     if (timeout)
     {
-        Doc *doc = qobject_cast<Doc*> (parent());
+        const Doc *doc = qobject_cast<Doc*> (parent());
         Q_ASSERT(doc != NULL);
 
         QList<Universe *> universes = doc->inputOutputMap()->claimUniverses();

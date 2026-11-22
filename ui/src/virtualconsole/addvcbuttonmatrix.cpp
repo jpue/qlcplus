@@ -179,7 +179,7 @@ void AddVCButtonMatrix::accept()
 
 void AddVCButtonMatrix::addFunction(quint32 fid)
 {
-    Function* function = m_doc->function(fid);
+    const Function* function = m_doc->function(fid);
     if (function == NULL)
         return;
 

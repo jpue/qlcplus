@@ -341,7 +341,7 @@ void Chaser_Test::createCopy()
     QVERIFY(f != c1);
     QVERIFY(f->id() != c1->id());
 
-    Chaser* copy = qobject_cast<Chaser*> (f);
+    const Chaser* copy = qobject_cast<Chaser*> (f);
     QVERIFY(copy != NULL);
     QVERIFY(copy->fadeInSpeed() == 42);
     QVERIFY(copy->fadeOutSpeed() == 69);

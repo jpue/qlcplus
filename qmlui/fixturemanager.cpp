@@ -154,7 +154,7 @@ QVariantList FixtureManager::universeInfo(quint32 id)
     }
     else if (type == App::FixtureGroupDragItem)
     {
-        FixtureGroup *group = m_doc->fixtureGroup(id);
+        const FixtureGroup *group = m_doc->fixtureGroup(id);
         if (group == nullptr)
             return m_universeInfo;
 
@@ -201,8 +201,8 @@ QVariant FixtureManager::fixtureInfo(quint32 itemID)
     if (fixture == nullptr)
         return fxMap;
 
-    QLCFixtureDef *def = fixture->fixtureDef();
-    QLCFixtureMode *mode = fixture->fixtureMode();
+    const QLCFixtureDef *def = fixture->fixtureDef();
+    const QLCFixtureMode *mode = fixture->fixtureMode();
 
     if (def == nullptr || mode == nullptr)
         return fxMap;
@@ -216,7 +216,7 @@ QVariant FixtureManager::fixtureInfo(quint32 itemID)
     fxMap.insert("author", def->author());
 
     QVariantList channelList;
-    for (QLCChannel *channel : mode->channels())
+    for (const QLCChannel *channel : mode->channels())
     {
         QVariantMap chMap;
         chMap.insert("mIcon", channel->getIconNameFromGroup(channel->group(), true));
@@ -396,7 +396,7 @@ bool FixtureManager::deleteFixtures(QVariantList IDList)
     // stale empty group would linger in the project and block the creation of
     // a new group with the same name (see #2063)
     QVariantList emptyGroups;
-    for (FixtureGroup *group : m_doc->fixtureGroups())
+    for (const FixtureGroup *group : m_doc->fixtureGroups())
         if (group->fixtureList().isEmpty())
             emptyGroups << group->id();
 
@@ -449,7 +449,7 @@ bool FixtureManager::renameFixture(quint32 itemID, QString newName)
         return false;
 
     QList<Fixture*> fixtureList = m_doc->fixtures();
-    for (Fixture *docFixture : fixtureList)
+    for (const Fixture *docFixture : fixtureList)
     {
         if (docFixture->name() == newName)
             return false;
@@ -609,14 +609,14 @@ void FixtureManager::setItemRoleData(int itemID, int index, QString role, QVaria
     if (role != "flags" && role != "canFade" && role != "precedence")
         return;
 
-    QLCFixtureDef *sourceDef = fixture->fixtureDef();
-    QLCFixtureMode *sourceMode = fixture->fixtureMode();
+    const QLCFixtureDef *sourceDef = fixture->fixtureDef();
+    const QLCFixtureMode *sourceMode = fixture->fixtureMode();
     if (sourceDef == nullptr || sourceMode == nullptr)
         return;
 
     m_isUpdating = true;
     QList<Fixture*> fixtures = m_doc->fixtures();
-    for (Fixture *destFixture : fixtures)
+    for (const Fixture *destFixture : fixtures)
     {
         if (destFixture == nullptr || destFixture->id() == fixtureID)
             continue;
@@ -640,7 +640,7 @@ void FixtureManager::setItemRoleData(int itemID, QVariant value, int role)
 
     quint32 fixtureID = FixtureUtils::itemFixtureID(itemID);
 
-    Fixture *fixture = m_doc->fixture(fixtureID);
+    const Fixture *fixture = m_doc->fixture(fixtureID);
     if (fixture == nullptr)
         return;
 
@@ -944,7 +944,7 @@ void FixtureManager::updateGroupsTree(Doc *doc, TreeModel *treeModel, QString se
 
 QString FixtureManager::fixtureIcon(quint32 fixtureID)
 {
-    Fixture *fixture = m_doc->fixture(fixtureID);
+    const Fixture *fixture = m_doc->fixture(fixtureID);
     if (fixture == nullptr)
         return QString();
 
@@ -955,11 +955,11 @@ QStringList FixtureManager::fixtureModes(quint32 itemID)
 {
     QStringList modes;
     quint32 fixtureID = FixtureUtils::itemFixtureID(itemID);
-    Fixture *fixture = m_doc->fixture(fixtureID);
+    const Fixture *fixture = m_doc->fixture(fixtureID);
     if (fixture == nullptr)
         return modes;
 
-    for (QLCFixtureMode *mode : fixture->fixtureDef()->modes())
+    for (const QLCFixtureMode *mode : fixture->fixtureDef()->modes())
         modes.append(mode->name());
 
     return modes;
@@ -968,11 +968,11 @@ QStringList FixtureManager::fixtureModes(quint32 itemID)
 int FixtureManager::fixtureModeIndex(quint32 itemID)
 {
     quint32 fixtureID = FixtureUtils::itemFixtureID(itemID);
-    Fixture *fixture = m_doc->fixture(fixtureID);
+    const Fixture *fixture = m_doc->fixture(fixtureID);
     if (fixture == nullptr)
         return -1;
 
-    QLCFixtureMode *currMode = fixture->fixtureMode();
+    const QLCFixtureMode *currMode = fixture->fixtureMode();
     QList<QLCFixtureMode *> modes = fixture->fixtureDef()->modes();
 
     return modes.indexOf(currMode);
@@ -997,8 +997,8 @@ bool FixtureManager::setFixtureModeIndex(quint32 itemID, int index)
     QList<Fixture*> targetFixtures;
     targetFixtures.append(fixture);
 
-    QLCFixtureDef *sourceDef = fixture->fixtureDef();
-    QLCFixtureMode *sourceMode = fixture->fixtureMode();
+    const QLCFixtureDef *sourceDef = fixture->fixtureDef();
+    const QLCFixtureMode *sourceMode = fixture->fixtureMode();
     if (m_applyToSameType && m_isUpdating == false && linkedIndex == 0 &&
         sourceDef != nullptr && sourceMode != nullptr)
     {
@@ -1019,7 +1019,7 @@ bool FixtureManager::setFixtureModeIndex(quint32 itemID, int index)
 
     // Pre-check all candidate fixtures first, so this operation is atomic.
     const int chNum = newMode->channels().count();
-    for (Fixture *targetFixture : targetFixtures)
+    for (const Fixture *targetFixture : targetFixtures)
     {
         if (targetFixture == nullptr)
             return false;
@@ -1068,7 +1068,7 @@ void FixtureManager::updateLinkedFixtureNode(quint32 itemID, bool add)
     quint32 fixtureID = FixtureUtils::itemFixtureID(itemID);
     quint16 headIndex = FixtureUtils::itemHeadIndex(itemID);
     quint16 linkedIndex = FixtureUtils::itemLinkedIndex(itemID);
-    MonitorProperties *monProps = m_doc->monitorProperties();
+    const MonitorProperties *monProps = m_doc->monitorProperties();
     QStringList uniNames = m_doc->inputOutputMap()->universeNames();
 
     Fixture *fixture = m_doc->fixture(fixtureID);
@@ -1104,7 +1104,7 @@ void FixtureManager::updateLinkedFixtureNode(quint32 itemID, bool add)
 QString FixtureManager::channelIcon(quint32 fxID, quint32 chIdx)
 {
     //qDebug() << "Channel icon for fixture" << fxID << "channel" << chIdx;
-    Fixture *fixture = m_doc->fixture(fxID);
+    const Fixture *fixture = m_doc->fixture(fxID);
     if (fixture == nullptr)
         return QString();
 
@@ -1117,7 +1117,7 @@ QString FixtureManager::channelIcon(quint32 fxID, quint32 chIdx)
 
 QString FixtureManager::channelName(quint32 fxID, quint32 chIdx)
 {
-    Fixture *fixture = m_doc->fixture(fxID);
+    const Fixture *fixture = m_doc->fixture(fxID);
     if (fixture == nullptr)
         return QString();
 
@@ -1130,7 +1130,7 @@ QString FixtureManager::channelName(quint32 fxID, quint32 chIdx)
 
 int FixtureManager::channelType(quint32 fxID, quint32 chIdx)
 {
-    Fixture *fixture = m_doc->fixture(fxID);
+    const Fixture *fixture = m_doc->fixture(fxID);
     if (fixture == nullptr)
         return QLCChannel::NoGroup;
 
@@ -1146,7 +1146,7 @@ int FixtureManager::channelType(quint32 fxID, quint32 chIdx)
 
 qreal FixtureManager::channelDegrees(quint32 fxID, quint32 chIdx)
 {
-    Fixture *fixture = m_doc->fixture(fxID);
+    const Fixture *fixture = m_doc->fixture(fxID);
     if (fixture == nullptr)
         return 0;
 
@@ -1241,7 +1241,7 @@ void FixtureManager::addItemsToNewGroup(QList<quint32> itemIds)
         const quint32 fxId      = FixtureUtils::itemFixtureID(itemId);
         const quint16 headIndex = FixtureUtils::itemHeadIndex(itemId);
         const quint16 linkedIdx = FixtureUtils::itemLinkedIndex(itemId);
-        Fixture *fx = m_doc->fixture(fxId);
+        const Fixture *fx = m_doc->fixture(fxId);
         if (!fx)
             continue;
 
@@ -1416,7 +1416,7 @@ void FixtureManager::addItemsToNewGroup(QList<quint32> itemIds)
 
 void FixtureManager::updateFixtureGroup(quint32 groupID, quint32 itemID, int headIdx)
 {
-    FixtureGroup *group = m_doc->fixtureGroup(groupID);
+    const FixtureGroup *group = m_doc->fixtureGroup(groupID);
     if (group == nullptr)
         return;
 
@@ -1437,7 +1437,7 @@ void FixtureManager::updateFixtureGroup(quint32 groupID, quint32 itemID, int hea
     }
 
     QString fxPath = QString("%1%2%3").arg(group->name()).arg(TreeModel::separator()).arg(fixture->name());
-    TreeModelItem *fxItem = m_fixtureTree->itemAtPath(fxPath);
+    const TreeModelItem *fxItem = m_fixtureTree->itemAtPath(fxPath);
 
     if (fxItem == nullptr)
     {
@@ -1475,7 +1475,7 @@ bool FixtureManager::renameFixtureGroup(quint32 groupID, QString newName)
 
     // check for same name among existing groups
     QList<FixtureGroup*> groupList = m_doc->fixtureGroups();
-    for (FixtureGroup *docGroup : groupList)
+    for (const FixtureGroup *docGroup : groupList)
         if (docGroup->name() == newName)
             return false;
 
@@ -1551,7 +1551,7 @@ bool FixtureManager::addRGBPanel(QString name, qreal xPos, qreal yPos)
 
     // make sure the name is unique
     QList<FixtureGroup*> groupList = m_doc->fixtureGroups();
-    for (FixtureGroup *docGroup : groupList)
+    for (const FixtureGroup *docGroup : groupList)
     {
         if (docGroup->name() == name)
         {
@@ -1777,7 +1777,7 @@ QString FixtureManager::getTooltip(quint32 address)
     if (fxID == Fixture::invalidId())
         return "";
 
-    Fixture *fixture = m_doc->fixture(fxID);
+    const Fixture *fixture = m_doc->fixture(fxID);
     if (fixture == nullptr)
         return "";
 
@@ -1911,7 +1911,7 @@ int FixtureManager::pasteFromClipboard(QVariantList fixtureIDs)
         return 0;
 
     // check destination universe
-    Fixture *fixture = m_doc->fixture(fixtureIDs.first().toUInt());
+    const Fixture *fixture = m_doc->fixture(fixtureIDs.first().toUInt());
     if (fixture == nullptr)
         return -1;
 
@@ -2052,7 +2052,7 @@ QStringList FixtureManager::colorFiltersFileList()
         emit selectedFiltersChanged();
     }
 
-    for (ColorFilters *filters : m_colorFilters)
+    for (const ColorFilters *filters : m_colorFilters)
         list.append(filters->name());
 
     return list;
@@ -2063,7 +2063,7 @@ void FixtureManager::addColorFiltersFile()
     int newID = 1;
 
     /* count the existing user filters */
-    for (ColorFilters *filter : m_colorFilters)
+    for (const ColorFilters *filter : m_colorFilters)
         if (filter->isUser())
             newID++;
 
@@ -2123,7 +2123,7 @@ void FixtureManager::setPresetValue(quint32 fixtureID, int chIndex, quint8 value
 {
     qDebug() << "[FixtureManager] setPresetValue - fixture:" << fixtureID << ", channel:" << chIndex << "value:" << value;
 
-    Fixture *fixture = m_doc->fixture(fixtureID);
+    const Fixture *fixture = m_doc->fixture(fixtureID);
     if (fixture == nullptr || fixture->fixtureMode() == nullptr)
         return;
 
@@ -2181,7 +2181,7 @@ QMultiHash<int, SceneValue> FixtureManager::getFixtureCapabilities(quint32 itemI
     QMultiHash<int, SceneValue> channelsMap;
     quint32 fixtureID = FixtureUtils::itemFixtureID(itemID);
 
-    Fixture *fixture = m_doc->fixture(fixtureID);
+    const Fixture *fixture = m_doc->fixture(fixtureID);
     if (fixture == nullptr)
         return channelsMap;
 
@@ -2429,7 +2429,7 @@ QVariantList FixtureManager::presetsChannels(QLCChannel::Group group)
             continue;
 
         quint32 fxID = m_presetsCache[ch];
-        Fixture *fixture = m_doc->fixture(fxID);
+        const Fixture *fixture = m_doc->fixture(fxID);
         if (fixture == nullptr)
             continue;
 
@@ -2520,7 +2520,7 @@ QVariantList FixtureManager::presetCapabilities(quint32 fixtureID, int chIndex)
 {
     QVariantList var;
 
-    Fixture *fixture = m_doc->fixture(fixtureID);
+    const Fixture *fixture = m_doc->fixture(fixtureID);
     if (fixture == nullptr || fixture->fixtureMode() == nullptr)
         return var;
 
@@ -2538,7 +2538,7 @@ QVariantList FixtureManager::presetChannel(quint32 fixtureID, int chIndex)
 {
     QVariantList prList;
 
-    Fixture *fixture = m_doc->fixture(fixtureID);
+    const Fixture *fixture = m_doc->fixture(fixtureID);
     if (fixture == nullptr)
         return prList;
 
@@ -2594,7 +2594,7 @@ void FixtureManager::selectChannelModifier(QString name)
 
 bool FixtureManager::isSystemChannelModifier(QString name) const
 {
-    ChannelModifier *modifier = m_doc->modifiersCache()->modifier(name);
+    const ChannelModifier *modifier = m_doc->modifiersCache()->modifier(name);
     if (modifier == nullptr)
         return false;
 
@@ -2614,8 +2614,8 @@ void FixtureManager::setChannelModifier(quint32 itemID, quint32 channelIndex)
     QList<Fixture*> targetFixtures;
     targetFixtures.append(fixture);
 
-    QLCFixtureDef *sourceDef = fixture->fixtureDef();
-    QLCFixtureMode *sourceMode = fixture->fixtureMode();
+    const QLCFixtureDef *sourceDef = fixture->fixtureDef();
+    const QLCFixtureMode *sourceMode = fixture->fixtureMode();
     if (m_applyToSameType && m_isUpdating == false && linkedIndex == 0 &&
         sourceDef != nullptr && sourceMode != nullptr)
     {
@@ -2642,7 +2642,7 @@ void FixtureManager::setChannelModifier(quint32 itemID, quint32 channelIndex)
         if (targetFixture == nullptr)
             continue;
 
-        ChannelModifier *currentModifier = targetFixture->channelModifier(channelIndex);
+        const ChannelModifier *currentModifier = targetFixture->channelModifier(channelIndex);
         QString oldModifierName = currentModifier ? currentModifier->name() : QString();
         if (oldModifierName == newModifierName)
             continue;

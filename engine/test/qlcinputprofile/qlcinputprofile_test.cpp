@@ -224,7 +224,7 @@ void QLCInputProfile_Test::copy()
     ich4->setName("Channel 4");
     ip.insertChannel(9000, ich4);
 
-    QLCInputProfile *copy = ip.createCopy();
+    const QLCInputProfile *copy = ip.createCopy();
     QVERIFY(copy->manufacturer() == "Behringer");
     QVERIFY(copy->model() == "BCF2000");
 
@@ -349,7 +349,7 @@ void QLCInputProfile_Test::loadNoProfile()
 
 void QLCInputProfile_Test::loader()
 {
-    QLCInputProfile* prof = QLCInputProfile::loader("foobar");
+    const QLCInputProfile* prof = QLCInputProfile::loader("foobar");
     QVERIFY(prof == NULL);
 
     prof = QLCInputProfile::loader("broken.xml");

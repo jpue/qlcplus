@@ -90,7 +90,7 @@ bool MidiPlugin::openOutput(quint32 output, quint32 universe)
     {
         qDebug() << "[MIDI] Opening device with template: " << dev->midiTemplateName();
 
-        MidiTemplate* templ = midiTemplate(dev->midiTemplateName());
+        const MidiTemplate* templ = midiTemplate(dev->midiTemplateName());
 
         if (templ != NULL)
             sendSysEx(output, templ->initMessage());
@@ -130,7 +130,7 @@ QStringList MidiPlugin::outputsUID()
     QListIterator <MidiOutputDevice*> it(m_enumerator->outputDevices());
     while (it.hasNext() == true)
     {
-        MidiOutputDevice* dev = it.next();
+        const MidiOutputDevice* dev = it.next();
         list << dev->uid().toString();
     }
 
@@ -167,7 +167,7 @@ QString MidiPlugin::outputInfo(quint32 output)
         return str;
     }
 
-    MidiOutputDevice* dev = outputDevice(output);
+    const MidiOutputDevice* dev = outputDevice(output);
     if (dev != NULL)
     {
         QString status;
@@ -263,7 +263,7 @@ QStringList MidiPlugin::inputsUID()
     QListIterator <MidiInputDevice*> it(m_enumerator->inputDevices());
     while (it.hasNext() == true)
     {
-        MidiInputDevice* dev = it.next();
+        const MidiInputDevice* dev = it.next();
         list << dev->uid().toString();
     }
 
@@ -288,7 +288,7 @@ QString MidiPlugin::inputInfo(quint32 input)
         return str;
     }
 
-    MidiInputDevice* dev = inputDevice(input);
+    const MidiInputDevice* dev = inputDevice(input);
     if (dev != NULL)
     {
         QString status;
@@ -359,7 +359,7 @@ void MidiPlugin::slotValueChanged(const QVariant& uid, ushort channel, uchar val
 {
     for (int i = 0; i < m_enumerator->inputDevices().size(); i++)
     {
-        MidiInputDevice* dev = m_enumerator->inputDevices().at(i);
+        const MidiInputDevice* dev = m_enumerator->inputDevices().at(i);
         if (dev->uid() == uid)
         {
             emit valueChanged(UINT_MAX, i, channel, value,
@@ -391,7 +391,7 @@ void MidiPlugin::configure()
 
         if (inLine != UINT_MAX)
         {
-            MidiInputDevice *dev = inputDevice(inLine);
+            const MidiInputDevice *dev = inputDevice(inLine);
             if (dev != NULL)
             {
                 if (dev->midiChannel() != 0)
@@ -422,7 +422,7 @@ void MidiPlugin::configure()
 
         if (outLine != UINT_MAX)
         {
-            MidiOutputDevice *dev = outputDevice(outLine);
+            const MidiOutputDevice *dev = outputDevice(outLine);
             if (dev != NULL)
             {
                 if (dev->midiChannel() != 0)

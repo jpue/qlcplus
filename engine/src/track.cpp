@@ -144,7 +144,7 @@ bool Track::addShowFunction(ShowFunction *func)
         return false;
 
     // forbid self-containment
-    Show *show = qobject_cast<Show *>(parent());
+    const Show *show = qobject_cast<Show *>(parent());
     if (show != NULL && func->functionID() == show->id())
         return false;
 
@@ -197,7 +197,7 @@ bool Track::saveXML(QXmlStreamWriter *doc) const
     /* Save the list of Functions if any is present */
     if (m_functions.isEmpty() == false)
     {
-        foreach (ShowFunction *func, showFunctions())
+        foreach (const ShowFunction *func, showFunctions())
             func->saveXML(doc);
     }
 
@@ -308,7 +308,7 @@ bool Track::postLoad(Doc* doc)
 
         if (function->type() == Function::SequenceType)
         {
-            Sequence* sequence = qobject_cast<Sequence*>(function);
+            const Sequence* sequence = qobject_cast<Sequence*>(function);
             if (sequence == NULL || getSceneID() == sequence->boundSceneID())
                 continue;
 #ifndef QMLUI
@@ -338,9 +338,9 @@ bool Track::contains(Doc* doc, quint32 functionId) const
     QListIterator<ShowFunction*> it(m_functions);
     while (it.hasNext())
     {
-        ShowFunction* showFunction = it.next();
+        const ShowFunction* showFunction = it.next();
 
-        Function* function = doc->function(showFunction->functionID());
+        const Function* function = doc->function(showFunction->functionID());
         // contains() can be called during init, function may be NULL
         if (function == NULL)
             continue;
@@ -361,7 +361,7 @@ QList<quint32> Track::components() const
     QListIterator<ShowFunction*> it(m_functions);
     while (it.hasNext())
     {
-        ShowFunction* showFunction = it.next();
+        const ShowFunction* showFunction = it.next();
         ids.append(showFunction->functionID());
     }
 

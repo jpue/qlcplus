@@ -119,7 +119,7 @@ void Sequence_Test::createCopy()
     QVERIFY(f != seq);
     QVERIFY(f->id() != seq->id());
 
-    Sequence* copy = qobject_cast<Sequence*> (f);
+    const Sequence* copy = qobject_cast<Sequence*> (f);
     QVERIFY(copy != NULL);
     QVERIFY(copy->fadeInSpeed() == 42);
     QVERIFY(copy->fadeOutSpeed() == 69);

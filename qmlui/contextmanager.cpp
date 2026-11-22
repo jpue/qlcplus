@@ -131,7 +131,7 @@ void ContextManager::unregisterContext(QString name)
     if (m_contextsMap.contains(name) == false)
         return;
 
-    PreviewContext *context = m_contextsMap.take(name);
+    const PreviewContext *context = m_contextsMap.take(name);
 
     disconnect(context, SIGNAL(keyPressed(QKeyEvent*)),
                this, SLOT(handleKeyPress(QKeyEvent*)));
@@ -295,7 +295,7 @@ void ContextManager::setEnvironmentSize(QVector3D environmentSize)
         m_2DView->setGridSize(environmentSize);
     if (m_3DView->isEnabled())
     {
-        for (Fixture *fixture : m_doc->fixtures()) // C++11
+        for (const Fixture *fixture : m_doc->fixtures()) // C++11
         {
             for (quint32 &subID : m_monProps->fixtureIDList(fixture->id()))
             {
@@ -728,7 +728,7 @@ void ContextManager::setItemSelection(quint32 itemID, bool enable, int keyModifi
     }
 
     quint32 fxID = FixtureUtils::itemFixtureID(itemID);
-    Fixture *fixture = m_doc->fixture(fxID);
+    const Fixture *fixture = m_doc->fixture(fxID);
     if (fixture == nullptr)
         return;
 
@@ -880,7 +880,7 @@ void ContextManager::toggleFixturesSelection()
     if (m_selectedFixtures.count() == visibleCount)
         selectAll = false;
 
-    for (Fixture *fixture : m_doc->fixtures()) // C++11
+    for (const Fixture *fixture : m_doc->fixtures()) // C++11
     {
         if (fixture == nullptr)
             continue;
@@ -917,7 +917,7 @@ QVariantList ContextManager::selectedFixtureAddress()
     for (quint32 &itemID : m_selectedFixtures)
     {
         quint32 fxID = FixtureUtils::itemFixtureID(itemID);
-        Fixture *fixture = m_doc->fixture(fxID);
+        const Fixture *fixture = m_doc->fixture(fxID);
         if (fixture == nullptr)
             continue;
 
@@ -1165,7 +1165,7 @@ void ContextManager::setFixturesDistribution(int direction)
         quint32 fxID = FixtureUtils::itemFixtureID(itemID);
         quint16 headIndex = FixtureUtils::itemHeadIndex(itemID);
         quint16 linkedIndex = FixtureUtils::itemLinkedIndex(itemID);
-        Fixture *fixture = m_doc->fixture(fxID);
+        const Fixture *fixture = m_doc->fixture(fxID);
         QPointF fxPos = FixtureUtils::item2DPosition(m_monProps, m_monProps->pointOfView(),
                                                      m_monProps->fixturePosition(fxID, headIndex, linkedIndex));
         QSizeF fxRect = FixtureUtils::item2DDimension(fixture->fixtureMode(), m_monProps->pointOfView());
@@ -1212,7 +1212,7 @@ void ContextManager::setFixturesDistribution(int direction)
         quint32 fxID = FixtureUtils::itemFixtureID(itemID);
         quint16 headIndex = FixtureUtils::itemHeadIndex(itemID);
         quint16 linkedIndex = FixtureUtils::itemLinkedIndex(itemID);
-        Fixture *fixture = m_doc->fixture(fxID);
+        const Fixture *fixture = m_doc->fixture(fxID);
         QSizeF fxRect = FixtureUtils::item2DDimension(fixture->fixtureMode(), m_monProps->pointOfView());
         qreal size = direction == Qt::Horizontal ? fxRect.width() : fxRect.height();
         QVector3D fxPos = m_monProps->fixturePosition(fxID, headIndex, linkedIndex);
@@ -1286,7 +1286,7 @@ void ContextManager::setLinkedFixture(quint32 itemID)
     {
         // create a new linked fixture - itemID is the base fixture
         int newIndex = 1;
-        Fixture *fixture = m_doc->fixture(fixtureID);
+        const Fixture *fixture = m_doc->fixture(fixtureID);
         if (fixture == nullptr)
             return;
 
@@ -1354,7 +1354,7 @@ qreal ContextManager::getCurrentValue(int type, bool degrees)
 
         if (degrees)
         {
-            QLCFixtureMode *fxMode = fixture->fixtureMode();
+            const QLCFixtureMode *fxMode = fixture->fixtureMode();
             QLCPhysical phy = fxMode->physical();
             switch (type)
             {
@@ -1556,7 +1556,7 @@ void ContextManager::setFixtureGroupSelection(quint32 id, bool enable, bool isUn
 {
     if (isUniverse)
     {
-        for (Fixture *fixture : m_doc->fixtures())
+        for (const Fixture *fixture : m_doc->fixtures())
         {
             if (fixture->universe() == id)
             {
@@ -1572,13 +1572,13 @@ void ContextManager::setFixtureGroupSelection(quint32 id, bool enable, bool isUn
     }
     else
     {
-        FixtureGroup *group = m_doc->fixtureGroup(id);
+        const FixtureGroup *group = m_doc->fixtureGroup(id);
         if (group == nullptr)
             return;
 
         for (quint32 &fxID : group->fixtureList())
         {
-            Fixture *fixture = m_doc->fixture(fxID);
+            const Fixture *fixture = m_doc->fixture(fxID);
             if (fixture == nullptr)
                 continue;
 
@@ -1693,7 +1693,7 @@ void ContextManager::setColorValue(QColor col, QColor wauv)
         const QList<SceneValue> svList = m_channelsMap.values(cmyTypes[i]);
         for (const SceneValue &sv : svList)
         {
-            Fixture *fixture = m_doc->fixture(sv.fxi);
+            const Fixture *fixture = m_doc->fixture(sv.fxi);
             if (fixture == nullptr)
                 continue;
 
@@ -1825,14 +1825,14 @@ void ContextManager::highlightFixtureSelection()
     for (quint32 &itemID : m_selectedFixtures)
     {
         quint32 fxID = FixtureUtils::itemFixtureID(itemID);
-        Fixture *fixture = m_doc->fixture(fxID);
+        const Fixture *fixture = m_doc->fixture(fxID);
         if (fixture == nullptr)
             continue;
 
         for (quint32 i = 0; i < fixture->channels(); i++)
         {
             const QLCChannel *channel = fixture->channel(i);
-            for (QLCCapability *cap : channel->capabilities())
+            for (const QLCCapability *cap : channel->capabilities())
             {
                 if (cap->preset() == QLCCapability::ShutterOpen ||
                     cap->preset() == QLCCapability::LampOn)
@@ -1864,7 +1864,7 @@ void ContextManager::slotPresetChanged(const QLCChannel *channel, quint8 value)
     for (quint32 &itemID : m_selectedFixtures)
     {
         quint32 fixtureID = FixtureUtils::itemFixtureID(itemID);
-        Fixture *fixture = m_doc->fixture(fixtureID);
+        const Fixture *fixture = m_doc->fixture(fixtureID);
         if (fixture == nullptr)
             continue;
 

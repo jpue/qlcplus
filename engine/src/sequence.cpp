@@ -100,7 +100,7 @@ QList<quint32> Sequence::components() const
 
 void Sequence::applyDumpValues(const QList<SceneValue> &dumpedValues, int targetStepIndex)
 {
-    Scene *scene = qobject_cast<Scene *>(doc()->function(boundSceneID()));
+    const Scene *scene = qobject_cast<Scene *>(doc()->function(boundSceneID()));
     if (scene == nullptr)
         return;
 
@@ -234,7 +234,7 @@ bool Sequence::loadXML(QXmlStreamReader &root)
 
     setBoundSceneID(funcAttrs.value(KXMLQLCSequenceBoundScene).toString().toUInt());
 
-    Scene *scene = qobject_cast<Scene *>(doc()->function(boundSceneID()));
+    const Scene *scene = qobject_cast<Scene *>(doc()->function(boundSceneID()));
     QList<SceneValue> sceneValues;
     if (scene != NULL)
     {
@@ -300,7 +300,7 @@ void Sequence::postLoad()
     if (m_needFixup == false)
         return;
 
-    Doc* doc = this->doc();
+    const Doc* doc = this->doc();
     Q_ASSERT(doc != NULL);
 
     Scene *scene = qobject_cast<Scene *>(doc->function(boundSceneID()));

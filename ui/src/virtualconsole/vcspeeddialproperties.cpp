@@ -341,7 +341,7 @@ QList <VCSpeedDialFunction> VCSpeedDialProperties::functions() const
 
 void VCSpeedDialProperties::createFunctionItem(const VCSpeedDialFunction &speeddialfunction)
 {
-    Function* function = m_doc->function(speeddialfunction.functionId);
+    const Function* function = m_doc->function(speeddialfunction.functionId);
     if (function != NULL)
     {
         QTreeWidgetItem* item = new QTreeWidgetItem(m_tree);

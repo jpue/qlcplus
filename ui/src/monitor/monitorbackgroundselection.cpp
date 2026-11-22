@@ -116,7 +116,7 @@ void MonitorBackgroundSelection::updateCustomTree()
         it.next();
 
         quint32 fid = it.key();
-        Function *f = m_doc->function(fid);
+        const Function *f = m_doc->function(fid);
         if (f != NULL)
         {
             QTreeWidgetItem *item = new QTreeWidgetItem(m_customTree);

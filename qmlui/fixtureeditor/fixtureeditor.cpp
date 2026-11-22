@@ -220,7 +220,7 @@ QMap<quint32, QString> FixtureEditor::collectFixturesForDefinition(const QString
 {
     QMap<quint32, QString> fixturesToModeNames;
 
-    for (Fixture *fixture : m_doc->fixtures())
+    for (const Fixture *fixture : m_doc->fixtures())
     {
         if (fixture == nullptr || fixture->fixtureDef() == nullptr || fixture->fixtureMode() == nullptr)
             continue;

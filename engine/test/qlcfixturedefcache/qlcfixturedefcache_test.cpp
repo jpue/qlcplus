@@ -136,7 +136,7 @@ void QLCFixtureDefCache_Test::add()
 void QLCFixtureDefCache_Test::reload()
 {
     QLCFixtureDef *def = cache.fixtureDef("Botex", "SP-1500");
-    QLCChannel *channel = def->channel("Control");
+    const QLCChannel *channel = def->channel("Control");
 
     QVERIFY(def->channels().count() == 5);
     def->removeChannel(channel);
@@ -156,7 +156,7 @@ void QLCFixtureDefCache_Test::fixtureDef()
     QVERIFY(cache.m_defs.first()->definitionSourceFile() == relPath);
 
     // request a fixture cached but not yet loaded
-    QLCFixtureDef *def = cache.fixtureDef("Futurelight", "CY-200");
+    const QLCFixtureDef *def = cache.fixtureDef("Futurelight", "CY-200");
 
     // check that once loaded, the relative path becomes absolute
     QDir absDir(def->definitionSourceFile());
@@ -235,7 +235,7 @@ void QLCFixtureDefCache_Test::defDirectories()
 
 void QLCFixtureDefCache_Test::storeDef()
 {
-    QLCFixtureDef *def = cache.fixtureDef("Futurelight", "CY-200");
+    const QLCFixtureDef *def = cache.fixtureDef("Futurelight", "CY-200");
     QFile defFile(def->definitionSourceFile());
     QVERIFY(defFile.open(QIODevice::ReadOnly | QIODevice::Text));
     QString defBuffer = defFile.readAll();

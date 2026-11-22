@@ -387,7 +387,7 @@ void VCSpeedDial::slotUpdate()
             it != m_presets.end(); ++it)
     {
         QWidget* widget = it.key();
-        VCSpeedDialPreset* preset = it.value();
+        const VCSpeedDialPreset* preset = it.value();
 
         QPushButton* button = reinterpret_cast<QPushButton*>(widget);
         button->setDown(preset->m_value == currentValue);
@@ -462,7 +462,7 @@ QList<VCSpeedDialPreset*> VCSpeedDial::presets() const
 void VCSpeedDial::slotPresetClicked()
 {
     QPushButton *btn = qobject_cast<QPushButton*>(sender());
-    VCSpeedDialPreset *preset = m_presets[btn];
+    const VCSpeedDialPreset *preset = m_presets[btn];
 
     Q_ASSERT(preset != NULL);
 
@@ -762,7 +762,7 @@ void VCSpeedDial::slotKeyPressed(const QKeySequence& keySequence)
     for (QHash<QWidget*, VCSpeedDialPreset*>::iterator it = m_presets.begin();
             it != m_presets.end(); ++it)
     {
-        VCSpeedDialPreset *preset = it.value();
+        const VCSpeedDialPreset *preset = it.value();
         if (preset->m_keySequence == keySequence)
         {
             QPushButton *button = reinterpret_cast<QPushButton*>(it.key());
@@ -1157,7 +1157,7 @@ void VCSpeedDial::postLoad()
     while (it.hasNext() == true)
     {
         it.next();
-        Function* function = m_doc->function(it.value().functionId);
+        const Function* function = m_doc->function(it.value().functionId);
         if (function == NULL)
             it.remove();
     }

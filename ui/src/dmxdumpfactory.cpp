@@ -110,7 +110,7 @@ void DmxDumpFactory::slotUpdateChasersTree()
     m_addtoTree->clear();
     foreach (Function *f, m_doc->functionsByType(Function::ChaserType))
     {
-        Chaser *chaser = qobject_cast<Chaser*>(f);
+        const Chaser *chaser = qobject_cast<Chaser*>(f);
         QTreeWidgetItem *item = new QTreeWidgetItem(m_addtoTree);
         item->setText(KColumnTargetName, chaser->name());
         item->setText(KColumnTargetID, QString::number(chaser->id()));
@@ -141,7 +141,7 @@ void DmxDumpFactory::slotSelectSceneButtonClicked()
     if (fs.exec() == QDialog::Accepted && fs.selection().size() > 0)
     {
         m_selectedSceneID = fs.selection().first();
-        Scene *scene = qobject_cast<Scene*>(m_doc->function(m_selectedSceneID));
+        const Scene *scene = qobject_cast<Scene*>(m_doc->function(m_selectedSceneID));
         if (scene == NULL)
             return;
 
@@ -152,7 +152,7 @@ void DmxDumpFactory::slotSelectSceneButtonClicked()
 
         foreach (SceneValue scv, scene->values())
         {
-            Fixture *fxi = m_doc->fixture(scv.fxi);
+            const Fixture *fxi = m_doc->fixture(scv.fxi);
             if (fxi == NULL)
                 continue;
             quint32 absAddress = fxi->channelAddress(scv.channel);
@@ -189,7 +189,7 @@ void DmxDumpFactory::updateWidgetsTree(int type)
 
     foreach (QObject *object, widgetsList)
     {
-        VCWidget *widget = qobject_cast<VCWidget *>(object);
+        const VCWidget *widget = qobject_cast<VCWidget *>(object);
 
         QTreeWidgetItem *item = new QTreeWidgetItem(m_addtoTree);
         item->setText(KColumnTargetName, widget->caption());
@@ -257,7 +257,7 @@ void DmxDumpFactory::accept()
         {
             QTreeWidgetItem *fixItem = uniItem->child(f);
             quint32 fxID = fixItem->data(KColumnName, PROP_ID).toUInt();
-            Fixture *fxi = m_doc->fixture(fxID);
+            const Fixture *fxi = m_doc->fixture(fxID);
             if (fxi != NULL)
             {
                 for (int c = 0; c < fixItem->childCount(); c++)

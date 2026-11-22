@@ -168,7 +168,7 @@ quint32 FixtureConsole::fixture() const
 void FixtureConsole::slotAliasChanged()
 {
     quint32 i = 0;
-    Fixture *fxi = m_doc->fixture(m_fixture);
+    const Fixture *fxi = m_doc->fixture(m_fixture);
 
     QListIterator <ConsoleChannel*> it(m_channels);
     while (it.hasNext() == true)
@@ -308,7 +308,7 @@ void FixtureConsole::setValue(quint32 ch, uchar value, bool apply)
 
 uchar FixtureConsole::value(quint32 ch) const
 {
-    ConsoleChannel* cc = channel(ch);
+    const ConsoleChannel* cc = channel(ch);
     if (cc != NULL)
         return cc->value();
     else

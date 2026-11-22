@@ -54,7 +54,7 @@ MonitorFixture::~MonitorFixture()
 {
     if (m_fixture != Fixture::invalidId())
     {
-        Fixture* fxi = m_doc->fixture(m_fixture);
+        const Fixture* fxi = m_doc->fixture(m_fixture);
         if (fxi != NULL)
             disconnect(fxi, SIGNAL(valuesChanged()), this, SLOT(slotValuesChanged()));
     }
@@ -72,8 +72,8 @@ MonitorFixture::~MonitorFixture()
 
 bool MonitorFixture::operator<(const MonitorFixture& mof)
 {
-    Fixture* fxi;
-    Fixture* mof_fxi;
+    const Fixture* fxi;
+    const Fixture* mof_fxi;
 
     fxi = m_doc->fixture(m_fixture);
     if (fxi == NULL)
@@ -188,7 +188,7 @@ void MonitorFixture::slotChannelStyleChanged(MonitorProperties::ChannelStyle sty
     if (m_fixture == Fixture::invalidId())
         return;
 
-    Fixture* fxi = m_doc->fixture(m_fixture);
+    const Fixture* fxi = m_doc->fixture(m_fixture);
     Q_ASSERT(fxi != NULL);
 
     /* Start channel numbering from this fixture's address */

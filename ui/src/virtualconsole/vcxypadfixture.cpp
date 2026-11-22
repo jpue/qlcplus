@@ -202,7 +202,7 @@ GroupHead const & VCXYPadFixture::head() const
 
 QRectF VCXYPadFixture::degreesRange() const
 {
-    Fixture* fxi = m_doc->fixture(m_head.fxi);
+    const Fixture* fxi = m_doc->fixture(m_head.fxi);
     if (fxi == NULL)
     {
         return QRectF();
@@ -218,7 +218,7 @@ QString VCXYPadFixture::name() const
     if (!m_head.isValid())
         return QString();
 
-    Fixture* fxi = m_doc->fixture(m_head.fxi);
+    const Fixture* fxi = m_doc->fixture(m_head.fxi);
     if (fxi == NULL)
         return QString();
 
@@ -472,7 +472,7 @@ bool VCXYPadFixture::saveXML(QXmlStreamWriter *doc) const
 
 void VCXYPadFixture::arm()
 {
-    Fixture* fxi = m_doc->fixture(m_head.fxi);
+    const Fixture* fxi = m_doc->fixture(m_head.fxi);
     if (fxi == NULL)
     {
         m_xMSB = QLCChannel::invalid();

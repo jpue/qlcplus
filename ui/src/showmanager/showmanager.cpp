@@ -377,7 +377,7 @@ void ShowManager::updateShowsCombo()
             this, SLOT(slotShowsComboChanged(int)));
 
     m_showsCombo->clear();
-    foreach (Function* f, m_doc->functionsByType(Function::ShowType))
+    foreach (const Function* f, m_doc->functionsByType(Function::ShowType))
     {
         // Insert in ascii order
         int insertPosition = 0;
@@ -599,7 +599,7 @@ void ShowManager::slotAddItem()
     FunctionSelection fs(this, m_doc);
     // Forbid self-containment
     QList<quint32> disabledList;
-    foreach (Function* function, m_doc->functions())
+    foreach (const Function* function, m_doc->functions())
     {
         if (function->contains(m_show->id()))
             disabledList << function->id();
@@ -993,7 +993,7 @@ void ShowManager::slotAddVideo()
 
 void ShowManager::slotCopy()
 {
-    ShowItem *item = m_showview->getSelectedItem();
+    const ShowItem *item = m_showview->getSelectedItem();
     if (item != NULL)
     {
         Function* function = m_doc->function(item->functionID());
@@ -1157,7 +1157,7 @@ void ShowManager::slotDelete()
 {
     // find out if we're deleting a show item or a track
     bool isTrack = true;
-    ShowItem *selectedItem = m_showview->getSelectedItem();
+    const ShowItem *selectedItem = m_showview->getSelectedItem();
     if (selectedItem != NULL)
         isTrack = false;
 
@@ -1477,7 +1477,7 @@ void ShowManager::slotShowTimingsTool()
 
     TimingsTool *tt = new TimingsTool(item, this);
 
-    Function *func = m_doc->function(item->functionID());
+    const Function *func = m_doc->function(item->functionID());
     if (func != NULL)
     {
         if (func->type() == Function::AudioType)
@@ -1602,7 +1602,7 @@ void ShowManager::slotFunctionRemoved(quint32 id)
 
     foreach (Function *function, m_doc->functionsByType(Function::ShowType))
     {
-        Show *show = qobject_cast<Show*>(function);
+        const Show *show = qobject_cast<Show*>(function);
         foreach (Track *track, show->tracks())
         {
             foreach (ShowFunction *sf, track->showFunctions())
@@ -1666,7 +1666,7 @@ void ShowManager::updateMultiTrackView()
         quint32 boundSceneID = track->getSceneID();
         if (boundSceneID != Function::invalidId())
         {
-            Function *f = m_doc->function(boundSceneID);
+            const Function *f = m_doc->function(boundSceneID);
             if (f == NULL || f->type() != Function::SceneType)
                 track->setSceneID(Function::invalidId());
         }
@@ -1741,9 +1741,9 @@ bool ShowManager::checkOverlapping(quint32 startTime, quint32 duration)
     if (m_currentTrack == NULL)
         return false;
 
-    foreach (ShowFunction *sf, m_currentTrack->showFunctions())
+    foreach (const ShowFunction *sf, m_currentTrack->showFunctions())
     {
-        Function *func = m_doc->function(sf->functionID());
+        const Function *func = m_doc->function(sf->functionID());
         if (func != NULL)
         {
             quint32 fst = sf->startTime();

@@ -316,7 +316,7 @@ void SimpleDeskEngine::writeDMX(MasterTimer *timer, QList<Universe *> ua)
                     {
                         it.next();
                         FadeChannel fc = it.value();
-                        Fixture *fixture = m_doc->fixture(fc.fixture());
+                        const Fixture *fixture = m_doc->fixture(fc.fixture());
                         quint32 chIndex = fc.channel();
 
                         if (fixture != NULL)
@@ -342,7 +342,7 @@ void SimpleDeskEngine::writeDMX(MasterTimer *timer, QList<Universe *> ua)
                 if (!fader.isNull())
                 {
                     FadeChannel fc(m_doc, Fixture::invalidId(), channel);
-                    Fixture *fixture = m_doc->fixture(fc.fixture());
+                    const Fixture *fixture = m_doc->fixture(fc.fixture());
                     quint32 chIndex = fc.channel();
                     fader->remove(&fc);
 

@@ -69,7 +69,7 @@ void MonitorGraphicsView::setGridMetrics(float value)
 
 quint32 MonitorGraphicsView::selectedFixtureID() const
 {
-    MonitorFixtureItem *item = getSelectedItem();
+    const MonitorFixtureItem *item = getSelectedItem();
     if (item != NULL)
         return item->fixtureID();
     else
@@ -103,7 +103,7 @@ void MonitorGraphicsView::showFixturesLabels(bool visible)
 
 QColor MonitorGraphicsView::fixtureGelColor(quint32 id)
 {
-    MonitorFixtureItem *item = m_fixtures[id];
+    const MonitorFixtureItem *item = m_fixtures[id];
     if (item == NULL)
         return QColor();
 
@@ -120,7 +120,7 @@ QPointF MonitorGraphicsView::realPositionToPixels(qreal xpos, qreal ypos)
 
 void MonitorGraphicsView::updateFixture(quint32 id)
 {
-    Fixture *fxi = m_doc->fixture(id);
+    const Fixture *fxi = m_doc->fixture(id);
     if (fxi == NULL || m_fixtures.contains(id) == false)
         return;
 

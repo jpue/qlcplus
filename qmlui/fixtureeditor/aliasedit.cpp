@@ -65,7 +65,7 @@ QStringList AliasEdit::applicableModes() const
     if (m_fixtureDef == nullptr || m_channel == nullptr)
         return list;
 
-    for (QLCFixtureMode *mode : m_fixtureDef->modes())
+    for (const QLCFixtureMode *mode : m_fixtureDef->modes())
     {
         if (mode->channel(m_channel->name()) != nullptr)
             list << mode->name();
@@ -81,7 +81,7 @@ QStringList AliasEdit::allChannels() const
     if (m_fixtureDef == nullptr)
         return list;
 
-    for (QLCChannel *channel : m_fixtureDef->channels())
+    for (const QLCChannel *channel : m_fixtureDef->channels())
         list << channel->name();
 
     return list;
@@ -219,7 +219,7 @@ QString AliasEdit::aliasWarning(int index) const
     if (alias.sourceChannel == alias.targetChannel)
         return tr("Source and target channels are the same");
 
-    QLCFixtureMode *mode = m_fixtureDef->mode(alias.targetMode);
+    const QLCFixtureMode *mode = m_fixtureDef->mode(alias.targetMode);
     if (mode == nullptr)
         return tr("Mode '%1' does not exist").arg(alias.targetMode);
 

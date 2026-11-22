@@ -94,7 +94,7 @@ FixtureRemap::FixtureRemap(Doc *doc, QWidget *parent)
     m_targetDoc->inputOutputMap()->removeAllUniverses();
 
     int index = 0;
-    foreach (Universe *uni, m_doc->inputOutputMap()->universes())
+    foreach (const Universe *uni, m_doc->inputOutputMap()->universes())
     {
         m_targetDoc->inputOutputMap()->addUniverse(uni->id());
         m_targetDoc->inputOutputMap()->setUniverseName(index, uni->name());
@@ -130,7 +130,7 @@ FixtureRemap::FixtureRemap(Doc *doc, QWidget *parent)
             this, SLOT(slotUpdateConnections()));
 
     // retrieve the original project name from the QLC+ App class
-    App *mainApp = (App *)m_doc->parent();
+    const App *mainApp = (App *)m_doc->parent();
     QString prjName = mainApp->fileName();
 
     if (prjName.lastIndexOf(".") > 0)
@@ -179,7 +179,7 @@ QTreeWidgetItem *FixtureRemap::getUniverseItem(Doc *doc, quint32 universe, QTree
 
 void FixtureRemap::fillFixturesTree(Doc *doc, QTreeWidget *tree)
 {
-    foreach (Fixture *fxi, doc->fixtures())
+    foreach (const Fixture *fxi, doc->fixtures())
     {
         quint32 uni = fxi->universe();
         QTreeWidgetItem *topItem = getUniverseItem(doc, uni, tree);
@@ -492,7 +492,7 @@ void FixtureRemap::slotCloneSourceFixture()
 
     QTreeWidgetItem *sItem = m_sourceTree->selectedItems().first();
     quint32 fxID = sItem->text(KColumnID).toUInt();
-    Fixture *srcFix = m_doc->fixture(fxID);
+    const Fixture *srcFix = m_doc->fixture(fxID);
     if (srcFix == NULL)
         return; // popup here ?
 
@@ -784,7 +784,7 @@ void FixtureRemap::accept()
                         if (val.fxi == srcFxID)
                         {
                             const SceneValue &tgtVal = targetList.at(i);
-                            Fixture *docFix = m_doc->fixture(tgtVal.fxi);
+                            const Fixture *docFix = m_doc->fixture(tgtVal.fxi);
                             if (docFix == NULL)
                                 continue;
                             const QLCChannel *chan = docFix->channel(tgtVal.channel);

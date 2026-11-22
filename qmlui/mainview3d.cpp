@@ -183,7 +183,7 @@ void MainView3D::slotRefreshView()
     createStage();
     emit stageIndexChanged(m_monProps->stageType());
 
-    for (Fixture *fixture : m_doc->fixtures())
+    for (const Fixture *fixture : m_doc->fixtures())
     {
         if (m_monProps->containsFixture(fixture->id()))
         {
@@ -357,7 +357,7 @@ void MainView3D::setUniverseFilter(quint32 universeFilter)
 
         quint32 fixtureID = FixtureUtils::itemFixtureID(itemID);
 
-        Fixture *fixture = m_doc->fixture(fixtureID);
+        const Fixture *fixture = m_doc->fixture(fixtureID);
         if (fixture == nullptr)
             return;
 
@@ -665,7 +665,7 @@ void MainView3D::resetStage(QEntity *entity)
 
 void MainView3D::createFixtureItems(quint32 fxID, QVector3D pos, bool mmCoords)
 {
-    Fixture *fixture = m_doc->fixture(fxID);
+    const Fixture *fixture = m_doc->fixture(fxID);
     if (fixture == nullptr)
         return;
 
@@ -700,7 +700,7 @@ void MainView3D::createFixtureItem(quint32 fxID, quint16 headIndex, quint16 link
 
     qDebug() << "[MainView3D] Creating fixture with ID" << fxID << "pos:" << pos;
 
-    Fixture *fixture = m_doc->fixture(fxID);
+    const Fixture *fixture = m_doc->fixture(fxID);
     if (fixture == nullptr)
         return;
 
@@ -711,7 +711,7 @@ void MainView3D::createFixtureItem(quint32 fxID, quint16 headIndex, quint16 link
         return;
     }
 
-    QLCFixtureMode *fxMode = fixture->fixtureMode();
+    const QLCFixtureMode *fxMode = fixture->fixtureMode();
     QString meshPath = meshDirectory() + "fixtures" + QDir::separator();
     QString openGobo = goboDirectory() + QDir::separator() + "Others/open.svg";
     quint32 itemID = FixtureUtils::fixtureItemID(fxID, headIndex, linkedIndex);
@@ -1189,7 +1189,7 @@ void MainView3D::initializeFixture(quint32 itemID, QEntity *fxEntity, const QSce
     if (isEnabled() == false || m_sceneRootEntity == nullptr)
         return;
 
-    SceneItem *pendingRef = m_entitiesMap.value(itemID, nullptr);
+    const SceneItem *pendingRef = m_entitiesMap.value(itemID, nullptr);
     if (pendingRef == nullptr)
         return;
 
@@ -1220,7 +1220,7 @@ void MainView3D::initializeFixture(quint32 itemID, QEntity *fxEntity, const QSce
         return;
 
     quint32 itemFlags = m_monProps->fixtureFlags(fxID, headIndex, linkedIndex);
-    QLCFixtureMode *fxMode = fixture->fixtureMode();
+    const QLCFixtureMode *fxMode = fixture->fixtureMode();
     QVector3D fxSize(0.3, 0.3, 0.3);
     int panDeg = 0;
     int tiltDeg = 0;
@@ -1228,7 +1228,7 @@ void MainView3D::initializeFixture(quint32 itemID, QEntity *fxEntity, const QSce
     qreal focusMin = 10;
     bool calculateVolume = false;
     QEntity *root = nullptr;
-    QEntity *baseItem = nullptr;
+    const QEntity *baseItem = nullptr;
 
     if (fxMode != nullptr)
     {
@@ -1572,7 +1572,7 @@ void MainView3D::updateFixtureItem(Fixture *fixture, quint16 headIndex, quint16 
                 if (colorSet && value == 0)
                     break;
 
-                QLCCapability *cap = ch->searchCapability(value);
+                const QLCCapability *cap = ch->searchCapability(value);
 
                 if (cap == nullptr ||
                    (cap->presetType() != QLCCapability::SingleColor &&
@@ -1614,7 +1614,7 @@ void MainView3D::updateFixtureItem(Fixture *fixture, quint16 headIndex, quint16 
                 if (previous.length() && value == uchar(previous.at(i)))
                     break;
 
-                QLCCapability *cap = ch->searchCapability(value);
+                const QLCCapability *cap = ch->searchCapability(value);
 
                 if (cap == nullptr)
                     break;
@@ -1887,14 +1887,14 @@ QVector3D MainView3D::meshFileExtents(const QString &meshPath) const
 
 QVector3D MainView3D::fixtureDrawnSize(quint32 fixtureID) const
 {
-    Fixture *fixture = m_doc->fixture(fixtureID);
+    const Fixture *fixture = m_doc->fixture(fixtureID);
     if (fixture == nullptr)
         return QVector3D(0, 0, 0);
 
     // Declared physical size — the box the mesh gets fitted into, and the answer
     // outright for fixture types drawn without a mesh.
     QVector3D declared(0.3f, 0.3f, 0.3f);
-    QLCFixtureMode *fxMode = fixture->fixtureMode();
+    const QLCFixtureMode *fxMode = fixture->fixtureMode();
     if (fxMode != nullptr)
     {
         QLCPhysical phy = fxMode->physical();
@@ -1993,7 +1993,7 @@ void MainView3D::updateLightMatrix(SceneItem *mesh, quint32 itemID)
     // The offset is model-space only (arm + head translations, no root position/rotation).
     quint32 fxID = FixtureUtils::itemFixtureID(itemID);
     quint16 headIndex = FixtureUtils::itemHeadIndex(itemID);
-    Fixture *fixture = m_doc->fixture(fxID);
+    const Fixture *fixture = m_doc->fixture(fxID);
     if (fixture != nullptr)
     {
         // Only fixtures that actually steer a beam need a persisted emitter
@@ -2182,7 +2182,7 @@ void MainView3D::initializeItem(int itemID, QEntity *itemEntity, QSceneLoader *l
     if (isEnabled() == false || m_sceneRootEntity == nullptr || loader == nullptr)
         return;
 
-    SceneItem *pendingRef = m_genericMap.value(itemID, nullptr);
+    const SceneItem *pendingRef = m_genericMap.value(itemID, nullptr);
     if (pendingRef == nullptr)
         return;
 

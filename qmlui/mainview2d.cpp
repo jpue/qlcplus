@@ -88,7 +88,7 @@ void MainView2D::setUniverseFilter(quint32 universeFilter)
 
         quint32 fixtureID = FixtureUtils::itemFixtureID(itemID);
 
-        Fixture *fixture = m_doc->fixture(fixtureID);
+        const Fixture *fixture = m_doc->fixture(fixtureID);
         if (fixture == nullptr)
             return;
 
@@ -145,7 +145,7 @@ bool MainView2D::initialize2DProperties()
 
 void MainView2D::createFixtureItems(quint32 fxID, QVector3D pos, bool mmCoords)
 {
-    Fixture *fixture = m_doc->fixture(fxID);
+    const Fixture *fixture = m_doc->fixture(fxID);
     if (fixture == nullptr)
         return;
 
@@ -176,7 +176,7 @@ void MainView2D::createFixtureItem(quint32 fxID, quint16 headIndex, quint16 link
         return;
 
     quint32 itemID = FixtureUtils::fixtureItemID(fxID, headIndex, linkedIndex);
-    QLCFixtureMode *fxMode = fixture->fixtureMode();
+    const QLCFixtureMode *fxMode = fixture->fixtureMode();
     QQuickItem *newFixtureItem = qobject_cast<QQuickItem*>(fixtureComponent->create());
     quint32 itemFlags = m_monProps->fixtureFlags(fxID, headIndex, linkedIndex);
 
@@ -375,7 +375,7 @@ void MainView2D::slotRefreshView()
         return;
     }
 
-    for (Fixture *fixture : m_doc->fixtures())
+    for (const Fixture *fixture : m_doc->fixtures())
     {
         if (m_monProps->containsFixture(fixture->id()))
         {
@@ -506,7 +506,7 @@ void MainView2D::updateFixtureItem(Fixture *fixture, quint16 headIndex, quint16 
                 if (colorSet && value == 0)
                     break;
 
-                QLCCapability *cap = ch->searchCapability(value);
+                const QLCCapability *cap = ch->searchCapability(value);
 
                 if (cap == nullptr ||
                    (cap->presetType() != QLCCapability::SingleColor &&
@@ -543,7 +543,7 @@ void MainView2D::updateFixtureItem(Fixture *fixture, quint16 headIndex, quint16 
                 if (goboSet || (previous.length() && value == uchar(previous.at(i))))
                     break;
 
-                QLCCapability *cap = ch->searchCapability(value);
+                const QLCCapability *cap = ch->searchCapability(value);
 
                 if (cap == nullptr)
                     break;
@@ -766,7 +766,7 @@ void MainView2D::updateFixtureSize(quint32 itemID, Fixture *fixture)
                                     m_monProps->fixtureRotation(fxID, headIndex, linkedIndex)))
             return;
 
-        QLCFixtureMode *fxMode = fixture->fixtureMode();
+        const QLCFixtureMode *fxMode = fixture->fixtureMode();
         QSizeF size = FixtureUtils::item2DDimension(fixture->type() == QLCFixtureDef::Dimmer ? nullptr : fxMode,
                                                     m_monProps->pointOfView());
         fxItem->setProperty("mmWidth", size.width());

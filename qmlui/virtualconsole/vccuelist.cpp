@@ -423,7 +423,7 @@ void VCCueList::addFunctions(QVariantList idsList, int insertIndex)
     }
     else
     {
-        Function *f = m_doc->function(idsList.first().toUInt());
+        const Function *f = m_doc->function(idsList.first().toUInt());
         if (f == nullptr || f->type() != Function::ChaserType)
             return;
 
@@ -600,7 +600,7 @@ static int backwardIndex(int index, int count)
 
 int VCCueList::getNextIndex()
 {
-    Chaser *ch = chaser();
+    const Chaser *ch = chaser();
     if (ch == nullptr)
         return -1;
 
@@ -612,7 +612,7 @@ int VCCueList::getNextIndex()
 
 int VCCueList::getPrevIndex()
 {
-    Chaser *ch = chaser();
+    const Chaser *ch = chaser();
     if (ch == nullptr)
         return -1;
 
@@ -624,7 +624,7 @@ int VCCueList::getPrevIndex()
 
 int VCCueList::getFirstIndex()
 {
-    Chaser *ch = chaser();
+    const Chaser *ch = chaser();
     if (ch == nullptr)
         return -1;
 
@@ -636,7 +636,7 @@ int VCCueList::getFirstIndex()
 
 int VCCueList::getLastIndex()
 {
-    Chaser *ch = chaser();
+    const Chaser *ch = chaser();
     if (ch == nullptr)
         return -1;
 
@@ -661,7 +661,7 @@ void VCCueList::setPlaybackIndex(int playbackIndex)
     m_playbackIndex = playbackIndex;
     emit playbackIndexChanged(playbackIndex);
 
-    Chaser *ch = chaser();
+    const Chaser *ch = chaser();
     if (ch != nullptr)
     {
         m_nextStepIndex = playbackIndex >= 0 ? ch->computeNextStep(playbackIndex) : -1;
@@ -673,7 +673,7 @@ void VCCueList::setPlaybackIndex(int playbackIndex)
 
 VCCueList::PlaybackStatus VCCueList::playbackStatus() const
 {
-    Chaser *ch = chaser();
+    const Chaser *ch = chaser();
 
     if (ch == nullptr)
         return Stopped;
@@ -723,7 +723,7 @@ void VCCueList::updateFeedback()
 {
     sendFeedback(m_sideFaderLevel, INPUT_SIDE_FADER_ID, VCWidget::ExactValue);
 
-    Chaser *ch = chaser();
+    const Chaser *ch = chaser();
     if (ch == NULL)
         return;
 
@@ -975,7 +975,7 @@ void VCCueList::slotCurrentStepChanged(int stepNumber)
 
 void VCCueList::slotProgressTimeout()
 {
-    Chaser *ch = chaser();
+    const Chaser *ch = chaser();
     if (ch == nullptr || !ch->isRunning() || m_item == nullptr)
         return;
 

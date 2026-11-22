@@ -461,7 +461,7 @@ void InputProfileEditor::slotEditClicked()
 edit:
         if (ice.exec() == QDialog::Accepted)
         {
-            QLCInputChannel* another;
+            const QLCInputChannel* another;
             another = m_profile->channel(ice.channel());
 
             if (another == NULL || another == channel)
@@ -549,7 +549,7 @@ void InputProfileEditor::slotItemClicked(QTreeWidgetItem *item, int col)
     Q_UNUSED(col)
 
     quint32 chNum = item->text(KColumnNumber).toUInt() - 1;
-    QLCInputChannel *ich = m_profile->channel(chNum);
+    const QLCInputChannel *ich = m_profile->channel(chNum);
     if (ich != NULL)
     {
         setOptionsVisibility(ich->type());

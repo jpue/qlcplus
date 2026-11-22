@@ -198,7 +198,7 @@ void PaletteManager::deletePalettes(QVariantList list)
 {
     for (QVariant pID : list)
     {
-        QLCPalette *p = m_doc->palette(pID.toInt());
+        const QLCPalette *p = m_doc->palette(pID.toInt());
         if (p == nullptr)
             continue;
 
@@ -270,7 +270,7 @@ QStringList PaletteManager::selectedItemNames(QVariantList list) const
 
     for (QVariant pID : list)
     {
-        QLCPalette *p = m_doc->palette(pID.toInt());
+        const QLCPalette *p = m_doc->palette(pID.toInt());
         if (p == nullptr)
             continue;
         names.append(p->name());
@@ -284,7 +284,7 @@ void PaletteManager::updatePaletteList()
     m_paletteList->clear();
     m_dimmerCount = m_colorCount = m_positionCount = m_position3DCount = 0;
 
-    for (QLCPalette *palette : m_doc->palettes())
+    for (const QLCPalette *palette : m_doc->palettes())
     {
         // counts are always over all palettes, independent of the active filter
         switch (palette->type())

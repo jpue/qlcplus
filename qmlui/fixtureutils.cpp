@@ -343,12 +343,12 @@ QPointF FixtureUtils::available2DPosition(Doc *doc, int pointOfView, QRectF fxRe
     qreal origWidth = fxRect.width();
     qreal origHeight = fxRect.height();
 
-    for (Fixture *fixture : doc->fixtures())
+    for (const Fixture *fixture : doc->fixtures())
     {
         if (monProps->containsFixture(fixture->id()) == false)
             continue;
 
-        QLCFixtureMode *fxMode = fixture->fixtureMode();
+        const QLCFixtureMode *fxMode = fixture->fixtureMode();
 
         for (quint32 subID : monProps->fixtureIDList(fixture->id()))
         {
@@ -670,7 +670,7 @@ int FixtureUtils::shutterTimings(const QLCChannel *ch, uchar value, int &highTim
         break;
         default:
         {
-            QLCCapability *cap = ch->searchCapability(value);
+            const QLCCapability *cap = ch->searchCapability(value);
             if (cap == nullptr)
                 break;
 

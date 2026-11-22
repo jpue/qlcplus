@@ -134,7 +134,7 @@ void MidiEnumeratorPrivate::rescan()
                     continue;
 
                 QVariant uid = AlsaMidiUtil::buildUid(m_alsa, address);
-                MidiInputDevice* dev = inputDevice(uid);
+                const MidiInputDevice* const dev = inputDevice(uid);
                 if (dev == NULL)
                 {
                     AlsaMidiInputDevice* dev = new AlsaMidiInputDevice(
@@ -156,7 +156,7 @@ void MidiEnumeratorPrivate::rescan()
                     continue;
 
                 QVariant uid = AlsaMidiUtil::buildUid(m_alsa, address);
-                MidiOutputDevice* dev = outputDevice(uid);
+                const MidiOutputDevice* const dev = outputDevice(uid);
                 if (dev == NULL)
                 {
                     AlsaMidiOutputDevice* dev = new AlsaMidiOutputDevice(

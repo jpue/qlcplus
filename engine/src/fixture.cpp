@@ -803,7 +803,7 @@ void Fixture::setFixtureDefinition(QLCFixtureDef* fixtureDef,
 
         for (i = 0; i < chNum; i++)
         {
-            QLCChannel *channel = fixtureMode->channel(i);
+            const QLCChannel *channel = fixtureMode->channel(i);
             const QList <QLCCapability*> capsList = channel->capabilities();
 
             // initialize values with previous values if possible, otherwise defaults
@@ -816,7 +816,7 @@ void Fixture::setFixtureDefinition(QLCFixtureDef* fixtureDef,
             m_aliasInfo[i].m_hasAlias = false;
             m_aliasInfo[i].m_currCap = capsList.count() ? capsList.at(0) : NULL;
 
-            foreach (QLCCapability *cap, capsList)
+            foreach (const QLCCapability *cap, capsList)
             {
                 if (cap->preset() == QLCCapability::Alias)
                     m_aliasInfo[i].m_hasAlias = true;
@@ -1564,7 +1564,7 @@ bool Fixture::saveXML(QXmlStreamWriter *doc) const
         {
             it.next();
             quint32 ch = it.key();
-            ChannelModifier *mod = it.value();
+            const ChannelModifier *mod = it.value();
             if (mod != NULL)
             {
                 doc->writeStartElement(KXMLFixtureChannelModifier);

@@ -149,7 +149,7 @@ bool VCSoloFrame::thisIsNearestSoloFrameParent(QWidget* widget)
     {
         widget = widget->parentWidget();
 
-        VCSoloFrame *sf = qobject_cast<VCSoloFrame*>(widget);
+        const VCSoloFrame *sf = qobject_cast<VCSoloFrame*>(widget);
         if (sf != NULL)
         {
             return sf == this;
@@ -161,7 +161,7 @@ bool VCSoloFrame::thisIsNearestSoloFrameParent(QWidget* widget)
 
 void VCSoloFrame::slotWidgetFunctionStarting(quint32 fid, qreal intensity)
 {
-    VCWidget* senderWidget = qobject_cast<VCWidget*>(sender());
+    const VCWidget* senderWidget = qobject_cast<VCWidget*>(sender());
 
     if (senderWidget != NULL)
     {

@@ -253,7 +253,7 @@ void ClickAndGoWidget::createPresetList(const QLCChannel *chan)
 
     //qDebug() << Q_FUNC_INFO << "cap #" << chan->capabilities().size();
 
-    foreach (QLCCapability* cap, chan->capabilities())
+    foreach (const QLCCapability* cap, chan->capabilities())
     {
         if (cap->presetType() == QLCCapability::Picture)
         {

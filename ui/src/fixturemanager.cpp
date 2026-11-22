@@ -306,7 +306,7 @@ void FixtureManager::slotFixtureGroupChanged(quint32 id)
     if (item == NULL)
         return;
 
-    FixtureGroup* grp = m_doc->fixtureGroup(id);
+    const FixtureGroup* grp = m_doc->fixtureGroup(id);
     Q_ASSERT(grp != NULL);
     m_fixtures_tree->updateGroupItem(item, grp);
     updateGroupMenu();
@@ -452,7 +452,7 @@ void FixtureManager::updateChannelsGroupView()
         for (int i = m_channel_groups_tree->topLevelItemCount() - 1; i >= 0; i--)
             m_channel_groups_tree->takeTopLevelItem(i);
 
-    foreach (ChannelsGroup *grp, m_doc->channelsGroups())
+    foreach (const ChannelsGroup *grp, m_doc->channelsGroups())
     {
         QTreeWidgetItem *grpItem = new QTreeWidgetItem(m_channel_groups_tree);
         grpItem->setText(KColumnName, grp->name());
@@ -461,7 +461,7 @@ void FixtureManager::updateChannelsGroupView()
         if (grp->getChannels().count() > 0)
         {
             SceneValue scv = grp->getChannels().at(0);
-            Fixture *fxi = m_doc->fixture(scv.fxi);
+            const Fixture *fxi = m_doc->fixture(scv.fxi);
             if (fxi == NULL)
                 continue;
 
@@ -498,7 +498,7 @@ void FixtureManager::updateRDMView()
 
 void FixtureManager::fixtureSelected(quint32 id)
 {
-    Fixture* fxi = m_doc->fixture(id);
+    const Fixture* fxi = m_doc->fixture(id);
     if (fxi == NULL)
         return;
 
@@ -589,12 +589,12 @@ void FixtureManager::slotSelectionChanged()
             if (uniID.isValid() == true)
                 uniName = m_doc->inputOutputMap()->getUniverseNameByID(uniID.toUInt());
 
-            foreach (Fixture *fixture, m_doc->fixtures())
+            foreach (const Fixture *fixture, m_doc->fixtures())
             {
                 if (fixture == NULL || fixture->universe() != uniID.toUInt() || fixture->fixtureMode() == NULL)
                     continue;
 
-                QLCFixtureMode *mode = fixture->fixtureMode();
+                const QLCFixtureMode *mode = fixture->fixtureMode();
                 totalWeight += mode->physical().weight();
                 totalPower += mode->physical().powerConsumption();
             }
@@ -637,12 +637,12 @@ void FixtureManager::slotSelectionChanged()
                     if (fxID.isValid() == false)
                         continue;
 
-                    Fixture *fixture = m_doc->fixture(fxID.toUInt());
+                    const Fixture *fixture = m_doc->fixture(fxID.toUInt());
 
                     if (fixture == NULL || fixture->fixtureMode() == NULL)
                         continue;
 
-                    QLCFixtureMode *mode = fixture->fixtureMode();
+                    const QLCFixtureMode *mode = fixture->fixtureMode();
                     totalWeight += mode->physical().weight();
                     totalPower += mode->physical().powerConsumption();
                 }
@@ -701,7 +701,7 @@ void FixtureManager::slotChannelsGroupSelectionChanged()
         QVariant grpvar = item->data(KColumnName, PROP_ID);
         if (grpvar.isValid() == true)
         {
-            ChannelsGroup *chGroup = m_doc->channelsGroup(grpvar.toUInt());
+            const ChannelsGroup *chGroup = m_doc->channelsGroup(grpvar.toUInt());
             if (chGroup != NULL)
                 m_info->setText(QString("%1<BODY>%2</BODY></HTML>")
                                 .arg(channelsGroupInfoStyleSheetHeader())
@@ -1182,7 +1182,7 @@ void FixtureManager::updateGroupMenu()
         m_groupMenu->removeAction(a);
 
     // Put all known fixture groups to the menu
-    foreach (FixtureGroup* grp, m_doc->fixtureGroups())
+    foreach (const FixtureGroup* grp, m_doc->fixtureGroups())
     {
         QAction* a = m_groupMenu->addAction(grp->name());
         a->setData((qulonglong) grp);
@@ -1583,7 +1583,7 @@ void FixtureManager::removeFixture()
         /** @todo This is REALLY bogus here, since Fixture or Doc should do
             this. However, FixtureManager is the only place to destroy fixtures,
             so it's rather safe to reset the fixture's address space here. */
-        Fixture* fxi = m_doc->fixture(id);
+        const Fixture* fxi = m_doc->fixture(id);
         Q_ASSERT(fxi != NULL);
         QList<Universe*> ua = m_doc->inputOutputMap()->claimUniverses();
         int universe = fxi->universe();
@@ -1760,7 +1760,7 @@ int FixtureManager::headCount(const QList <QTreeWidgetItem*>& items) const
         if (var.isValid() == false)
             continue;
 
-        Fixture* fxi = m_doc->fixture(var.toUInt());
+        const Fixture* fxi = m_doc->fixture(var.toUInt());
         count += fxi->heads();
     }
 
@@ -2054,7 +2054,7 @@ void FixtureManager::slotExport()
     QListIterator <Fixture*> fxit(m_doc->fixtures());
     while (fxit.hasNext() == true)
     {
-        Fixture* fxi(fxit.next());
+        const Fixture* fxi(fxit.next());
         Q_ASSERT(fxi != NULL);
         fxi->saveXML(&doc);
     }
@@ -2062,7 +2062,7 @@ void FixtureManager::slotExport()
     QListIterator <FixtureGroup*>grpit(m_doc->fixtureGroups());
     while (grpit.hasNext() == true)
     {
-        FixtureGroup *fxgrp(grpit.next());
+        const FixtureGroup *fxgrp(grpit.next());
         Q_ASSERT(fxgrp != NULL);
         fxgrp->saveXML(&doc);
     }

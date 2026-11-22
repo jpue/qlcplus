@@ -92,7 +92,7 @@ void AddChannelsDialog::fillChannelsTrees(QList<QLCChannel *> allList, QVector<Q
         i++;
     }
 
-    foreach (QLCChannel *ch, modeList)
+    foreach (const QLCChannel *ch, modeList)
     {
         QTreeWidgetItem *item = new QTreeWidgetItem(m_modeTree);
         int index = allList.indexOf(ch);

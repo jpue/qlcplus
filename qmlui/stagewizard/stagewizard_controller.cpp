@@ -60,11 +60,11 @@ QLCInputProfile *StageWizard::controllerProfile() const
     if (m_ctrlUniverse < 0)
         return nullptr;
 
-    InputOutputMap *iomap = m_doc->inputOutputMap();
+    const InputOutputMap *iomap = m_doc->inputOutputMap();
     if (iomap == nullptr)
         return nullptr;
 
-    InputPatch *ip = iomap->inputPatch(static_cast<quint32>(m_ctrlUniverse));
+    const InputPatch *ip = iomap->inputPatch(static_cast<quint32>(m_ctrlUniverse));
     return ip ? ip->profile() : nullptr;
 }
 
@@ -72,7 +72,7 @@ QVariant StageWizard::controllersModel() const
 {
     QVariantList list;
 
-    InputOutputMap *iomap = m_doc->inputOutputMap();
+    const InputOutputMap *iomap = m_doc->inputOutputMap();
     if (iomap == nullptr)
         return QVariant::fromValue(list);
 
@@ -83,7 +83,7 @@ QVariant StageWizard::controllersModel() const
     // already patched was excluded and the list came up empty.
     for (quint32 u = 0; u < iomap->universesCount(); u++)
     {
-        InputPatch *ip = iomap->inputPatch(u);
+        const InputPatch *ip = iomap->inputPatch(u);
         if (ip == nullptr || !ip->isPatched())
             continue;
 
@@ -92,7 +92,7 @@ QVariant StageWizard::controllersModel() const
         if (ip->pluginName() == QStringLiteral("Loopback"))
             continue;
 
-        QLCInputProfile *profile = ip->profile();
+        const QLCInputProfile *profile = ip->profile();
 
         int buttons = 0, faders = 0;
         if (profile != nullptr)
@@ -145,7 +145,7 @@ QVariant StageWizard::controllersModel() const
 
 void StageWizard::refreshControllers()
 {
-    InputOutputMap *iomap = m_doc->inputOutputMap();
+    const InputOutputMap *iomap = m_doc->inputOutputMap();
 
     // Drop a stale selection (e.g. the user unpatched it in the I/O panel) and
     // auto-select when there is exactly one candidate, so the common
@@ -158,7 +158,7 @@ void StageWizard::refreshControllers()
     {
         for (quint32 u = 0; u < iomap->universesCount(); u++)
         {
-            InputPatch *ip = iomap->inputPatch(u);
+            const InputPatch *ip = iomap->inputPatch(u);
             if (ip == nullptr || !ip->isPatched() ||
                 ip->pluginName() == QStringLiteral("Loopback"))
                 continue;
@@ -255,7 +255,7 @@ QString StageWizard::controllerMappingPreview() const
         int colors = 0, gobos = 0;
         for (quint32 id : m_generatedFunctionIDs)
         {
-            Function *f = m_doc->function(id);
+            const Function *f = m_doc->function(id);
             if (!f || f->type() != Function::SceneType)
                 continue;
             if (f->path().contains(grp.name + "/" + tr("Colors")))
@@ -616,7 +616,7 @@ void StageWizard::buildControllerSurface(CtrlSurface &surface) const
     if (m_ctrlUniverse < 0)
         return;
 
-    QLCInputProfile *profile = controllerProfile();
+    const QLCInputProfile *profile = controllerProfile();
 
     if (profile == nullptr)
     {
@@ -793,7 +793,7 @@ void StageWizard::ensureFeedbackPatch()
     if (iomap->feedbackPatch(uni) != nullptr)
         return;
 
-    InputPatch *ip = iomap->inputPatch(uni);
+    const InputPatch *ip = iomap->inputPatch(uni);
     if (ip == nullptr)
         return;
 

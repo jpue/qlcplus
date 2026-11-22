@@ -107,10 +107,10 @@ void ShowEditor::updateFunctionList()
     masterItem->setData(NAME_COL, PROP_ID, m_show->id());
     masterItem->setIcon(NAME_COL, QIcon(":/show.png"));
 
-    foreach (Track *track, m_show->tracks())
+    foreach (const Track *track, m_show->tracks())
     {
         QTreeWidgetItem* sceneItem = NULL;
-        Scene *scene = qobject_cast<Scene*>(m_doc->function(track->getSceneID()));
+        const Scene *scene = qobject_cast<Scene*>(m_doc->function(track->getSceneID()));
         if (scene != NULL)
         {
             sceneItem = scenesMap[scene->id()];
@@ -123,7 +123,7 @@ void ShowEditor::updateFunctionList()
             }
         }
 
-        foreach (ShowFunction *sf, track->showFunctions())
+        foreach (const ShowFunction *sf, track->showFunctions())
         {
             Function *func = m_doc->function(sf->functionID());
             if (func == NULL)
@@ -147,7 +147,7 @@ void ShowEditor::updateFunctionList()
 
             if (func->type() == Function::ChaserType)
             {
-                Chaser *chaser = qobject_cast<Chaser*>(func);
+                const Chaser *chaser = qobject_cast<Chaser*>(func);
                 fItem->setIcon(NAME_COL, QIcon(":/sequence.png"));
                 fItem->setText(STEPS_COL, QString("%1").arg(chaser->steps().count()));
             }

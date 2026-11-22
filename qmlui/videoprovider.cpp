@@ -35,7 +35,7 @@ VideoProvider::VideoProvider(QQuickView *view, Doc *doc, QObject *parent)
 
     qmlRegisterUncreatableType<Video>("org.qlcplus.classes", 1, 0, "VideoFunction", "Can't create a Video!");
 
-    for (Function *f : m_doc->functionsByType(Function::VideoType))
+    for (const Function *f : m_doc->functionsByType(Function::VideoType))
         slotFunctionAdded(f->id());
 
     connect(m_doc, SIGNAL(functionAdded(quint32)), this, SLOT(slotFunctionAdded(quint32)));
@@ -111,7 +111,7 @@ void VideoProvider::slotFunctionRemoved(quint32 id)
 
 void VideoProvider::slotRequestPlayback()
 {
-    Video *video = qobject_cast<Video *>(sender());
+    const Video *video = qobject_cast<Video *>(sender());
     if (video == nullptr)
         return;
 
@@ -121,7 +121,7 @@ void VideoProvider::slotRequestPlayback()
 
 void VideoProvider::slotRequestPause(bool enable)
 {
-    Video *video = qobject_cast<Video *>(sender());
+    const Video *video = qobject_cast<Video *>(sender());
     if (video == nullptr)
         return;
 
@@ -131,7 +131,7 @@ void VideoProvider::slotRequestPause(bool enable)
 
 void VideoProvider::slotRequestStop()
 {
-    Video *video = qobject_cast<Video *>(sender());
+    const Video *video = qobject_cast<Video *>(sender());
     if (video == nullptr)
         return;
 

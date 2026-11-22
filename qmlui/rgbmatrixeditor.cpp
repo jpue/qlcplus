@@ -263,7 +263,7 @@ QString RGBMatrixEditor::algoText() const
     if (m_matrix != nullptr && m_matrix->algorithm() != nullptr &&
         m_matrix->algorithm()->type() == RGBAlgorithm::Text)
     {
-        RGBText *algo = static_cast<RGBText*> (m_matrix->algorithm());
+        const RGBText *algo = static_cast<RGBText*> (m_matrix->algorithm());
         return algo->text();
     }
 
@@ -291,7 +291,7 @@ QFont RGBMatrixEditor::algoTextFont() const
     if (m_matrix != nullptr && m_matrix->algorithm() != nullptr &&
         m_matrix->algorithm()->type() == RGBAlgorithm::Text)
     {
-        RGBText *algo = static_cast<RGBText*> (m_matrix->algorithm());
+        const RGBText *algo = static_cast<RGBText*> (m_matrix->algorithm());
         return algo->font();
     }
     return QFont();
@@ -318,7 +318,7 @@ QString RGBMatrixEditor::algoImagePath() const
     if (m_matrix != nullptr && m_matrix->algorithm() != nullptr &&
         m_matrix->algorithm()->type() == RGBAlgorithm::Image)
     {
-        RGBImage *algo = static_cast<RGBImage*> (m_matrix->algorithm());
+        const RGBImage *algo = static_cast<RGBImage*> (m_matrix->algorithm());
         return algo->filename();
     }
 
@@ -351,12 +351,12 @@ QSize RGBMatrixEditor::algoOffset() const
     {
         if (m_matrix->algorithm()->type() == RGBAlgorithm::Image)
         {
-            RGBImage *algo = static_cast<RGBImage*> (m_matrix->algorithm());
+            const RGBImage *algo = static_cast<RGBImage*> (m_matrix->algorithm());
             return QSize(algo->xOffset(), algo->yOffset());
         }
         else if (m_matrix->algorithm()->type() == RGBAlgorithm::Text)
         {
-            RGBText *algo = static_cast<RGBText*> (m_matrix->algorithm());
+            const RGBText *algo = static_cast<RGBText*> (m_matrix->algorithm());
             return QSize(algo->xOffset(), algo->yOffset());
         }
     }
@@ -402,12 +402,12 @@ int RGBMatrixEditor::animationStyle() const
     {
         if (m_matrix->algorithm()->type() == RGBAlgorithm::Image)
         {
-            RGBImage *algo = static_cast<RGBImage*> (m_matrix->algorithm());
+            const RGBImage *algo = static_cast<RGBImage*> (m_matrix->algorithm());
             return (int)algo->animationStyle();
         }
         else if (m_matrix->algorithm()->type() == RGBAlgorithm::Text)
         {
-            RGBText *algo = static_cast<RGBText*> (m_matrix->algorithm());
+            const RGBText *algo = static_cast<RGBText*> (m_matrix->algorithm());
             return (int)algo->animationStyle();
         }
     }
@@ -619,7 +619,7 @@ void RGBMatrixEditor::saveToSequence()
     if (m_matrix == NULL || m_matrix->fixtureGroup() == FixtureGroup::invalidId())
         return;
 
-    FixtureGroup* grp = m_doc->fixtureGroup(m_matrix->fixtureGroup());
+    const FixtureGroup* grp = m_doc->fixtureGroup(m_matrix->fixtureGroup());
     if (grp != NULL && m_matrix->algorithm() != NULL)
     {
         bool testRunning = m_matrix->isRunning();
@@ -635,7 +635,7 @@ void RGBMatrixEditor::saveToSequence()
         QList<GroupHead> headList = grp->headList();
         foreach (GroupHead head, headList)
         {
-            Fixture *fxi = m_doc->fixture(head.fxi);
+            const Fixture *fxi = m_doc->fixture(head.fxi);
             if (fxi == NULL)
                 continue;
 
@@ -741,7 +741,7 @@ void RGBMatrixEditor::saveToSequence()
                     uint col = m_previewStepHandler->m_map[y][x];
                     GroupHead head = grp->head(QLCPoint(x, y));
 
-                    Fixture *fxi = m_doc->fixture(head.fxi);
+                    const Fixture *fxi = m_doc->fixture(head.fxi);
                     if (fxi == NULL)
                         continue;
 

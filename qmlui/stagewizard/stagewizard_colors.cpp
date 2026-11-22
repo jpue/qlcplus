@@ -256,7 +256,7 @@ QList<StageWizard::WheelColor> StageWizard::wheelColorsOf(quint32 fixtureID) con
 {
     QList<WheelColor> result;
 
-    Fixture *fx = m_doc->fixture(fixtureID);
+    const Fixture *fx = m_doc->fixture(fixtureID);
     if (fx == nullptr)
         return result;
 

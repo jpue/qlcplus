@@ -162,7 +162,7 @@ void StageWizard::createVCLayout()
                 int n = 0;
                 for (quint32 id : m_generatedFunctionIDs)
                 {
-                    Function *f = m_doc->function(id);
+                    const Function *f = m_doc->function(id);
                     if (f && f->type() == Function::SceneType &&
                         (f->path().contains(grp.name + "/" + tr("Colors")) ||
                          f->path().contains(grp.name + "/" + tr("Color Wheel"))))
@@ -234,7 +234,7 @@ void StageWizard::createVCLayout()
     {
         for (quint32 id : m_generatedFunctionIDs)
         {
-            Function *f = m_doc->function(id);
+            const Function *f = m_doc->function(id);
             if (f && f->name().endsWith(suffix))
                 return id;
         }
@@ -304,7 +304,7 @@ void StageWizard::createVCLayout()
         int colors = 0, wheel = 0, gobos = 0;
         for (quint32 id : m_generatedFunctionIDs)
         {
-            Function *f = m_doc->function(id);
+            const Function *f = m_doc->function(id);
             if (!f || f->type() != Function::SceneType)
                 continue;
             if (f->path().contains(grp.name + "/" + tr("Colors")))            colors++;
@@ -526,7 +526,7 @@ void StageWizard::createVCLayout()
                     slider->setSliderMode(VCSlider::Level);
                     for (quint32 fxID : grp.fixtureIDs)
                     {
-                        Fixture *fx = m_doc->fixture(fxID);
+                        const Fixture *fx = m_doc->fixture(fxID);
                         if (!fx) continue;
                         for (quint32 ch = 0; ch < fx->channels(); ++ch)
                         {
@@ -591,7 +591,7 @@ void StageWizard::createVCLayout()
                 {
                     for (quint32 id : m_generatedFunctionIDs)
                     {
-                        Function *f = m_doc->function(id);
+                        const Function *f = m_doc->function(id);
                         if (!f || f->type() != Function::SceneType)
                             continue;
                         if (f->path().contains(grp.name + "/" + subPath))
@@ -670,7 +670,7 @@ void StageWizard::createVCLayout()
                     // both correct and what makes the mapping fire only while
                     // the owning page is shown.
 
-                    Function *f = m_doc->function(ids.at(i));
+                    const Function *f = m_doc->function(ids.at(i));
                     QString cap = f ? f->name() : QString();
                     int dash = cap.indexOf(QStringLiteral(" – "));
                     if (dash >= 0) cap = cap.mid(dash + 3);
@@ -746,7 +746,7 @@ void StageWizard::createVCLayout()
             {
                 for (quint32 id : m_generatedFunctionIDs)
                 {
-                    Function *f = m_doc->function(id);
+                    const Function *f = m_doc->function(id);
                     if (!f || f->type() != Function::SceneType || f->name() != target)
                         continue;
 
@@ -819,7 +819,7 @@ void StageWizard::createVCLayout()
                 // so calling it here left the pad with no heads and no presets.
                 for (quint32 fxID : grp.fixtureIDs)
                 {
-                    Fixture *fx = m_doc->fixture(fxID);
+                    const Fixture *fx = m_doc->fixture(fxID);
                     if (!fx) continue;
                     // Only pan/tilt-capable fixtures belong on an XY pad; the
                     // group may also hold static units (grp.hasMovement is true
@@ -878,7 +878,7 @@ void StageWizard::createVCLayout()
         {
             for (quint32 id : m_generatedFunctionIDs)
             {
-                Function *f = m_doc->function(id);
+                const Function *f = m_doc->function(id);
                 if (f && f->name() == target)
                 {
                     addEffectBtn(caption, id, VCButton::Toggle);
@@ -996,7 +996,7 @@ void StageWizard::createVCLayout()
 
 QColor StageWizard::sceneColor(quint32 sceneID) const
 {
-    Scene *s = qobject_cast<Scene *>(m_doc->function(sceneID));
+    const Scene *s = qobject_cast<Scene *>(m_doc->function(sceneID));
     if (!s) return QColor();
 
     int r = 0, g = 0, b = 0;
@@ -1005,7 +1005,7 @@ QColor StageWizard::sceneColor(quint32 sceneID) const
     // A palette scene stores no direct channel values; resolve via its palette.
     for (quint32 pid : s->palettes())
     {
-        QLCPalette *p = m_doc->palette(pid);
+        const QLCPalette *p = m_doc->palette(pid);
         if (p && p->type() == QLCPalette::Color)
         {
             QColor c = p->rgbValue();
@@ -1018,7 +1018,7 @@ QColor StageWizard::sceneColor(quint32 sceneID) const
     // capability the value falls in and use its ColorMacro resource colour.
     for (const SceneValue &sv : s->values())
     {
-        Fixture *fx = m_doc->fixture(sv.fxi);
+        const Fixture *fx = m_doc->fixture(sv.fxi);
         if (!fx) continue;
         const QLCChannel *c = fx->channel(sv.channel);
         if (!c || c->group() != QLCChannel::Colour) continue;
@@ -1035,7 +1035,7 @@ QColor StageWizard::sceneColor(quint32 sceneID) const
     // Fallback: derive from raw RGB/CMY channel values set by the scene.
     for (const SceneValue &sv : s->values())
     {
-        Fixture *fx = m_doc->fixture(sv.fxi);
+        const Fixture *fx = m_doc->fixture(sv.fxi);
         if (!fx) continue;
         const QLCChannel *c = fx->channel(sv.channel);
         if (!c || c->group() != QLCChannel::Intensity) continue;
@@ -1059,7 +1059,7 @@ QColor StageWizard::sceneColor(quint32 sceneID) const
 
 QString StageWizard::goboPicture(quint32 sceneID) const
 {
-    Scene *s = qobject_cast<Scene *>(m_doc->function(sceneID));
+    const Scene *s = qobject_cast<Scene *>(m_doc->function(sceneID));
     if (!s) return QString();
 
     // A gobo scene sets one value on a Gobo-group channel; resolve the
@@ -1068,7 +1068,7 @@ QString StageWizard::goboPicture(quint32 sceneID) const
     // form against the system gobo directory when the definition is read.
     for (const SceneValue &sv : s->values())
     {
-        Fixture *fx = m_doc->fixture(sv.fxi);
+        const Fixture *fx = m_doc->fixture(sv.fxi);
         if (!fx) continue;
         const QLCChannel *c = fx->channel(sv.channel);
         if (!c || c->group() != QLCChannel::Gobo) continue;
@@ -1116,7 +1116,7 @@ bool StageWizard::ensureLoopbackPatch(int pageCount, quint32 &loopInUniverse,
 
     // Which universes already hold at least one fixture?
     QSet<quint32> usedUniverses;
-    for (Fixture *fx : m_doc->fixtures())
+    for (const Fixture *fx : m_doc->fixtures())
         if (fx) usedUniverses.insert(fx->universe());
 
     // First truly empty universe — no fixtures AND no in/out patch — hosts the
@@ -1157,7 +1157,7 @@ bool StageWizard::ensureLoopbackPatch(int pageCount, quint32 &loopInUniverse,
     while (iomap->universesCount() <= inUni)
         iomap->addUniverse();
 
-    InputPatch *ip = iomap->inputPatch(inUni);
+    const InputPatch *ip = iomap->inputPatch(inUni);
     if (ip == nullptr || ip->pluginName() != loopName)
     {
         if (!iomap->setInputPatch(inUni, loopName, QString(), QString(), 0))

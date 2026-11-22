@@ -72,7 +72,7 @@ Scene *StageWizard::makeFullScene(const FixtureGroupEntry &grp, const QString &n
     s->setName(name);
     for (quint32 fxID : grp.fixtureIDs)
     {
-        Fixture *fx = m_doc->fixture(fxID);
+        const Fixture *fx = m_doc->fixture(fxID);
         if (!fx) continue;
         for (quint32 ch = 0; ch < fx->channels(); ++ch)
         {
@@ -114,7 +114,7 @@ Chaser *StageWizard::makeChaserFromScenes(const QList<Scene *> &scenes,
 
 quint32 StageWizard::findPalette(int type, const QVariantList &values) const
 {
-    for (QLCPalette *p : m_doc->palettes())
+    for (const QLCPalette *p : m_doc->palettes())
     {
         if (p == nullptr || int(p->type()) != type)
             continue;
@@ -201,7 +201,7 @@ bool StageWizard::allGroupsCanRender(const QColor &color) const
         bool hasR = false, hasG = false, hasB = false;
         for (quint32 fxID : grp.fixtureIDs)
         {
-            Fixture *fx = m_doc->fixture(fxID);
+            const Fixture *fx = m_doc->fixture(fxID);
             if (!fx) continue;
             for (quint32 ch = 0; ch < fx->channels(); ++ch)
             {
@@ -309,7 +309,7 @@ void StageWizard::generateGroupPalettes(const FixtureGroupEntry &grp)
             {
                 if (onWheel.contains(fxID))
                     continue;
-                Fixture *fx = m_doc->fixture(fxID);
+                const Fixture *fx = m_doc->fixture(fxID);
                 if (fx == nullptr)
                     continue;
                 for (quint32 ch = 0; ch < fx->channels() && !anyMixer; ++ch)
@@ -423,7 +423,7 @@ void StageWizard::generateLampOnScene(const FixtureGroupEntry &grp, const QStrin
 
     for (quint32 fxID : grp.fixtureIDs)
     {
-        Fixture *fx = m_doc->fixture(fxID);
+        const Fixture *fx = m_doc->fixture(fxID);
         if (!fx) continue;
 
         for (quint32 ch = 0; ch < fx->channels(); ++ch)
@@ -469,7 +469,7 @@ int StageWizard::movingHeadCount(const FixtureGroupEntry &grp) const
     int n = 0;
     for (quint32 fxID : grp.fixtureIDs)
     {
-        Fixture *fx = m_doc->fixture(fxID);
+        const Fixture *fx = m_doc->fixture(fxID);
         if (fx && fx->channelNumber(QLCChannel::Pan, QLCChannel::MSB) != QLCChannel::invalid())
             n += qMax(1, fx->heads());
     }
@@ -479,11 +479,11 @@ int StageWizard::movingHeadCount(const FixtureGroupEntry &grp) const
 // Moving-head fixture IDs of a group, paired with their placed X (mm).
 QList<QPair<quint32, float>> StageWizard::movingHeadsByX(const FixtureGroupEntry &grp) const
 {
-    MonitorProperties *props = m_doc->monitorProperties();
+    const MonitorProperties *props = m_doc->monitorProperties();
     QList<QPair<quint32, float>> heads;
     for (quint32 fxID : grp.fixtureIDs)
     {
-        Fixture *fx = m_doc->fixture(fxID);
+        const Fixture *fx = m_doc->fixture(fxID);
         if (!fx || fx->channelNumber(QLCChannel::Pan, QLCChannel::MSB) == QLCChannel::invalid())
             continue;
         heads.append(qMakePair(fxID, props->fixturePosition(fxID, 0, 0).x()));
@@ -606,7 +606,7 @@ void StageWizard::generateColorPalette(const FixtureGroupEntry &grp, const QStri
         s->setName(tr("%1 – %2").arg(prefix).arg(cd.name));
         for (quint32 fxID : grp.fixtureIDs)
         {
-            Fixture *fx = m_doc->fixture(fxID);
+            const Fixture *fx = m_doc->fixture(fxID);
             if (!fx) continue;
             for (quint32 ch = 0; ch < fx->channels(); ++ch)
             {
@@ -640,7 +640,7 @@ void StageWizard::generateColorPalette(const FixtureGroupEntry &grp, const QStri
 void StageWizard::generateGoboPalette(const FixtureGroupEntry &grp, const QString &prefix)
 {
     // Collect gobo capabilities from the first fixture in the group
-    Fixture *sample = nullptr;
+    const Fixture *sample = nullptr;
     for (quint32 id : grp.fixtureIDs)
     {
         sample = m_doc->fixture(id);
@@ -693,7 +693,7 @@ void StageWizard::generateGoboPalette(const FixtureGroupEntry &grp, const QStrin
 
 void StageWizard::generateShutterEffects(const FixtureGroupEntry &grp, const QString &prefix)
 {
-    Fixture *sample = nullptr;
+    const Fixture *sample = nullptr;
     for (quint32 id : grp.fixtureIDs)
     {
         sample = m_doc->fixture(id);
@@ -753,7 +753,7 @@ void StageWizard::generatePositionPresets(const FixtureGroupEntry &grp, const QS
         s->setName(tr("%1 – %2").arg(prefix).arg(pd.name));
         for (quint32 fxID : grp.fixtureIDs)
         {
-            Fixture *fx = m_doc->fixture(fxID);
+            const Fixture *fx = m_doc->fixture(fxID);
             if (!fx) continue;
             for (quint32 ch = 0; ch < fx->channels(); ++ch)
             {
@@ -808,7 +808,7 @@ quint32 StageWizard::baseMovementPosition(const FixtureGroupEntry &grp, Movement
     s->setName(tr("%1 – Position %2").arg(grp.name).arg(aname));
     for (quint32 fxID : grp.fixtureIDs)
     {
-        Fixture *fx = m_doc->fixture(fxID);
+        const Fixture *fx = m_doc->fixture(fxID);
         if (fx && fx->channelNumber(QLCChannel::Pan, QLCChannel::MSB) != QLCChannel::invalid())
             s->addFixture(fxID);
     }
@@ -826,7 +826,7 @@ void StageWizard::groupPanTiltMax(const FixtureGroupEntry &grp, float &panDeg, f
     tiltDeg = 270.0f;
     for (quint32 fxID : grp.fixtureIDs)
     {
-        Fixture *fx = m_doc->fixture(fxID);
+        const Fixture *fx = m_doc->fixture(fxID);
         if (!fx || !fx->fixtureMode())
             continue;
         QLCPhysical phy = fx->fixtureMode()->physical();
@@ -889,7 +889,7 @@ void StageWizard::generateMovementEffect(const FixtureGroupEntry &grp, const QSt
 
     for (quint32 fxID : grp.fixtureIDs)
     {
-        Fixture *fx = m_doc->fixture(fxID);
+        const Fixture *fx = m_doc->fixture(fxID);
         if (!fx) continue;
         int heads = qMax(1, fx->heads());
         for (int h = 0; h < heads; ++h)
@@ -936,7 +936,7 @@ void StageWizard::generateEFX(const FixtureGroupEntry &grp, const QString &prefi
     QVector3D rot;
     for (quint32 fxID : grp.fixtureIDs)
     {
-        Fixture *fx = m_doc->fixture(fxID);
+        const Fixture *fx = m_doc->fixture(fxID);
         if (fx && fx->channelNumber(QLCChannel::Pan, QLCChannel::MSB) != QLCChannel::invalid())
         {
             rot = m_doc->monitorProperties()->fixtureRotation(fxID, 0, 0);
@@ -970,7 +970,7 @@ void StageWizard::generateEFX(const FixtureGroupEntry &grp, const QString &prefi
 
     for (quint32 fxID : grp.fixtureIDs)
     {
-        Fixture *fx = m_doc->fixture(fxID);
+        const Fixture *fx = m_doc->fixture(fxID);
         if (!fx) continue;
         int heads = qMax(1, fx->heads());
         for (int h = 0; h < heads; ++h)
@@ -1026,7 +1026,7 @@ void StageWizard::generateRGBMatrix(const FixtureGroupEntry &grp,
     bool allCanMix = true;
     for (quint32 fxID : grp.fixtureIDs)
     {
-        Fixture *fx = m_doc->fixture(fxID);
+        const Fixture *fx = m_doc->fixture(fxID);
         if (fx == nullptr)
             continue;
 
@@ -1091,7 +1091,7 @@ Chaser *StageWizard::generateStrobeChase(const FixtureGroupEntry &grp, const QSt
 
     for (quint32 fxID : grp.fixtureIDs)
     {
-        Fixture *fx = m_doc->fixture(fxID);
+        const Fixture *fx = m_doc->fixture(fxID);
         if (!fx) continue;
         for (quint32 ch = 0; ch < fx->channels(); ++ch)
         {
@@ -1123,7 +1123,7 @@ Chaser *StageWizard::generateHeartbeat(const FixtureGroupEntry &grp, const QStri
     dim->setName(tr("%1 – Dim").arg(prefix));
     for (quint32 fxID : grp.fixtureIDs)
     {
-        Fixture *fx = m_doc->fixture(fxID);
+        const Fixture *fx = m_doc->fixture(fxID);
         if (!fx) continue;
         for (quint32 ch = 0; ch < fx->channels(); ++ch)
         {
@@ -1173,7 +1173,7 @@ Chaser *StageWizard::generateColorRainbow(const FixtureGroupEntry &grp, const QS
         s->setName(tr("%1 – Rainbow %2").arg(prefix).arg(cd.name));
         for (quint32 fxID : grp.fixtureIDs)
         {
-            Fixture *fx = m_doc->fixture(fxID);
+            const Fixture *fx = m_doc->fixture(fxID);
             if (!fx) continue;
             for (quint32 ch = 0; ch < fx->channels(); ++ch)
             {
@@ -1211,7 +1211,7 @@ Chaser *StageWizard::generateSplitColor(const FixtureGroupEntry &grp, const QStr
         for (int i = 0; i < grp.fixtureIDs.count(); ++i)
         {
             quint32 fxID = grp.fixtureIDs[i];
-            Fixture *fx  = m_doc->fixture(fxID);
+            const Fixture *fx  = m_doc->fixture(fxID);
             if (!fx) continue;
             bool isOdd = (i % 2 != 0) ^ swap;
             for (quint32 ch = 0; ch < fx->channels(); ++ch)
@@ -1321,7 +1321,7 @@ Chaser *StageWizard::generateAmbientLoop()
             s->setName(tr("Ambient – %1 %2").arg(grp.name).arg(cd.name));
             for (quint32 fxID : grp.fixtureIDs)
             {
-                Fixture *fx = m_doc->fixture(fxID);
+                const Fixture *fx = m_doc->fixture(fxID);
                 if (!fx) continue;
                 for (quint32 ch = 0; ch < fx->channels(); ++ch)
                 {

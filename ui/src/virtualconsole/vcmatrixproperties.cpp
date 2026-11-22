@@ -150,7 +150,7 @@ void VCMatrixProperties::slotAttachFunction()
 void VCMatrixProperties::slotSetFunction(quint32 fid)
 {
     m_function = fid;
-    Function* func = m_doc->function(m_function);
+    const Function* func = m_doc->function(m_function);
 
     if (func == NULL)
     {
@@ -460,7 +460,7 @@ void VCMatrixProperties::slotRemoveClicked()
     {
         // For R/G/B Knobs:
         // Remove the two others
-        VCMatrixControl *control = getSelectedControl();
+        const VCMatrixControl *control = getSelectedControl();
         if (control != NULL)
         {
             if (control->m_type == VCMatrixControl::Color1Knob

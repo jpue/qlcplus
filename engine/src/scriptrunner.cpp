@@ -425,7 +425,7 @@ int ScriptRunner::getChannelValue(int universe, int channel)
 
     if (universe >= 0 && universe < uniList.count())
     {
-        Universe *uni = uniList.at(universe);
+        const Universe *uni = uniList.at(universe);
         dmxValue = uni->preGMValue(channel);
     }
     m_doc->inputOutputMap()->releaseUniverses(false);
@@ -440,7 +440,7 @@ bool ScriptRunner::setFixture(quint32 fxID, quint32 channel, uchar value, uint t
 
     qDebug() << Q_FUNC_INFO;
 
-    Fixture *fxi = m_doc->fixture(fxID);
+    const Fixture *fxi = m_doc->fixture(fxID);
     if (fxi == NULL)
     {
         qWarning() << QString("No such fixture (ID: %1)").arg(fxID);
@@ -500,7 +500,7 @@ Function* ScriptRunner::getFunctionIfRunning(quint32 fID) const
 
 bool ScriptRunner::enqueueFunction(quint32 fID, FunctionOperation operation)
 {
-    Function *function = getFunctionIfRunning(fID);
+    const Function *function = getFunctionIfRunning(fID);
     if (function == NULL)
         return false;
 
@@ -526,13 +526,13 @@ bool ScriptRunner::stopFunction(quint32 fID)
 
 bool ScriptRunner::isFunctionRunning(quint32 fID)
 {
-    Function *function = getFunctionIfRunning(fID);
+    const Function *function = getFunctionIfRunning(fID);
     return function == NULL ? false : function->isRunning();
 }
 
 float ScriptRunner::getFunctionAttribute(quint32 fID, int attributeIndex) const
 {
-    Function *function = getFunctionIfRunning(fID);
+    const Function *function = getFunctionIfRunning(fID);
     return function == NULL ? 0 : function->getAttributeValue(attributeIndex);
 }
 

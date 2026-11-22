@@ -76,7 +76,7 @@ ConfigureArtNet::ConfigureArtNet(ArtNetPlugin* plugin, QWidget* parent)
 
 void ConfigureArtNet::fillNodesTree()
 {
-    ArtNetController *prevController = NULL;
+    const ArtNetController *prevController = NULL;
 
     QList<ArtNetIO> IOmap = m_plugin->getIOMapping();
 

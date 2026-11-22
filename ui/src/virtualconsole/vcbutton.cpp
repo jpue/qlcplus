@@ -303,7 +303,7 @@ void VCButton::setIconPath(const QString& iconPath)
 void VCButton::slotChooseIcon()
 {
     /* No point coming here if there is no VC */
-    VirtualConsole *vc = VirtualConsole::instance();
+    const VirtualConsole *vc = VirtualConsole::instance();
     if (vc == NULL)
         return;
 
@@ -362,7 +362,7 @@ void VCButton::slotResetIcon()
 
 void VCButton::setFunction(quint32 fid)
 {
-    Function* old = m_doc->function(m_function);
+    const Function* old = m_doc->function(m_function);
     if (old != NULL)
     {
         /* Get rid of old function connections */
@@ -481,7 +481,7 @@ void VCButton::updateState()
     }
     else if (m_action == Toggle)
     {
-        Function* function = m_doc->function(m_function);
+        const Function* function = m_doc->function(m_function);
         if (function != NULL && function->isRunning())
             state = Active;
     }
@@ -833,7 +833,7 @@ void VCButton::slotFunctionFlashing(quint32 fid, bool state)
         return;
 
     // if the function was flashed by another button, and the function is still running, keep the button pushed
-    Function* f = m_doc->function(m_function);
+    const Function* f = m_doc->function(m_function);
     if (state == false && m_action == Toggle && f != NULL && f->isRunning())
     {
         return;

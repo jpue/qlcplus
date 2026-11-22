@@ -221,14 +221,14 @@ void VCClock_Test::copy()
     sch->setWeekFlags(5);
     clock.addSchedule(sch);
 
-    VCClock *copy = qobject_cast<VCClock *>(clock.createCopy(&parent));
+    const VCClock *copy = qobject_cast<VCClock *>(clock.createCopy(&parent));
     QVERIFY(copy != nullptr);
     QCOMPARE(copy->caption(), QString("Copied"));
     QCOMPARE(copy->clockType(), VCClock::Countdown);
     QCOMPARE(copy->enableSchedule(), true);
 
     QCOMPARE(copy->schedules().count(), 1);
-    VCClockSchedule *sch2 = copy->schedules().first();
+    const VCClockSchedule *sch2 = copy->schedules().first();
     QVERIFY(sch2 != sch);
     QCOMPARE(sch2->functionID(), scene->id());
     QCOMPARE(sch2->startTime(), 3600);
@@ -276,7 +276,7 @@ void VCClock_Test::saveLoad()
     QCOMPARE(clock2.currentTime(), 3725);
 
     QCOMPARE(clock2.schedules().count(), 1);
-    VCClockSchedule *sch2 = clock2.schedules().first();
+    const VCClockSchedule *sch2 = clock2.schedules().first();
     QCOMPARE(sch2->functionID(), scene->id());
     QCOMPARE(sch2->startTime(), 3600);
     QCOMPARE(sch2->stopTime(), 7200);

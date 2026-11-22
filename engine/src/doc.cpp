@@ -782,7 +782,7 @@ int Doc::totalPowerConsumption(int& fuzzy) const
     QListIterator <Fixture*> fxit(fixtures());
     while (fxit.hasNext() == true)
     {
-        Fixture* fxi(fxit.next());
+        const Fixture* fxi(fxit.next());
         Q_ASSERT(fxi != NULL);
 
         if (fxi->fixtureMode() != NULL)
@@ -1255,7 +1255,7 @@ QList<quint32> Doc::getUsage(quint32 fid)
         {
             case Function::CollectionType:
             {
-                Collection *c = qobject_cast<Collection *>(f);
+                const Collection *c = qobject_cast<Collection *>(f);
                 int pos = c->functions().indexOf(fid);
                 if (pos != -1)
                 {
@@ -1270,7 +1270,7 @@ QList<quint32> Doc::getUsage(quint32 fid)
                 Chaser *c = qobject_cast<Chaser *>(f);
                 for (int i = 0; i < c->stepsCount(); i++)
                 {
-                    ChaserStep *cs = c->stepAt(i);
+                    const ChaserStep *cs = c->stepAt(i);
                     if (cs->fid == fid)
                     {
                         usageList.append(f->id());
@@ -1281,7 +1281,7 @@ QList<quint32> Doc::getUsage(quint32 fid)
             break;
             case Function::SequenceType:
             {
-                Sequence *s = qobject_cast<Sequence *>(f);
+                const Sequence *s = qobject_cast<Sequence *>(f);
                 if (s->boundSceneID() == fid)
                 {
                     usageList.append(f->id());
@@ -1291,7 +1291,7 @@ QList<quint32> Doc::getUsage(quint32 fid)
             break;
             case Function::ScriptType:
             {
-                Script *s = qobject_cast<Script *>(f);
+                const Script *s = qobject_cast<Script *>(f);
                 QList<quint32> l = s->functionList();
                 for (int i = 0; i < l.count(); i+=2)
                 {
@@ -1309,10 +1309,10 @@ QList<quint32> Doc::getUsage(quint32 fid)
             break;
             case Function::ShowType:
             {
-                Show *s = qobject_cast<Show *>(f);
-                foreach (Track *t, s->tracks())
+                const Show *s = qobject_cast<Show *>(f);
+                foreach (const Track *t, s->tracks())
                 {
-                    foreach (ShowFunction *sf, t->showFunctions())
+                    foreach (const ShowFunction *sf, t->showFunctions())
                     {
                         if (sf->functionID() == fid)
                         {
@@ -1448,7 +1448,7 @@ bool Doc::saveXML(QXmlStreamWriter *doc) const
     QListIterator <Fixture*> fxit(fixtures());
     while (fxit.hasNext() == true)
     {
-        Fixture *fxi(fxit.next());
+        const Fixture *fxi(fxit.next());
         if (fxi != NULL)
             fxi->saveXML(doc);
     }
@@ -1457,7 +1457,7 @@ bool Doc::saveXML(QXmlStreamWriter *doc) const
     QListIterator <FixtureGroup*> grpit(fixtureGroups());
     while (grpit.hasNext() == true)
     {
-        FixtureGroup *grp(grpit.next());
+        const FixtureGroup *grp(grpit.next());
         if (grp != NULL)
             grp->saveXML(doc);
     }
@@ -1466,7 +1466,7 @@ bool Doc::saveXML(QXmlStreamWriter *doc) const
     QListIterator <ChannelsGroup*> chanGroups(channelsGroups());
     while (chanGroups.hasNext() == true)
     {
-        ChannelsGroup *grp(chanGroups.next());
+        const ChannelsGroup *grp(chanGroups.next());
         if (grp != NULL)
             grp->saveXML(doc);
     }
@@ -1475,7 +1475,7 @@ bool Doc::saveXML(QXmlStreamWriter *doc) const
     QListIterator <QLCPalette*> paletteIt(palettes());
     while (paletteIt.hasNext() == true)
     {
-        QLCPalette *palette(paletteIt.next());
+        const QLCPalette *palette(paletteIt.next());
         if (palette != NULL)
             palette->saveXML(doc);
     }
@@ -1484,7 +1484,7 @@ bool Doc::saveXML(QXmlStreamWriter *doc) const
     QListIterator <Function*> funcit(functions());
     while (funcit.hasNext() == true)
     {
-        Function *func(funcit.next());
+        const Function *func(funcit.next());
         if (func != NULL)
             func->saveXML(doc);
     }

@@ -428,7 +428,7 @@ void FixtureTreeWidget::updateTree()
 
     if (m_showGroups == true)
     {
-        foreach (FixtureGroup* grp, m_doc->fixtureGroups())
+        foreach (const FixtureGroup* grp, m_doc->fixtureGroups())
         {
             QTreeWidgetItem* grpItem = new QTreeWidgetItem(this);
             updateGroupItem(grpItem, grp);

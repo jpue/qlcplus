@@ -151,7 +151,7 @@ bool VCAnimation::copyFrom(const VCWidget *widget)
 
     /* Copy object lists */
     clearControls();
-    for (VCAnimationPreset *control : animation->controls())
+    for (const VCAnimationPreset *control : animation->controls())
         addControlInternal(new VCAnimationPreset(*control));
     m_lastAssignedControlId = animation->m_lastAssignedControlId;
     setActivePresetId(-1);
@@ -212,7 +212,7 @@ void VCAnimation::setFunctionID(quint32 newFunctionID)
         oldMatrix->applyStyleAttributes();
     }
 
-    RGBMatrix *matrix = qobject_cast<RGBMatrix*>(m_doc->function(newFunctionID));
+    const RGBMatrix *matrix = qobject_cast<RGBMatrix*>(m_doc->function(newFunctionID));
     if (matrix == nullptr)
     {
         m_functionID = Function::invalidId();
@@ -908,7 +908,7 @@ void VCAnimation::setPresetKnobValue(quint8 presetId, int value)
 
 int VCAnimation::presetKnobValue(quint8 presetId) const
 {
-    VCAnimationPreset *control = findControl(presetId);
+    const VCAnimationPreset *control = findControl(presetId);
     if (control == nullptr || control->widgetType() != VCAnimationPreset::Knob)
         return 0;
 
@@ -936,7 +936,7 @@ void VCAnimation::slotInputValueChanged(quint8 id, uchar value)
         return;
     }
 
-    VCAnimationPreset *control = findControl(id);
+    const VCAnimationPreset *control = findControl(id);
     if (control == nullptr)
         return;
 

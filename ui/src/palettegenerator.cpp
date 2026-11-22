@@ -201,7 +201,7 @@ void PaletteGenerator::addToDoc()
 
     foreach (Chaser *chaser, m_chasers)
     {
-        foreach (Scene *scene, m_scenes)
+        foreach (const Scene *scene, m_scenes)
         {
             qDebug() << "Add chaser step:" << scene->id();
             chaser->addStep(ChaserStep(scene->id()));
@@ -307,7 +307,7 @@ void PaletteGenerator::createRGBCMYScene(QList<SceneValue> rcMap,
 
         foreach (SceneValue scv, rcMap)
         {
-            Fixture *fxi = m_doc->fixture(scv.fxi);
+            const Fixture *fxi = m_doc->fixture(scv.fxi);
             int gmCh = -1, byCh = -1;
 
             for (int i = 0; i < fxi->heads(); i++)
@@ -375,7 +375,7 @@ void PaletteGenerator::createCapabilityScene(QHash<quint32, quint32> chMap,
     if (chMap.size() == 0)
         return;
 
-    Fixture *fxi = m_fixtures.at(0);
+    const Fixture *fxi = m_fixtures.at(0);
     Q_ASSERT(fxi != NULL);
     QHashIterator <quint32, quint32> it(chMap);
 
@@ -389,7 +389,7 @@ void PaletteGenerator::createCapabilityScene(QHash<quint32, quint32> chMap,
         Scene *evenScene = NULL;
         Scene *oddScene = NULL;
         bool even = false;
-        QLCCapability *cap = channel->capabilities().at(cIdx);
+        const QLCCapability *cap = channel->capabilities().at(cIdx);
         uchar value = cap->middle();
         QString name = cap->name();
 
@@ -495,7 +495,7 @@ void PaletteGenerator::createFunctions(PaletteGenerator::PaletteType type,
 
     for (int i = 0; i < m_fixtures.count(); i++)
     {
-        Fixture *fixture = m_fixtures.at(i);
+        const Fixture *fixture = m_fixtures.at(i);
         Q_ASSERT(fixture != NULL);
         quint32 fxID = fixture->id();
 

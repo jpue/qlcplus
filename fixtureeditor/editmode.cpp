@@ -157,7 +157,7 @@ void EditMode::slotAddChannelClicked()
 
 void EditMode::slotRemoveChannelClicked()
 {
-    QLCChannel *ch = currentChannel();
+    const QLCChannel *ch = currentChannel();
 
     if (ch != NULL)
     {
@@ -262,7 +262,7 @@ void EditMode::refreshChannelList()
 
         for (int index = 0; index < m_mode->channels().size(); index++)
         {
-            QLCChannel *currentChannel = m_mode->channels().at(index);
+            const QLCChannel *currentChannel = m_mode->channels().at(index);
             comboList << QString::number(index + 1) + " - " + currentChannel->name();
         }
 

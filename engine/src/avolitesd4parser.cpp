@@ -694,7 +694,7 @@ void AvolitesD4Parser::parseInclude(QXmlStreamReader *doc, QLCFixtureMode *mode)
                     while (it.hasNext() == true)
                     {
                         it.next();
-                        QLCChannel *ch(it.value());
+                        QLCChannel* const ch(it.value());
                         Q_ASSERT(ch != NULL);
 
                         if (ch->name() == QString(name + " Fine"))

@@ -420,7 +420,7 @@ void ChannelEdit::setupPreset()
         return;
     }
 
-    for (QLCCapability *cap : m_channel->capabilities())
+    for (const QLCCapability *cap : m_channel->capabilities())
         m_channel->removeCapability(cap);
 
     m_channel->addPresetCapability();
@@ -440,7 +440,7 @@ QLCCapability *ChannelEdit::addNewCapability()
     int min = 0;
     if (m_channel->capabilities().count())
     {
-        QLCCapability *last = m_channel->capabilities().last();
+        const QLCCapability *last = m_channel->capabilities().last();
         min = last->max() + 1;
     }
     QLCCapability *cap = new QLCCapability(min, UCHAR_MAX);
@@ -481,7 +481,7 @@ QLCCapability *ChannelEdit::addCapability(int min, int max, QString name)
 bool ChannelEdit::checkAvailability(int startAddress, int amount)
 {
     int endAddress = startAddress + amount - 1;
-    for (QLCCapability *cap : m_channel->capabilities())
+    for (const QLCCapability *cap : m_channel->capabilities())
     {
         if (cap->max() >= startAddress && cap->min() <= endAddress)
             return false;

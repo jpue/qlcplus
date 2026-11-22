@@ -203,7 +203,7 @@ TreeModelItem *TreeModel::itemAtPath(const QString& path) const
             return nullptr;
     }
 
-    TreeModelItem *item = m_itemsPathMap.value(pathList.at(0), nullptr);
+    const TreeModelItem *item = m_itemsPathMap.value(pathList.at(0), nullptr);
     if (item == nullptr)
         return nullptr;
 
@@ -240,7 +240,7 @@ bool TreeModel::removeItem(const QString& path)
     }
     else
     {
-        TreeModelItem *item = m_itemsPathMap.value(pathList.at(0), nullptr);
+        const TreeModelItem *item = m_itemsPathMap.value(pathList.at(0), nullptr);
         if (item == nullptr)
             return false;
 
@@ -277,7 +277,7 @@ void TreeModel::setItemRoleData(QString path, const QVariant &value, int role)
     }
     else
     {
-        TreeModelItem *item = m_itemsPathMap.value(pathList.at(0), nullptr);
+        const TreeModelItem *item = m_itemsPathMap.value(pathList.at(0), nullptr);
         if (item == nullptr)
             return;
 
@@ -345,7 +345,7 @@ QVariant TreeModel::data(const QModelIndex &index, int role) const
     if (itemRow < 0 || itemRow >= m_items.count())
         return false;
 
-    TreeModelItem *item = m_items.at(itemRow);
+    const TreeModelItem *item = m_items.at(itemRow);
 
     switch(role)
     {
@@ -481,7 +481,7 @@ int TreeModel::getItemInsertIndex(const QString& label, int flags) const
         bool incomingIsFolder = (flags & EmptyNode);
         for (int index = 0; index < m_items.count(); ++index)
         {
-            TreeModelItem *current = m_items.at(index);
+            const TreeModelItem *current = m_items.at(index);
             bool currentIsFolder = current->hasChildren() || (current->flags() & EmptyNode);
 
             if (incomingIsFolder)
@@ -509,7 +509,7 @@ int TreeModel::getNodeInsertIndex(const QString& label) const
     {
         for (int index = 0; index < m_items.count(); ++index)
         {
-            TreeModelItem *current = m_items.at(index);
+            const TreeModelItem *current = m_items.at(index);
             bool currentIsFolder = current->hasChildren() || (current->flags() & EmptyNode);
             if (currentIsFolder == false)
                 return index;

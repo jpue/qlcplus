@@ -107,7 +107,7 @@ void VCClockProperties::addScheduleItem(VCClockSchedule schedule)
     if (fid == Function::invalidId())
         return;
 
-    Function *func = m_doc->function(fid);
+    const Function *func = m_doc->function(fid);
     if (func != NULL)
     {
         QTreeWidgetItem *item = new QTreeWidgetItem(m_scheduleTree);

@@ -46,7 +46,7 @@ void FunctionsTreeWidget::updateTree()
 
     clearTree();
 
-    foreach (Function* function, m_doc->functions())
+    foreach (const Function* function, m_doc->functions())
     {
         if (function->isVisible())
             updateFunctionItem(new QTreeWidgetItem(parentItem(function)), function);
@@ -64,7 +64,7 @@ void FunctionsTreeWidget::clearTree()
 void FunctionsTreeWidget::functionNameChanged(quint32 fid)
 {
     blockSignals(true);
-    Function* function = m_doc->function(fid);
+    const Function* function = m_doc->function(fid);
     if (function == NULL)
     {
         blockSignals(false);
@@ -399,7 +399,7 @@ void FunctionsTreeWidget::dropEvent(QDropEvent *event)
     foreach (QTreeWidgetItem *item, m_draggedItems)
     {
         quint32 dragFID = item->data(COL_NAME, Qt::UserRole).toUInt();
-        Function *dragFunc = m_doc->function(dragFID);
+        const Function *dragFunc = m_doc->function(dragFID);
         if (dragFunc != NULL && dragFunc->type() == dropType)
         {
             QTreeWidget::dropEvent(event);

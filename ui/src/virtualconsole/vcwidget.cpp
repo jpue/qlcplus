@@ -617,14 +617,14 @@ void VCWidget::setInputSource(QSharedPointer<QLCInputSource> const& source, quin
         m_inputs.insert(id, source);
         // now check if the source is defined in the associated universe
         // profile and if it has specific settings
-        InputPatch *ip = m_doc->inputOutputMap()->inputPatch(source->universe());
+        const InputPatch *ip = m_doc->inputOutputMap()->inputPatch(source->universe());
         if (ip != NULL)
         {
-            QLCInputProfile *profile = ip->profile();
+            const QLCInputProfile *profile = ip->profile();
             if (profile != NULL)
             {
                 // Do not care about the page since input profiles don't do either
-                QLCInputChannel *ich = profile->channel(source->channel() & 0xFFFF);
+                const QLCInputChannel *ich = profile->channel(source->channel() & 0xFFFF);
                 if (ich != NULL)
                 {
                     // retrieve plugin specific params for feedback
@@ -748,7 +748,7 @@ void VCWidget::slotInputProfileChanged(quint32 universe, const QString &profileN
 {
     qDebug() << "[VCWdget] input profile changed" << profileName;
 
-    QLCInputProfile *profile = m_doc->inputOutputMap()->profile(profileName);
+    const QLCInputProfile *profile = m_doc->inputOutputMap()->profile(profileName);
 
     foreach (QSharedPointer<QLCInputSource> const& source, m_inputs)
     {
@@ -762,7 +762,7 @@ void VCWidget::slotInputProfileChanged(quint32 universe, const QString &profileN
             }
             else
             {
-                QLCInputChannel *ich = profile->channel(source->channel());
+                const QLCInputChannel *ich = profile->channel(source->channel());
                 if (ich != NULL)
                 {
                     if (ich->movementType() == QLCInputChannel::Absolute)
@@ -1309,7 +1309,7 @@ void VCWidget::paintEvent(QPaintEvent* e)
     Q_UNUSED(e);
 
     /* No point coming here if there is no VC instance */
-    VirtualConsole* vc = VirtualConsole::instance();
+    const VirtualConsole* vc = VirtualConsole::instance();
     if (vc == NULL)
         return;
 

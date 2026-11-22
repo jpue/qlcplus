@@ -124,7 +124,7 @@ qreal VirtualConsole::pixelDensity() const
     }
     else
     {
-        App *app = qobject_cast<App *>(m_view);
+        const App *app = qobject_cast<App *>(m_view);
         if (app == nullptr)
             return 0;
         return app->pixelDensity();
@@ -221,29 +221,29 @@ QVariantList VirtualConsole::usageList(quint32 fid) const
         {
             case VCWidget::ButtonWidget:
             {
-                VCButton *button = qobject_cast<VCButton *>(widget);
+                const VCButton *button = qobject_cast<VCButton *>(widget);
                 if (button->functionID() == fid)
                     found = true;
             }
             break;
             case VCWidget::SliderWidget:
             {
-                VCSlider *slider = qobject_cast<VCSlider *>(widget);
+                const VCSlider *slider = qobject_cast<VCSlider *>(widget);
                 if (slider->controlledFunction() == fid)
                     found = true;
             }
             break;
             case VCWidget::CueListWidget:
             {
-                VCCueList *cuelist = qobject_cast<VCCueList *>(widget);
+                const VCCueList *cuelist = qobject_cast<VCCueList *>(widget);
                 if (cuelist->chaserID() == fid)
                     found = true;
             }
             break;
             case VCWidget::ClockWidget:
             {
-                VCClock *clock = qobject_cast<VCClock *>(widget);
-                for (VCClockSchedule *schedule : clock->schedules())
+                const VCClock *clock = qobject_cast<VCClock *>(widget);
+                for (const VCClockSchedule *schedule : clock->schedules())
                 {
                     if (schedule->functionID() == fid)
                     {
@@ -358,12 +358,12 @@ VCPage *VirtualConsole::page(int page) const
 
 QQuickItem *VirtualConsole::currentPageItem() const
 {
-    VCPage *currPage = page(m_selectedPage);
+    const VCPage *currPage = page(m_selectedPage);
     if (currPage == nullptr)
         return nullptr;
 
     QQuickItem *pageItem = nullptr;
-    PreviewContext *ctx = currPage->previewContext();
+    const PreviewContext *ctx = currPage->previewContext();
 
     if (ctx->detached())
     {
@@ -711,7 +711,7 @@ void VirtualConsole::moveWidget(VCWidget *widget, VCFrame *targetFrame, QPoint p
     if (widget == nullptr || targetFrame == nullptr)
         return;
 
-    VCFrame *sourceFrame = qobject_cast<VCFrame*>(widget->parent());
+    const VCFrame *sourceFrame = qobject_cast<VCFrame*>(widget->parent());
 
     if (sourceFrame != nullptr && sourceFrame != targetFrame)
     {
@@ -974,7 +974,7 @@ void VirtualConsole::deleteVCWidgets(QVariantList IDList)
          * together with the frame and restored with it on undo */
         if (w->type() == VCWidget::FrameWidget || w->type() == VCWidget::SoloFrameWidget)
         {
-            VCFrame *frame = qobject_cast<VCFrame *>(w);
+            const VCFrame *frame = qobject_cast<VCFrame *>(w);
             for (VCWidget *child : frame->children(true))
             {
                 /* Remove any input source/key sequence binding pointing to the
@@ -992,7 +992,7 @@ void VirtualConsole::deleteVCWidgets(QVariantList IDList)
             page->removeWidgetFromMaps(w);
 
         /* 3- remove the widget from the global VC widgets map */
-        VCFrame *parent = qobject_cast<VCFrame *>(w->parent());
+        const VCFrame *parent = qobject_cast<VCFrame *>(w->parent());
         Tardis::instance()->enqueueAction(Tardis::VCWidgetDelete, parent->id(),
                                           Tardis::instance()->actionToByteArray(Tardis::VCWidgetDelete, w->id()),
                                           QVariant());
@@ -1138,7 +1138,7 @@ int VirtualConsole::clipboardItemsCount() const
         if (w->type() == VCWidget::FrameWidget ||
             w->type() == VCWidget::SoloFrameWidget)
         {
-            VCFrame *frame = qobject_cast<VCFrame *>(w);
+            const VCFrame *frame = qobject_cast<VCFrame *>(w);
             count += frame->children(true).count();
         }
     }
@@ -1284,7 +1284,7 @@ void VirtualConsole::mapWidgetInputs(VCWidget *widget)
     QList<VCWidget *> widgets;
     widgets.append(widget);
 
-    VCFrame *frame = qobject_cast<VCFrame *>(widget);
+    const VCFrame *frame = qobject_cast<VCFrame *>(widget);
     if (frame != nullptr)
         widgets.append(frame->children(true));
 
@@ -1318,14 +1318,14 @@ QVariant VirtualConsole::inputChannelsModel()
         m_inputChannelsTree->clear();
     }
 
-    for (Universe *universe : m_doc->inputOutputMap()->universes())
+    for (const Universe *universe : m_doc->inputOutputMap()->universes())
     {
         /* Get the patch associated to the current universe */
-        InputPatch *patch = universe->inputPatch();
+        const InputPatch *patch = universe->inputPatch();
         if (patch == nullptr)
             continue;
 
-        QLCInputProfile *profile = patch->profile();
+        const QLCInputProfile *profile = patch->profile();
         if (profile == nullptr)
             continue;
 
@@ -1360,15 +1360,15 @@ QVariantList VirtualConsole::universeListModel() const
 {
     QVariantList list;
 
-    for (Universe *universe : m_doc->inputOutputMap()->universes())
+    for (const Universe *universe : m_doc->inputOutputMap()->universes())
     {
         QString name = universe->name();
 
         /* Get the patch associated to the current universe */
-        InputPatch *patch = universe->inputPatch();
+        const InputPatch *patch = universe->inputPatch();
         if (patch != nullptr)
         {
-            QLCInputProfile *profile = patch->profile();
+            const QLCInputProfile *profile = patch->profile();
             if (profile != nullptr)
                 name = QString("%1: %2").arg(universe->name()).arg(profile->name());
         }
@@ -1807,7 +1807,7 @@ void VirtualConsole::postLoad()
     QList<VCWidget *> invalidWidgetsList;
     QList<VCWidget *> widgetsList;
 
-    foreach (VCPage *page, m_pages)
+    foreach (const VCPage *page, m_pages)
         widgetsList.append(page->children(true));
 
     foreach (VCWidget *widget, widgetsList)

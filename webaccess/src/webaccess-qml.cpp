@@ -194,7 +194,7 @@ static QJsonArray sliderClickAndGoPresetsToJson(const VCSlider *slider, const Do
     const quint32 fixtureID = firstChannel.value("fixtureID").toUInt();
     const int channelIdx = firstChannel.value("channelIdx").toInt();
 
-    Fixture *fixture = doc->fixture(fixtureID);
+    const Fixture *fixture = doc->fixture(fixtureID);
     if (fixture == nullptr)
         return array;
 
@@ -264,7 +264,7 @@ static int clockScheduledDaysMask(const VCClock *clock)
 
     int mask = 0;
     const QList<VCClockSchedule*> schedules = clock->schedules();
-    for (VCClockSchedule *sch : schedules)
+    for (const VCClockSchedule *sch : schedules)
     {
         if (sch == nullptr)
             continue;
@@ -495,7 +495,7 @@ void WebAccessQml::slotHandleWebSocketRequest(QHttpConnection *conn, QString dat
     if (conn == nullptr)
         return;
 
-    WebAccessUser *user = static_cast<WebAccessUser*>(conn->userData);
+    const WebAccessUser *user = static_cast<WebAccessUser*>(conn->userData);
 
     QStringList cmdList = data.split("|");
     if (cmdList.isEmpty())
@@ -536,7 +536,7 @@ void WebAccessQml::slotHandleWebSocketRequest(QHttpConnection *conn, QString dat
         }
         else if (apiCmd == "getFunctionsList")
         {
-            foreach (Function *f, m_doc->functions())
+            foreach (const Function *f, m_doc->functions())
                 wsAPIMessage.append(QString("%1|%2|").arg(f->id()).arg(f->name()));
             wsAPIMessage.truncate(wsAPIMessage.length() - 1);
         }
@@ -546,7 +546,7 @@ void WebAccessQml::slotHandleWebSocketRequest(QHttpConnection *conn, QString dat
                 return;
 
             quint32 fID = cmdList[2].toUInt();
-            Function *f = m_doc->function(fID);
+            const Function *f = m_doc->function(fID);
             if (f != nullptr)
                 wsAPIMessage.append(f->typeString());
             else
@@ -558,7 +558,7 @@ void WebAccessQml::slotHandleWebSocketRequest(QHttpConnection *conn, QString dat
                 return;
 
             quint32 fID = cmdList[2].toUInt();
-            Function *f = m_doc->function(fID);
+            const Function *f = m_doc->function(fID);
             if (f != nullptr)
                 wsAPIMessage.append(f->isRunning() ? "Running" : "Stopped");
             else
@@ -595,7 +595,7 @@ void WebAccessQml::slotHandleWebSocketRequest(QHttpConnection *conn, QString dat
             for (int i = 0; i < m_vc->pagesCount(); i++)
                 collectWidgets(m_vc->page(i), widgets, true);
 
-            foreach (VCWidget *widget, widgets)
+            foreach (const VCWidget *widget, widgets)
                 wsAPIMessage.append(QString("%1|%2|").arg(widget->id()).arg(widget->caption()));
             wsAPIMessage.truncate(wsAPIMessage.length() - 1);
         }
@@ -605,7 +605,7 @@ void WebAccessQml::slotHandleWebSocketRequest(QHttpConnection *conn, QString dat
                 return;
 
             quint32 wID = cmdList[2].toUInt();
-            VCWidget *widget = m_vc->widget(wID);
+            const VCWidget *widget = m_vc->widget(wID);
             if (widget != nullptr)
                 wsAPIMessage.append(QString("%1|%2").arg(wID).arg(VCWidget::typeToString(widget->type())));
             else
@@ -629,21 +629,21 @@ void WebAccessQml::slotHandleWebSocketRequest(QHttpConnection *conn, QString dat
                 {
                     case VCWidget::ButtonWidget:
                     {
-                        VCButton *button = qobject_cast<VCButton*>(widget);
+                        const VCButton *button = qobject_cast<VCButton*>(widget);
                         if (button != nullptr && button->functionID() != Function::invalidId())
                             fID = button->functionID();
                     }
                     break;
                     case VCWidget::CueListWidget:
                     {
-                        VCCueList *cue = qobject_cast<VCCueList*>(widget);
+                        const VCCueList *cue = qobject_cast<VCCueList*>(widget);
                         if (cue != nullptr && cue->chaserID() != Function::invalidId())
                             fID = cue->chaserID();
                     }
                     break;
                     case VCWidget::SliderWidget:
                     {
-                        VCSlider *slider = qobject_cast<VCSlider*>(widget);
+                        const VCSlider *slider = qobject_cast<VCSlider*>(widget);
                         if (slider != nullptr && slider->controlledFunction() != Function::invalidId())
                             fID = slider->controlledFunction();
                     }
@@ -653,7 +653,7 @@ void WebAccessQml::slotHandleWebSocketRequest(QHttpConnection *conn, QString dat
                 }
             }
 
-            Function *f = (fID != 0) ? m_doc->function(fID) : nullptr;
+            const Function *f = (fID != 0) ? m_doc->function(fID) : nullptr;
             if (f != nullptr)
                 wsAPIMessage.append(QString("%1|%2|%3").arg(f->id()).arg(f->typeString()).arg(f->name()));
             else
@@ -674,7 +674,7 @@ void WebAccessQml::slotHandleWebSocketRequest(QHttpConnection *conn, QString dat
                 {
                     case VCWidget::ButtonWidget:
                     {
-                        VCButton *button = qobject_cast<VCButton*>(widget);
+                        const VCButton *button = qobject_cast<VCButton*>(widget);
                         if (button->state() == VCButton::Active)
                             wsAPIMessage.append("255");
                         else if (button->state() == VCButton::Monitoring)
@@ -685,13 +685,13 @@ void WebAccessQml::slotHandleWebSocketRequest(QHttpConnection *conn, QString dat
                     break;
                     case VCWidget::SliderWidget:
                     {
-                        VCSlider *slider = qobject_cast<VCSlider*>(widget);
+                        const VCSlider *slider = qobject_cast<VCSlider*>(widget);
                         wsAPIMessage.append(QString::number(slider->value()));
                     }
                     break;
                     case VCWidget::CueListWidget:
                     {
-                        VCCueList *cue = qobject_cast<VCCueList*>(widget);
+                        const VCCueList *cue = qobject_cast<VCCueList*>(widget);
                         if (cue->playbackStatus() == VCCueList::Playing)
                             wsAPIMessage.append(QString("PLAY|%1").arg(cue->playbackIndex()));
                         else
@@ -700,7 +700,7 @@ void WebAccessQml::slotHandleWebSocketRequest(QHttpConnection *conn, QString dat
                     break;
                     case VCWidget::AnimationWidget:
                     {
-                        VCAnimation *animation = qobject_cast<VCAnimation*>(widget);
+                        const VCAnimation *animation = qobject_cast<VCAnimation*>(widget);
                         wsAPIMessage.append(QString::number(animation->faderLevel()));
                     }
                     break;
@@ -1255,7 +1255,7 @@ QJsonObject WebAccessQml::widgetToJson(const VCWidget *widget)
 
             QJsonArray steps;
             QVariant listVar = cue->stepsList();
-            ListModel *model = qobject_cast<ListModel*>(listVar.value<QObject*>());
+            const ListModel *model = qobject_cast<ListModel*>(listVar.value<QObject*>());
             if (model != nullptr)
             {
                 for (int i = 0; i < model->rowCount(); i++)
@@ -1265,7 +1265,7 @@ QJsonObject WebAccessQml::widgetToJson(const VCWidget *widget)
                     {
                         QVariantMap map = itemVar.toMap();
                         quint32 funcId = map.value("funcID").toUInt();
-                        Function *func = m_doc->function(funcId);
+                        const Function *func = m_doc->function(funcId);
                         if (func != nullptr)
                         {
                             map.insert("funcName", func->name());
@@ -1346,7 +1346,7 @@ void WebAccessQml::collectWidgets(const VCFrame *frame, QList<VCWidget *> &list,
         list.append(child);
         if (recursive)
         {
-            VCFrame *childFrame = qobject_cast<VCFrame *>(child);
+            const VCFrame *childFrame = qobject_cast<VCFrame *>(child);
             if (childFrame != nullptr)
                 collectWidgets(childFrame, list, recursive);
         }
@@ -1370,7 +1370,7 @@ QByteArray WebAccessQml::getVCJson()
     QJsonArray pages;
     for (int i = 0; i < m_vc->pagesCount(); i++)
     {
-        VCFrame *page = m_vc->page(i);
+        const VCFrame *page = m_vc->page(i);
         QJsonObject pageObj = frameToJson(page);
         pageObj["index"] = i;
         pages.append(pageObj);
@@ -1462,7 +1462,7 @@ void WebAccessQml::setupWidgetConnections(const VCWidget *widget)
                     this, SLOT(slotFrameDisableStateChanged(bool)));
 
             QList<VCWidget *> children = frame->children(false);
-            for (VCWidget *child : children)
+            for (const VCWidget *child : children)
                 setupWidgetConnections(child);
         }
         break;
@@ -1538,7 +1538,7 @@ void WebAccessQml::slotButtonStateChanged(int state)
 
 void WebAccessQml::slotButtonDisableStateChanged(bool disable)
 {
-    VCButton *btn = qobject_cast<VCButton *>(sender());
+    const VCButton *btn = qobject_cast<VCButton *>(sender());
     if (btn == nullptr)
         return;
 
@@ -1548,7 +1548,7 @@ void WebAccessQml::slotButtonDisableStateChanged(bool disable)
 
 void WebAccessQml::slotLabelDisableStateChanged(bool disable)
 {
-    VCLabel *lbl = qobject_cast<VCLabel *>(sender());
+    const VCLabel *lbl = qobject_cast<VCLabel *>(sender());
     if (lbl == nullptr)
         return;
 
@@ -1558,7 +1558,7 @@ void WebAccessQml::slotLabelDisableStateChanged(bool disable)
 
 void WebAccessQml::slotWidgetVisibilityChanged(bool isVisible)
 {
-    VCWidget *widget = qobject_cast<VCWidget *>(sender());
+    const VCWidget *widget = qobject_cast<VCWidget *>(sender());
     if (widget == nullptr)
         return;
 
@@ -1578,7 +1578,7 @@ void WebAccessQml::slotSliderValueChanged(int value)
 
 void WebAccessQml::slotSliderDisableStateChanged(bool disable)
 {
-    VCSlider *slider = qobject_cast<VCSlider *>(sender());
+    const VCSlider *slider = qobject_cast<VCSlider *>(sender());
     if (slider == nullptr)
         return;
 
@@ -1588,7 +1588,7 @@ void WebAccessQml::slotSliderDisableStateChanged(bool disable)
 
 void WebAccessQml::slotSliderOverrideChanged()
 {
-    VCSlider *slider = qobject_cast<VCSlider *>(sender());
+    const VCSlider *slider = qobject_cast<VCSlider *>(sender());
     if (slider == nullptr)
         return;
 
@@ -1598,7 +1598,7 @@ void WebAccessQml::slotSliderOverrideChanged()
 
 void WebAccessQml::slotSliderClickAndGoColorsChanged()
 {
-    VCSlider *slider = qobject_cast<VCSlider *>(sender());
+    const VCSlider *slider = qobject_cast<VCSlider *>(sender());
     if (slider == nullptr)
         return;
 
@@ -1611,7 +1611,7 @@ void WebAccessQml::slotSliderClickAndGoColorsChanged()
 
 void WebAccessQml::slotAudioTriggersToggled()
 {
-    VCAudioTriggers *triggers = qobject_cast<VCAudioTriggers *>(sender());
+    const VCAudioTriggers *triggers = qobject_cast<VCAudioTriggers *>(sender());
     if (triggers == nullptr)
         return;
 
@@ -1621,7 +1621,7 @@ void WebAccessQml::slotAudioTriggersToggled()
 
 void WebAccessQml::slotAudioTriggersVolumeChanged()
 {
-    VCAudioTriggers *triggers = qobject_cast<VCAudioTriggers *>(sender());
+    const VCAudioTriggers *triggers = qobject_cast<VCAudioTriggers *>(sender());
     if (triggers == nullptr)
         return;
 
@@ -1631,7 +1631,7 @@ void WebAccessQml::slotAudioTriggersVolumeChanged()
 
 void WebAccessQml::slotWidgetDisableStateChanged(bool disable)
 {
-    VCWidget *widget = qobject_cast<VCWidget *>(sender());
+    const VCWidget *widget = qobject_cast<VCWidget *>(sender());
     if (widget == nullptr)
         return;
 
@@ -1641,7 +1641,7 @@ void WebAccessQml::slotWidgetDisableStateChanged(bool disable)
 
 void WebAccessQml::slotCueIndexChanged(int idx)
 {
-    VCCueList *cue = qobject_cast<VCCueList *>(sender());
+    const VCCueList *cue = qobject_cast<VCCueList *>(sender());
     if (cue == nullptr)
         return;
 
@@ -1651,7 +1651,7 @@ void WebAccessQml::slotCueIndexChanged(int idx)
 
 void WebAccessQml::slotCuePlaybackStateChanged()
 {
-    VCCueList *cue = qobject_cast<VCCueList *>(sender());
+    const VCCueList *cue = qobject_cast<VCCueList *>(sender());
     if (cue == nullptr)
         return;
 
@@ -1667,7 +1667,7 @@ void WebAccessQml::slotCuePlaybackStateChanged()
 
 void WebAccessQml::slotCueSideFaderLevelChanged()
 {
-    VCCueList *cue = qobject_cast<VCCueList *>(sender());
+    const VCCueList *cue = qobject_cast<VCCueList *>(sender());
     if (cue == nullptr)
         return;
 
@@ -1677,7 +1677,7 @@ void WebAccessQml::slotCueSideFaderLevelChanged()
 
 void WebAccessQml::slotCueDisableStateChanged(bool disable)
 {
-    VCCueList *cue = qobject_cast<VCCueList *>(sender());
+    const VCCueList *cue = qobject_cast<VCCueList *>(sender());
     if (cue == nullptr)
         return;
 
@@ -1687,7 +1687,7 @@ void WebAccessQml::slotCueDisableStateChanged(bool disable)
 
 void WebAccessQml::slotFramePageChanged(int pageNum)
 {
-    VCFrame *frame = qobject_cast<VCFrame *>(sender());
+    const VCFrame *frame = qobject_cast<VCFrame *>(sender());
     if (frame == nullptr)
         return;
 
@@ -1697,7 +1697,7 @@ void WebAccessQml::slotFramePageChanged(int pageNum)
 
 void WebAccessQml::slotFrameDisableStateChanged(bool disable)
 {
-    VCFrame *frame = qobject_cast<VCFrame *>(sender());
+    const VCFrame *frame = qobject_cast<VCFrame *>(sender());
     if (frame == nullptr)
         return;
 
@@ -1707,7 +1707,7 @@ void WebAccessQml::slotFrameDisableStateChanged(bool disable)
 
 void WebAccessQml::slotMatrixFaderChanged()
 {
-    VCAnimation *animation = qobject_cast<VCAnimation *>(sender());
+    const VCAnimation *animation = qobject_cast<VCAnimation *>(sender());
     if (animation == nullptr)
         return;
 
@@ -1716,7 +1716,7 @@ void WebAccessQml::slotMatrixFaderChanged()
 
 void WebAccessQml::slotMatrixColorsChanged()
 {
-    VCAnimation *animation = qobject_cast<VCAnimation *>(sender());
+    const VCAnimation *animation = qobject_cast<VCAnimation *>(sender());
     if (animation == nullptr)
         return;
 
@@ -1725,7 +1725,7 @@ void WebAccessQml::slotMatrixColorsChanged()
 
 void WebAccessQml::slotMatrixAlgorithmChanged()
 {
-    VCAnimation *animation = qobject_cast<VCAnimation *>(sender());
+    const VCAnimation *animation = qobject_cast<VCAnimation *>(sender());
     if (animation == nullptr)
         return;
 
@@ -1734,7 +1734,7 @@ void WebAccessQml::slotMatrixAlgorithmChanged()
 
 void WebAccessQml::slotXYPadPositionChanged()
 {
-    VCXYPad *xypad = qobject_cast<VCXYPad *>(sender());
+    const VCXYPad *xypad = qobject_cast<VCXYPad *>(sender());
     if (xypad == nullptr)
         return;
 
@@ -1745,7 +1745,7 @@ void WebAccessQml::slotXYPadPositionChanged()
 
 void WebAccessQml::slotXYPadPresetChanged()
 {
-    VCXYPad *xypad = qobject_cast<VCXYPad *>(sender());
+    const VCXYPad *xypad = qobject_cast<VCXYPad *>(sender());
     if (xypad == nullptr)
         return;
 
@@ -1755,7 +1755,7 @@ void WebAccessQml::slotXYPadPresetChanged()
 
 void WebAccessQml::slotSpeedDialTimeChanged()
 {
-    VCSpeedDial *dial = qobject_cast<VCSpeedDial *>(sender());
+    const VCSpeedDial *dial = qobject_cast<VCSpeedDial *>(sender());
     if (dial == nullptr)
         return;
 
@@ -1768,7 +1768,7 @@ void WebAccessQml::slotSpeedDialTimeChanged()
 
 void WebAccessQml::slotSpeedDialFactorChanged()
 {
-    VCSpeedDial *dial = qobject_cast<VCSpeedDial *>(sender());
+    const VCSpeedDial *dial = qobject_cast<VCSpeedDial *>(sender());
     if (dial == nullptr)
         return;
 

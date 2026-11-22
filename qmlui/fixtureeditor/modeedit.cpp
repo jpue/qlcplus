@@ -105,7 +105,7 @@ QStringList ModeEdit::actsOnChannels()
     QStringList list;
     list << "-";
 
-    for (QLCChannel *channel : m_mode->channels())
+    for (const QLCChannel *channel : m_mode->channels())
         list << channel->name();
 
     return list;

@@ -919,7 +919,7 @@ void NetworkManager::showNextAccessRequest()
     while (!m_pendingAccessRequests.isEmpty())
     {
         const NativeAccessRequest request = m_pendingAccessRequests.takeFirst();
-        NetworkHost *host = m_hostsMap.value(request.sessionId, nullptr);
+        const NetworkHost *host = m_hostsMap.value(request.sessionId, nullptr);
         if (host == nullptr || request.socket.isNull() || host->tcpSocket != request.socket)
             continue;
         m_activeAccessRequest = request;
@@ -1385,7 +1385,7 @@ void NetworkManager::slotDocLoaded()
     if (m_doc == nullptr || m_doc->inputOutputMap() == nullptr)
         return;
 
-    InputOutputMap *ioMap = m_doc->inputOutputMap();
+    const InputOutputMap *ioMap = m_doc->inputOutputMap();
     int typeMask = NoServer;
 
     if (ioMap->networkServerType() & InputOutputMap::NativeServer)

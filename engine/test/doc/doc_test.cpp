@@ -1331,7 +1331,7 @@ void Doc_Test::movedFixtureChannels()
     fxi->setChannels(1);
     QVERIFY(m_doc->addFixture(fxi));
 
-    Universe *uni = m_doc->inputOutputMap()->universes().at(0);
+    const Universe *uni = m_doc->inputOutputMap()->universes().at(0);
     const uchar intensity = Universe::HTP | Universe::Intensity;
     QCOMPARE(uni->channelCapabilities(100), intensity);
     QCOMPARE(uni->channelCapabilities(300), uchar(Universe::Undefined));
@@ -1390,7 +1390,7 @@ void Doc_Test::movedFixtureBeyondUniverse()
     fxi->setChannels(4);
     QVERIFY(m_doc->addFixture(fxi));
 
-    Universe *uni = m_doc->inputOutputMap()->universes().at(0);
+    const Universe *uni = m_doc->inputOutputMap()->universes().at(0);
     const uchar intensity = Universe::HTP | Universe::Intensity;
     QCOMPARE(uni->channelCapabilities(10), intensity);
 
@@ -1416,7 +1416,7 @@ void Doc_Test::movedFixtureOverFixtureInBetween()
     b->setChannels(4);
     QVERIFY(m_doc->addFixture(b));
 
-    Universe *uni = m_doc->inputOutputMap()->universes().at(1);
+    const Universe *uni = m_doc->inputOutputMap()->universes().at(1);
     const uchar intensity = Universe::HTP | Universe::Intensity;
     QCOMPARE(uni->channelCapabilities(100), intensity);
 

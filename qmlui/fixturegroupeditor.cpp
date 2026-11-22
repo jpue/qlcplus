@@ -60,7 +60,7 @@ QVariant FixtureGroupEditor::groupsListModel()
 {
     QVariantList groupsList;
 
-    foreach (FixtureGroup *grp, m_doc->fixtureGroups())
+    foreach (const FixtureGroup *grp, m_doc->fixtureGroups())
     {
         QVariantMap grpMap;
         grpMap.insert("mIcon", "qrc:/group.svg");
@@ -188,7 +188,7 @@ QVariantList FixtureGroupEditor::groupSelection(int x, int y, int mouseMods)
         return m_groupSelection;
     }
 
-    Fixture *fixture = m_doc->fixture(head.fxi);
+    const Fixture *fixture = m_doc->fixture(head.fxi);
     if (fixture == nullptr)
         return m_groupSelection;
 
@@ -236,7 +236,7 @@ QVariantList FixtureGroupEditor::fixtureSelection(QVariant reference, int x, int
 
     if (reference.canConvert<Fixture *>())
     {
-        Fixture *fixture = reference.value<Fixture *>();
+        const Fixture *fixture = reference.value<Fixture *>();
 
         for (int headIdx = 0; headIdx < fixture->heads(); headIdx++)
             m_groupSelection.append(absIndex + headIdx);
@@ -314,7 +314,7 @@ bool FixtureGroupEditor::addFixture(QVariant reference, int x, int y)
 
     if (reference.canConvert<Fixture *>())
     {
-        Fixture *fixture = reference.value<Fixture *>();
+        const Fixture *fixture = reference.value<Fixture *>();
         if (m_editGroup->assignFixture(fixture->id(), QLCPoint(x, y)) == true)
         {
             updateGroupMap();
@@ -420,7 +420,7 @@ void FixtureGroupEditor::deleteSelection()
     {
         QLCPoint point = pointFromAbsolute(head.toInt());
         GroupHead gHead = m_editGroup->head(point);
-        Fixture *fixture = m_doc->fixture(gHead.fxi);
+        const Fixture *fixture = m_doc->fixture(gHead.fxi);
         if (fixture != nullptr && fixture->heads() == 1)
         {
             QString fxPath = QString("%1%2%3").arg(m_editGroup->name()).arg(TreeModel::separator()).arg(fixture->name());
@@ -573,7 +573,7 @@ QString FixtureGroupEditor::getTooltip(int x, int y)
     if (head.isValid() == false)
         return "";
 
-    Fixture *fixture = m_doc->fixture(head.fxi);
+    const Fixture *fixture = m_doc->fixture(head.fxi);
     if (fixture == nullptr)
         return "";
 
@@ -606,7 +606,7 @@ void FixtureGroupEditor::updateGroupMap()
             GroupHead head = m_editGroup->head(QLCPoint(x, y));
             if (head.isValid())
             {
-                Fixture *fx = m_doc->fixture(head.fxi);
+                const Fixture *fx = m_doc->fixture(head.fxi);
                 m_groupMap.append(head.fxi); // item ID
                 m_groupMap.append((gridWidth * y) + x); // absolute index
                 m_groupMap.append(0); // isOdd

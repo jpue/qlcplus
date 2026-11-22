@@ -120,7 +120,7 @@ void DMXUSB::closeOutput(quint32 output, quint32 universe)
         DMXUSBWidget *widget = m_outputs.at(output);
         if (widget->supportRDM())
         {
-            EnttecDMXUSBPro *pro = static_cast<EnttecDMXUSBPro*>(widget);
+            const EnttecDMXUSBPro *pro = static_cast<EnttecDMXUSBPro*>(widget);
             disconnect(pro, SIGNAL(rdmFrameReceived(quint32, quint32, QByteArray)),
                        this , SIGNAL(rdmFrameReceived(quint32, quint32, QByteArray)));
             disconnect(pro, SIGNAL(rdmTimeout(quint32, quint32, int)),
@@ -242,7 +242,7 @@ void DMXUSB::closeInput(quint32 input, quint32 universe)
             widget->type() == DMXUSBWidget::ProMk2 ||
             widget->type() == DMXUSBWidget::UltraPro)
         {
-            EnttecDMXUSBPro* pro = (EnttecDMXUSBPro*) widget;
+            const EnttecDMXUSBPro* pro = (EnttecDMXUSBPro*) widget;
             disconnect(pro, SIGNAL(valueChanged(quint32,quint32,quint32,uchar)),
                        this, SIGNAL(valueChanged(quint32,quint32,quint32,uchar)));
         }

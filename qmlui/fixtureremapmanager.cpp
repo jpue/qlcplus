@@ -48,7 +48,7 @@ FixtureRemapManager::FixtureRemapManager(QQuickView *view, Doc *doc, QObject *pa
 
     m_targetDoc->inputOutputMap()->removeAllUniverses();
     int index = 0;
-    foreach (Universe *uni, m_doc->inputOutputMap()->universes())
+    foreach (const Universe *uni, m_doc->inputOutputMap()->universes())
     {
         m_targetDoc->inputOutputMap()->addUniverse(uni->id());
         m_targetDoc->inputOutputMap()->setUniverseName(index, uni->name());
@@ -238,7 +238,7 @@ void FixtureRemapManager::addTargetFixture(const QString &manufacturer,
 
 bool FixtureRemapManager::cloneAndAutoRemap(quint32 srcFxiId)
 {
-    Fixture *srcFix = m_doc->fixture(srcFxiId);
+    const Fixture *srcFix = m_doc->fixture(srcFxiId);
     if (!srcFix)
         return false;
 
@@ -484,7 +484,7 @@ void FixtureRemapManager::applyRemap()
     m_remapper.applyRemap(m_doc, m_targetDoc->fixtures());
 
     /* Remap Virtual Console widgets */
-    VirtualConsole *vc = qobject_cast<App *>(m_view)->virtualConsole();
+    const VirtualConsole *vc = qobject_cast<App *>(m_view)->virtualConsole();
     if (vc != nullptr)
     {
         QVariantList widgets = vc->widgetsList();
@@ -513,7 +513,7 @@ void FixtureRemapManager::reset()
 
     m_targetDoc->inputOutputMap()->removeAllUniverses();
     int index = 0;
-    foreach (Universe *uni, m_doc->inputOutputMap()->universes())
+    foreach (const Universe *uni, m_doc->inputOutputMap()->universes())
     {
         m_targetDoc->inputOutputMap()->addUniverse(uni->id());
         m_targetDoc->inputOutputMap()->setUniverseName(index, uni->name());

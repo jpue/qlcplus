@@ -338,7 +338,7 @@ void VCXYPadProperties::slotAddClicked()
     QListIterator <Fixture*> fxit(m_doc->fixtures());
     while (fxit.hasNext() == true)
     {
-        Fixture* fixture(fxit.next());
+        const Fixture* fixture(fxit.next());
         Q_ASSERT(fixture != NULL);
 
         // If a channel with pan or tilt group exists, don't disable this fixture
@@ -751,7 +751,7 @@ void VCXYPadProperties::slotAddEFXClicked()
     if (fs.exec() == QDialog::Accepted && fs.selection().size() > 0)
     {
         quint32 fID = fs.selection().first();
-        Function *f = m_doc->function(fID);
+        const Function *f = m_doc->function(fID);
         if (f == NULL || f->type() != Function::EFXType)
             return;
         VCXYPadPreset *newPreset = new VCXYPadPreset(++m_lastAssignedID);
@@ -782,11 +782,11 @@ void VCXYPadProperties::slotAddSceneClicked()
         Function *f = m_doc->function(fID);
         if (f == NULL || f->type() != Function::SceneType)
             return;
-        Scene *scene = qobject_cast<Scene*>(f);
+        const Scene *scene = qobject_cast<Scene*>(f);
         bool panTiltFound = false;
         foreach (SceneValue scv, scene->values())
         {
-            Fixture *fixture = m_doc->fixture(scv.fxi);
+            const Fixture *fixture = m_doc->fixture(scv.fxi);
             if (fixture == NULL)
                 continue;
             const QLCChannel *ch = fixture->channel(scv.channel);
@@ -830,7 +830,7 @@ void VCXYPadProperties::slotAddFixtureGroupClicked()
         ++it;
     }
 
-    foreach (Fixture *fx, m_doc->fixtures())
+    foreach (const Fixture *fx, m_doc->fixtures())
     {
         for (int i = 0; i < fx->heads(); i++)
         {
@@ -927,7 +927,7 @@ void VCXYPadProperties::slotPresetSelectionChanged()
             Function *f = m_doc->function(preset->functionID());
             if (f == NULL || f->type() != Function::EFXType)
                 return;
-            EFX *efx = qobject_cast<EFX*>(f);
+            const EFX *efx = qobject_cast<EFX*>(f);
             QPolygonF polygon;
             efx->preview(polygon);
 

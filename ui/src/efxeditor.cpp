@@ -420,7 +420,7 @@ QTreeWidgetItem* EFXEditor::fixtureItem(EFXFixture* ef)
     while (*it != NULL)
     {
         QTreeWidgetItem* item = *it;
-        EFXFixture* ef_item = reinterpret_cast<EFXFixture*>
+        const EFXFixture* ef_item = reinterpret_cast<EFXFixture*>
                               (item->data(0, Qt::UserRole).toULongLong());
         if (ef_item == ef)
             return item;
@@ -461,7 +461,7 @@ void EFXEditor::updateIndices(int from, int to)
 void EFXEditor::addFixtureItem(EFXFixture* ef)
 {
     QTreeWidgetItem* item;
-    Fixture* fxi;
+    const Fixture* fxi;
 
     Q_ASSERT(ef != NULL);
 

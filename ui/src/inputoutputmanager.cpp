@@ -218,9 +218,9 @@ void InputOutputManager::updateItem(QListWidgetItem* item, quint32 universe)
 {
     Q_ASSERT(item != NULL);
 
-    InputPatch* ip = m_ioMap->inputPatch(universe);
-    OutputPatch* op = m_ioMap->outputPatch(universe);
-    OutputPatch* fp = m_ioMap->feedbackPatch(universe);
+    const InputPatch* ip = m_ioMap->inputPatch(universe);
+    const OutputPatch* op = m_ioMap->outputPatch(universe);
+    const OutputPatch* fp = m_ioMap->feedbackPatch(universe);
 
     QString uniName = m_ioMap->getUniverseNameByIndex(universe);
     if (uniName.isEmpty())
@@ -371,7 +371,7 @@ void InputOutputManager::slotDeleteUniverse()
     if (uniID == m_ioMap->invalidUniverse())
         return;
 
-    foreach (Fixture *fx, m_doc->fixtures())
+    foreach (const Fixture *fx, m_doc->fixtures())
     {
         if (fx->universe() == uniID)
         {
@@ -413,7 +413,7 @@ void InputOutputManager::slotUniverseAdded(quint32 universe)
 
 void InputOutputManager::slotPassthroughChanged(bool checked)
 {
-    QListWidgetItem *currItem = m_list->currentItem();
+    const QListWidgetItem *currItem = m_list->currentItem();
     if (currItem == NULL)
         return;
 

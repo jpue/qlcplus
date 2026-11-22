@@ -824,7 +824,7 @@ void FixtureGroup_Test::load()
     xmlReader.readNextStartElement();
     QVERIFY(FixtureGroup::loader(xmlReader, m_doc) == true);
     QCOMPARE(m_doc->fixtureGroups().size(), 1);
-    FixtureGroup* group2 = m_doc->fixtureGroup(99);
+    const FixtureGroup* group2 = m_doc->fixtureGroup(99);
     QVERIFY(group2 != NULL);
     QCOMPARE(group2->size(), QSize(4, 5));
     QCOMPARE(group2->name(), QString("Pertti Pasanen"));
