@@ -31,7 +31,7 @@ if(WIN32)
     target_link_libraries(${module_name} PRIVATE winmm)
     set(FTD2XXDIR "C:/projects/D2XXSDK")
     target_link_libraries(${module_name} PRIVATE ${FTD2XXDIR}/amd64/libftd2xx.a)
-    target_include_directories(${module_name} PRIVATE ${FTD2XXDIR})
+    target_include_directories(${module_name} SYSTEM PRIVATE ${FTD2XXDIR})
     message("Building with FTD2xx support.")
     set(WITH_D2XX TRUE)
 endif()
@@ -48,7 +48,7 @@ elseif(UNIX)
 
     if (LIBFTDI1_FOUND)
         # Add the include directories to the project
-        target_include_directories(${module_name} PRIVATE ${LIBFTDI1_INCLUDE_DIRS})
+        target_include_directories(${module_name} SYSTEM PRIVATE ${LIBFTDI1_INCLUDE_DIRS})
 
         target_compile_definitions(${module_name} PRIVATE LIBFTDI1)
         execute_process(COMMAND pkg-config --modversion libftdi1 OUTPUT_VARIABLE LIBFTDI1_VERSION)  # Get libFTDI1 version
@@ -75,7 +75,7 @@ elseif(UNIX)
 
     elseif (LIBFTDI_FOUND)
         # Add the include directories to the project
-        target_include_directories(${module_name} PRIVATE ${LIBFTDI_INCLUDE_DIRS})
+        target_include_directories(${module_name} SYSTEM PRIVATE ${LIBFTDI_INCLUDE_DIRS})
 
         # Link your executable against the libftdi library
         link_libraries(LIBFTDI_LINK_LIBRARIES)

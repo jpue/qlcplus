@@ -46,7 +46,7 @@ target_sources(${module_name} PRIVATE
 pkg_check_modules(LIBUSB1 IMPORTED_TARGET libusb-1.0)
 
 if(${LIBUSB1_FOUND})
-    target_include_directories(${module_name} PRIVATE ${LIBUSB_1_INCLUDE_DIRS})
+    target_include_directories(${module_name} SYSTEM PRIVATE ${LIBUSB_1_INCLUDE_DIRS})
     target_link_libraries(${module_name} PRIVATE ${LIBUSB_1_LINK_LIBRARIES})
 endif()
 

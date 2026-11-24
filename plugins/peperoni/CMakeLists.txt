@@ -42,6 +42,8 @@ target_sources(${module_name} PRIVATE
 )
 target_include_directories(${module_name} PRIVATE
     ../interfaces
+)
+target_include_directories(${module_name} SYSTEM PRIVATE
     ${LIBUSB_1_INCLUDE_DIRS}
 )
 
