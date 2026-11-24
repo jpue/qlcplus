@@ -604,7 +604,7 @@ void VCClock::mousePressEvent(QMouseEvent *e)
  * VCClockSchedule Class methods
  *********************************************************************/
 
-bool VCClockSchedule::operator <(const VCClockSchedule &sch) const
+bool VCClockSchedule::operator<(const VCClockSchedule &sch) const
 {
     if (sch.time() < time())
         return false;
