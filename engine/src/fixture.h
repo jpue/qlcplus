@@ -179,7 +179,7 @@ public:
     /**
      * Get the fixture instance's DMX universe
      *
-     * @return A zero-based DMX address (i.e. 0-511; not 1-512)
+     * @return A zero-based DMX universe (i.e. 0-7; not 1-8)
      */
     quint32 universe() const;
 
