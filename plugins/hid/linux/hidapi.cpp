@@ -203,7 +203,7 @@ static int uses_numbered_reports(__u8 *report_descriptor, __u32 size) {
  * strings pointed to by serial_number_utf8 and product_name_utf8 after use.
  */
 static int
-parse_uevent_info(const char *uevent, int *bus_type,
+parse_uevent_info(const char *uevent, unsigned short *bus_type,
 	unsigned short *vendor_id, unsigned short *product_id,
 	char **serial_number_utf8, char **product_name_utf8)
 {
@@ -233,7 +233,7 @@ parse_uevent_info(const char *uevent, int *bus_type,
 			 *        type vendor   product
 			 * HID_ID=0003:000005AC:00008242
 			 **/
-			int ret = sscanf(value, "%x:%hx:%hx", bus_type, vendor_id, product_id);
+			int ret = sscanf(value, "%hx:%hx:%hx", bus_type, vendor_id, product_id);
 			if (ret == 3) {
 				found_id = 1;
 			}
@@ -243,7 +243,7 @@ parse_uevent_info(const char *uevent, int *bus_type,
              * PRODUCT=    3/c12/5/110
              **/
             unsigned short dummy;
-            int ret = sscanf(value, "%x/%hx/%hx/%hx", bus_type, vendor_id, product_id, &dummy);
+            int ret = sscanf(value, "%hx/%hx/%hx/%hx", bus_type, vendor_id, product_id, &dummy);
             if (ret == 4) {
                 found_id = 1;
             }
@@ -294,7 +294,7 @@ static int get_device_string(hid_device *dev, enum device_string_id key, wchar_t
 		if (hid_dev) {
 			unsigned short dev_vid;
 			unsigned short dev_pid;
-			int bus_type;
+			unsigned short bus_type;
 			size_t retm;
 
 			ret = parse_uevent_info(
@@ -426,7 +426,7 @@ struct hid_device_info  HID_API_EXPORT *hid_enumerate(unsigned short vendor_id, 
 		unsigned short dev_pid;
 		char *serial_number_utf8 = NULL;
 		char *product_name_utf8 = NULL;
-		int bus_type;
+		unsigned short bus_type;
 		int result;
 
 		/* Get the filename of the /sys entry for the device
