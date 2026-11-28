@@ -396,7 +396,7 @@ void ChaserEditor::slotAddClicked()
     {
         FunctionSelection fs(this, m_doc);
         {
-            QList<quint32> disabledList;
+            QList <quint32> disabledList;
             disabledList << m_chaser->id();
             foreach (Function* function, m_doc->functions())
             {
@@ -530,7 +530,12 @@ void ChaserEditor::slotShuffleClicked()
     }
 
     QList <QTreeWidgetItem*> selectedItems(m_tree->selectedItems());
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     QList <int> indicesToShuffle(selectedCount);
+#else
+    QList <int> indicesToShuffle;
+    indicesToShuffle.reserve(selectedCount);
+#endif
 
     // save the selected scenes and their indices into a sorted array
     QListIterator <QTreeWidgetItem*> it(selectedItems);
@@ -767,7 +772,7 @@ void ChaserEditor::slotPasteClicked()
         insertionPoint = m_tree->topLevelItemCount();
     }
 
-    QList<QTreeWidgetItem*>selectionList;
+    QList <QTreeWidgetItem*> selectionList;
 
     QListIterator <ChaserStep> it(pasteList);
     while (it.hasNext() == true)
