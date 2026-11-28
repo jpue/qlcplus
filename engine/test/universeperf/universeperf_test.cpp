@@ -64,7 +64,22 @@ QStringList artnetPluginCandidates()
 {
     QStringList candidates;
     QStringList pluginDirs;
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     const QString envDir = qEnvironmentVariable("QLC_PLUGIN_DIR");
+#else
+    const QString envDir = []() -> QString {
+        const QByteArray rawValue = qgetenv("QLC_PLUGIN_DIR");
+        if (!rawValue.isEmpty())
+        {
+            return QString::fromLocal8Bit(rawValue);
+        }
+        else
+        {
+            return QString();
+        }
+    }();
+#endif
+
     if (!envDir.isEmpty())
         pluginDirs << envDir;
 
