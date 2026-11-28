@@ -33,7 +33,7 @@ void ShowFunction_Test::defaults()
     QVERIFY(sf.functionID() == Function::invalidId());
     QVERIFY(sf.startTime() == UINT_MAX);
     QVERIFY(sf.duration() == 0);
-    QCOMPARE(sf.color(), QColor::Invalid);
+    QCOMPARE(sf.color(), QColor(QColor::Invalid));
     QCOMPARE(sf.isLocked(), false);
     QVERIFY(sf.intensityOverrideId() == -1);
 

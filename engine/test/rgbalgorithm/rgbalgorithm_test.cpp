@@ -99,9 +99,9 @@ void RGBAlgorithm_Test::algorithm()
     colors << Qt::blue;
     algo->setColors(colors);
 
-    QCOMPARE(algo->getColor(0), Qt::red);
-    QCOMPARE(algo->getColor(1), Qt::green);
-    QCOMPARE(algo->getColor(2), Qt::blue);
+    QCOMPARE(algo->getColor(0), QColor(Qt::red));
+    QCOMPARE(algo->getColor(1), QColor(Qt::green));
+    QCOMPARE(algo->getColor(2), QColor(Qt::blue));
     delete algo;
 }
 

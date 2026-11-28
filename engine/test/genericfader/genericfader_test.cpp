@@ -108,17 +108,17 @@ void GenericFader_Test::addRemove()
     fader->add(fc);
     chHash = GenericFader::channelHash(fc.fixture(), fc.channel());
     QCOMPARE(fader->m_channels.size(), 1);
-    QCOMPARE(fader->m_channels[chHash].target(), uchar(127));
+    QCOMPARE(fader->m_channels[chHash].target(), quint32(127));
 
     fc.setTarget(63);
     fader->add(fc);
     QCOMPARE(fader->m_channels.size(), 1);
-    QCOMPARE(fader->m_channels[chHash].target(), uchar(63));
+    QCOMPARE(fader->m_channels[chHash].target(), quint32(63));
 
     fc.setCurrent(63);
     fader->add(fc);
     QCOMPARE(fader->m_channels.size(), 1);
-    QCOMPARE(fader->m_channels[chHash].target(), uchar(63));
+    QCOMPARE(fader->m_channels[chHash].target(), quint32(63));
 }
 
 void GenericFader_Test::writeZeroFade()

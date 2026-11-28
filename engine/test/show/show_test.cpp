@@ -43,7 +43,7 @@ void Show_Test::defaults()
     // check defaults
     QCOMPARE(s.type(), Function::ShowType);
     QCOMPARE(s.id(), Function::invalidId());
-    QCOMPARE(s.name(), "New Show");
+    QCOMPARE(s.name(), QStringLiteral("New Show"));
     QCOMPARE(s.attributes().count(), 0);
 }
 
@@ -123,10 +123,10 @@ void Show_Test::timeDivision()
     QCOMPARE(s.stringToTempo("BPM_3_4"), Show::BPM_3_4);
     QCOMPARE(s.stringToTempo("BPM_2_4"), Show::BPM_2_4);
 
-    QCOMPARE(s.tempoToString(Show::Time), "Time");
-    QCOMPARE(s.tempoToString(Show::BPM_4_4), "BPM_4_4");
-    QCOMPARE(s.tempoToString(Show::BPM_3_4), "BPM_3_4");
-    QCOMPARE(s.tempoToString(Show::BPM_2_4), "BPM_2_4");
+    QCOMPARE(s.tempoToString(Show::Time), QStringLiteral("Time"));
+    QCOMPARE(s.tempoToString(Show::BPM_4_4), QStringLiteral("BPM_4_4"));
+    QCOMPARE(s.tempoToString(Show::BPM_3_4), QStringLiteral("BPM_3_4"));
+    QCOMPARE(s.tempoToString(Show::BPM_2_4), QStringLiteral("BPM_2_4"));
 }
 
 void Show_Test::tracks()
@@ -266,11 +266,11 @@ void Show_Test::load()
     t = s.track(0);
     t2 = s.track(1);
 
-    QCOMPARE(t->name(), "Read track 1");
+    QCOMPARE(t->name(), QStringLiteral("Read track 1"));
     QVERIFY(t->getSceneID() == 111);
     QCOMPARE(t->isMute(), false);
 
-    QCOMPARE(t2->name(), "Read track 2");
+    QCOMPARE(t2->name(), QStringLiteral("Read track 2"));
     QVERIFY(t2->getSceneID() == 222);
     QCOMPARE(t2->isMute(), true);
 }
